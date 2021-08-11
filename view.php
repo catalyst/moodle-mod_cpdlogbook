@@ -38,8 +38,3 @@ echo html_writer::alist([
 ]);
 
 echo $OUTPUT->footer();
-
-//echo $record->id;
-//echo $record->course;
-//echo $record->name;
-//echo $record->totalpoints;
