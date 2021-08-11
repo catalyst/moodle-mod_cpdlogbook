@@ -20,6 +20,26 @@ $id = required_param('id', PARAM_INT);
 
 list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
 
-require_login();
+require_course_login($course, false, $cm);
 
-echo "Temp";
+$record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ]);
+
+$PAGE->set_url(new moodle_url('/mod/cpdlogbook/view.php', [ 'id' => $id ]));
+$PAGE->set_title($record->name);
+$PAGE->set_heading($record->name);
+
+echo $OUTPUT->header();
+
+echo html_writer::alist([
+        'id' => $record->id,
+        'course' => $record->course,
+        'name' => $record->name,
+        'totalpoints' => $record->totalpoints,
+]);
+
+echo $OUTPUT->footer();
+
+//echo $record->id;
+//echo $record->course;
+//echo $record->name;
+//echo $record->totalpoints;
