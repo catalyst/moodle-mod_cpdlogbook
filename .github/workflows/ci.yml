@@ -1,3 +1,5 @@
+# Taken from https://github.com/catalyst/moodle-tool_objectfs/blob/master/.github/workflows/ci.yml
+
 name: Run all tests
 
 # Run this workflow on push and on pull_request.
