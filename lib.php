@@ -18,9 +18,10 @@ defined('MOODLE_INTERNAL') || die();
 
 function cpdlogbook_supports($feature) {
     switch($feature) {
-        case FEATURE_MOD_INTRO:               return true;
-
-        default: return null;
+        case FEATURE_MOD_INTRO:
+            return true;
+        default:
+            return null;
     }
 }
 
