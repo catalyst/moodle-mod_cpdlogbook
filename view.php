@@ -15,8 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once('../../config.php');
+require_once($CFG->libdir.'/tablelib.php');
 
 $id = required_param('id', PARAM_INT);
+$insert = optional_param('insert', false, PARAM_BOOL);
 
 list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
 
@@ -28,6 +30,16 @@ $PAGE->set_url(new moodle_url('/mod/cpdlogbook/view.php', [ 'id' => $id ]));
 $PAGE->set_title($record->name);
 $PAGE->set_heading($record->name);
 
+if ($insert) {
+    $DB->insert_record('cpdlogbook_entries', [
+            'user' => $USER->id,
+            'cpdlogbook' => $record->id,
+            'name' => 'test',
+            'time' => time(),
+    ]);
+    redirect($PAGE->url);
+}
+
 echo $OUTPUT->header();
 
 echo html_writer::alist([
@@ -35,6 +47,15 @@ echo html_writer::alist([
         'course' => $record->course,
         'name' => $record->name,
         'totalpoints' => $record->totalpoints,
+        'info' => $record->intro,
+        'introformat' => $record->introformat,
 ]);
+
+echo html_writer::link($PAGE->url.'&insert=true', 'Insert a record');
+
+$table = new table_sql('cpdlogbook_id');
+$table->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbook='.$record->id.' AND user='.$USER->id);
+$table->define_baseurl($PAGE->url);
+$table->out(40, true);
 
 echo $OUTPUT->footer();
