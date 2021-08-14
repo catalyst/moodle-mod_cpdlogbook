@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+use mod_cpdlogbook\tables\entries_table;
+
 require_once('../../config.php');
 require_once($CFG->libdir.'/tablelib.php');
 
@@ -53,7 +55,7 @@ echo html_writer::alist([
 
 echo html_writer::link($PAGE->url.'&insert=true', 'Insert a record');
 
-$table = new table_sql('cpdlogbook_id');
+$table = new entries_table('cpdlogbook_id');
 $table->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbook=? AND user=?', [$record->id, $USER->id]);
 $table->define_baseurl($PAGE->url);
 $table->out(40, true);
