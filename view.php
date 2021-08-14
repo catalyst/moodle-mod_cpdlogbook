@@ -54,7 +54,7 @@ echo html_writer::alist([
 echo html_writer::link($PAGE->url.'&insert=true', 'Insert a record');
 
 $table = new table_sql('cpdlogbook_id');
-$table->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbook='.$record->id.' AND user='.$USER->id);
+$table->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbook=? AND user=?', [$record->id, $USER->id]);
 $table->define_baseurl($PAGE->url);
 $table->out(40, true);
 
