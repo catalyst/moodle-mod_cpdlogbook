@@ -21,3 +21,4 @@ $string['cpdlogbook:addinstance'] = 'Add an instance';
 $string['pluginadministration'] = 'Administration';
 $string['name'] = 'Name';
 $string['points'] = 'Points';
+$string['entryname'] = 'Name';

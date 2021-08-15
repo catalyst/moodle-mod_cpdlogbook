@@ -14,32 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace mod_cpdlogbook\tables;
+namespace mod_cpdlogbook\forms;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir.'/tablelib.php');
+require_once($CFG->libdir.'/formslib.php');
 
-use moodle_url;
-use table_sql;
+class edit_entry extends \moodleform {
+    public function definition() {
+        $mform = $this->_form;
 
-class entries_table extends table_sql {
+        $mform->addElement('text', 'name', get_string('entryname', 'mod_cpdlogbook'));
+        $mform->setType('name', PARAM_TEXT);
 
-    public function col_name($record) {
-        $cmid = required_param('id', PARAM_INT);
-        return \html_writer::link(new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $cmid, 'id' => $record->id]), $record->name);
-    }
+        $mform->addElement('hidden', 'cmid');
+        $mform->setType('cmid', PARAM_INT);
 
-    public function col_user($record) {
-        global $DB;
-        return fullname($DB->get_record('user', ['id' => $record->user]));
-    }
+        $mform->addElement('hidden', 'id');
+        $mform->setType('id', PARAM_INT);
 
-    public function col_time($record) {
-        return userdate(time() - $record->time);
-    }
-
-    public function other_cols($column, $row) {
-        return null;
+        $this->add_action_buttons();
     }
 }
