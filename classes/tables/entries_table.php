@@ -27,7 +27,8 @@ class entries_table extends table_sql {
 
     public function col_name($record) {
         $cmid = required_param('id', PARAM_INT);
-        return \html_writer::link(new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $cmid, 'id' => $record->id]), $record->name);
+        $url = new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $cmid, 'id' => $record->id]);
+        return \html_writer::link($url, $record->name);
     }
 
     public function col_user($record) {
