@@ -20,11 +20,13 @@ require_once('../../config.php');
 
 // Get the course module id and the entry id from either the parameters or the hidden fields.
 $cmid = required_param('cmid', PARAM_INT);
-$id = required_param('id', PARAM_INT);
+$id = optional_param('id', null,PARAM_INT);
 
 list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'cpdlogbook');
 
 require_course_login($course, false, $cm);
+
+$cpdlogbook = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ]);
 
 $mform = new edit_entry();
 
@@ -32,16 +34,34 @@ if ($mform->is_cancelled()) {
     redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cmid]));
 } else if ($fromform = $mform->get_data()) {
     // Update the record according to the submitted form data.
-    $DB->update_record('cpdlogbook_entries', $fromform);
+
+    if ($fromform->id != null) {
+        $DB->update_record('cpdlogbook_entries', $fromform);
+    } else {
+        $fromform->cpdlogbook = $cpdlogbook->id;
+        $fromform->user = $USER->id;
+
+        // A placeholder until the CRUD form has the correct required field.
+        $fromform->time = time();
+
+        $DB->insert_record('cpdlogbook_entries', $fromform);
+    }
     redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cmid]));
 }
 
-$record = $DB->get_record('cpdlogbook_entries', ['id' => $id]);
+$PAGE->set_url(new moodle_url('/mod/cpdlogbook/edit.php', [ 'cmid' => $cmid, 'id' => $id ]));
 
-$PAGE->set_url(new moodle_url('/mod/cpdlogbook/edit.php', [ 'cmid' => $cmid ]));
-$PAGE->set_title($record->name);
-$PAGE->set_heading($record->name);
+if ($id != null) {
+    $record = $DB->get_record('cpdlogbook_entries', ['id' => $id]);
 
+    $PAGE->set_title($record->name);
+    $PAGE->set_heading($record->name);
+} else {
+    $record = new stdClass();
+
+    $PAGE->set_title(get_string('createtitle', 'mod_cpdlogbook'));
+    $PAGE->set_heading(get_string('createtitle', 'mod_cpdlogbook'));
+}
 echo $OUTPUT->header();
 
 $record->cmid = $cmid;

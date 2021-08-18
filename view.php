@@ -20,7 +20,6 @@ require_once('../../config.php');
 require_once($CFG->libdir.'/tablelib.php');
 
 $id = required_param('id', PARAM_INT);
-$insert = optional_param('insert', false, PARAM_BOOL);
 
 list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
 
@@ -31,16 +30,6 @@ $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ]);
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/view.php', [ 'id' => $id ]));
 $PAGE->set_title($record->name);
 $PAGE->set_heading($record->name);
-
-if ($insert) {
-    $DB->insert_record('cpdlogbook_entries', [
-            'user' => $USER->id,
-            'cpdlogbook' => $record->id,
-            'name' => 'test',
-            'time' => time(),
-    ]);
-    redirect($PAGE->url);
-}
 
 echo $OUTPUT->header();
 
@@ -53,7 +42,7 @@ echo html_writer::alist([
         'introformat' => $record->introformat,
 ]);
 
-echo html_writer::link($PAGE->url.'&insert=true', 'Insert a record');
+echo html_writer::link(new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $id]), 'Insert a record');
 
 $table = new entries_table('cpdlogbook_id');
 $table->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbook=? AND user=?', [$record->id, $USER->id]);

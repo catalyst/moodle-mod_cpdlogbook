@@ -22,3 +22,4 @@ $string['pluginadministration'] = 'Administration';
 $string['name'] = 'Name';
 $string['points'] = 'Points';
 $string['entryname'] = 'Name';
+$string['createtitle'] = 'Create a New Entry';
