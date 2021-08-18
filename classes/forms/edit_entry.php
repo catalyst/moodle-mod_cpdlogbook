@@ -14,12 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-$string['modulename'] = 'CPD Logbook';
-$string['pluginname'] = 'CPD Logbook';
-$string['modulenameplural'] = 'CPD Logbooks';
-$string['cpdlogbook:addinstance'] = 'Add an instance';
-$string['pluginadministration'] = 'Administration';
-$string['name'] = 'Name';
-$string['points'] = 'Points';
-$string['entryname'] = 'Name';
-$string['createtitle'] = 'Create a New Entry';
+namespace mod_cpdlogbook\forms;
+
+defined('MOODLE_INTERNAL') || die();
+
+require_once($CFG->libdir.'/formslib.php');
+
+class edit_entry extends \moodleform {
+    public function definition() {
+        $mform = $this->_form;
+
+        $mform->addElement('text', 'name', get_string('entryname', 'mod_cpdlogbook'));
+        $mform->setType('name', PARAM_TEXT);
+
+        $mform->addElement('hidden', 'cmid');
+        $mform->setType('cmid', PARAM_INT);
+
+        $mform->addElement('hidden', 'id');
+        $mform->setType('id', PARAM_INT);
+
+        $this->add_action_buttons();
+    }
+}

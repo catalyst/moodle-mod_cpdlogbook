@@ -14,12 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-$string['modulename'] = 'CPD Logbook';
-$string['pluginname'] = 'CPD Logbook';
-$string['modulenameplural'] = 'CPD Logbooks';
-$string['cpdlogbook:addinstance'] = 'Add an instance';
-$string['pluginadministration'] = 'Administration';
-$string['name'] = 'Name';
-$string['points'] = 'Points';
-$string['entryname'] = 'Name';
-$string['createtitle'] = 'Create a New Entry';
+require_once('../../config.php');
+
+$cmid = required_param('cmid', PARAM_INT);
+$id = required_param('id', PARAM_INT);
+
+list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'cpdlogbook');
+
+require_course_login($course, false, $cm);
+
+$DB->delete_records('cpdlogbook_entries', ['id' => $id]);
+redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cmid]));
