@@ -25,6 +25,13 @@ function cpdlogbook_supports($feature) {
     }
 }
 
+/**
+ * Add a cpdlogbook module to a course.
+ *
+ * @param $cpdlogbook
+ * @return int new cpdlogbook instance id
+ * @throws dml_exception
+ */
 function cpdlogbook_add_instance($cpdlogbook) {
     global $DB;
 
@@ -33,10 +40,38 @@ function cpdlogbook_add_instance($cpdlogbook) {
     return $cpdlogbook->id;
 }
 
+/**
+ * Update an existing cpdlogbook instance.
+ *
+ * @param $cpdlogbook
+ * @return bool
+ * @throws dml_exception
+ */
 function cpdlogbook_update_instance($cpdlogbook) {
     global $DB;
 
     $cpdlogbook->id = $cpdlogbook->instance;
 
     return $DB->update_record('cpdlogbook', $cpdlogbook);
+}
+
+/**
+ * Delete a cpdlogbook instance.
+ *
+ * @param $id
+ * @return bool
+ * @throws dml_exception
+ */
+function cpdlogbook_delete_instance($id) {
+    global $DB;
+
+    if (! $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $id])) {
+        return false;
+    }
+
+    $DB->delete_records('cpdlogbook_entries', ['cpdlogbook' => $cpdlogbook->id]);
+
+    $DB->delete_records('cpdlogbook', ['id' => $cpdlogbook->id]);
+
+    return true;
 }
