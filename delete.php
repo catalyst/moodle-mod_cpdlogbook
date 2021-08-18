@@ -17,7 +17,7 @@
 require_once('../../config.php');
 
 $cmid = required_param('cmid', PARAM_INT);
-$id = required_param('id',PARAM_INT);
+$id = required_param('id', PARAM_INT);
 
 list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'cpdlogbook');
 

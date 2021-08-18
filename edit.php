@@ -20,7 +20,7 @@ require_once('../../config.php');
 
 // Get the course module id and the entry id from either the parameters or the hidden fields.
 $cmid = required_param('cmid', PARAM_INT);
-$id = optional_param('id', null,PARAM_INT);
+$id = optional_param('id', null, PARAM_INT);
 
 list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'cpdlogbook');
 
