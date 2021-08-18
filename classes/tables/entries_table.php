@@ -25,10 +25,27 @@ use table_sql;
 
 class entries_table extends table_sql {
 
+    /**
+     * Format the column for the entry name.
+     *
+     * At the moment, this uses html_writer methods to add an update and delete button.
+     *
+     * @param $record
+     * @return string
+     * @throws \coding_exception
+     * @throws \moodle_exception
+     */
     public function col_name($record) {
         $cmid = required_param('id', PARAM_INT);
-        $url = new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $cmid, 'id' => $record->id]);
-        return \html_writer::link($url, $record->name);
+        $updateurl = new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $cmid, 'id' => $record->id]);
+        $deleteurl = new moodle_url('/mod/cpdlogbook/delete.php', ['cmid' => $cmid, 'id' => $record->id]);
+        return \html_writer::div(
+            \html_writer::div($record->name).
+            \html_writer::alist([
+                \html_writer::link($updateurl, 'Update'),
+                \html_writer::link($deleteurl, 'Delete'),
+            ])
+        );
     }
 
     public function col_user($record) {
