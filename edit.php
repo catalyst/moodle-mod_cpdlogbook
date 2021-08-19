@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-use mod_cpdlogbook\forms\edit_entry;
+use mod_cpdlogbook\form\edit_entry;
 
 require_once('../../config.php');
 
