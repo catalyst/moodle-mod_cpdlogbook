@@ -69,7 +69,7 @@ function cpdlogbook_delete_instance($id) {
         return false;
     }
 
-    $DB->delete_records('cpdlogbook_entries', ['cpdlogbook' => $cpdlogbook->id]);
+    $DB->delete_records('cpdlogbook_entries', ['cpdlogbookid' => $cpdlogbook->id]);
 
     $DB->delete_records('cpdlogbook', ['id' => $cpdlogbook->id]);
 

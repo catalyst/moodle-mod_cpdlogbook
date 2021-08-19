@@ -57,9 +57,9 @@ class entries_table extends table_sql {
         );
     }
 
-    public function col_user($record) {
+    public function col_userid($record) {
         global $DB;
-        return fullname($DB->get_record('user', ['id' => $record->user]));
+        return fullname($DB->get_record('user', ['id' => $record->userid]));
     }
 
     public function col_time($record) {
