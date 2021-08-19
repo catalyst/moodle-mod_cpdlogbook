@@ -44,7 +44,10 @@ class entries_table extends table_sql {
      */
     public function col_name($record) {
         $updateurl = new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $this->cmid, 'id' => $record->id]);
-        $deleteurl = new moodle_url('/mod/cpdlogbook/delete.php', ['cmid' => $this->cmid, 'id' => $record->id]);
+        $deleteurl = new moodle_url(
+                '/mod/cpdlogbook/delete.php',
+                ['cmid' => $this->cmid, 'id' => $record->id, 'sesskey' => sesskey()]
+        );
         return \html_writer::div(
             \html_writer::div($record->name).
             \html_writer::alist([

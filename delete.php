@@ -23,5 +23,7 @@ list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'cpdlogbook');
 
 require_course_login($course, false, $cm);
 
+require_sesskey();
+
 $DB->delete_records('cpdlogbook_entries', ['id' => $id]);
 redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cmid]));
