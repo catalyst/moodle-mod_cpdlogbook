@@ -40,8 +40,8 @@ if ($mform->is_cancelled()) {
         $DB->update_record('cpdlogbook_entries', $fromform);
     } else {
         // If the user is creating a new record.
-        $fromform->cpdlogbook = $cpdlogbook->id;
-        $fromform->user = $USER->id;
+        $fromform->cpdlogbookid = $cpdlogbook->id;
+        $fromform->userid = $USER->id;
 
         // Remove the 'id' property from the $fromform object.
         unset($fromform->id);
