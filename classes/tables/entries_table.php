@@ -25,6 +25,13 @@ use table_sql;
 
 class entries_table extends table_sql {
 
+    public $cmid;
+
+    public function __construct($cmid, $uniqueid) {
+        parent::__construct($uniqueid);
+        $this->cmid = $cmid;
+    }
+
     /**
      * Format the column for the entry name.
      *
@@ -36,9 +43,11 @@ class entries_table extends table_sql {
      * @throws \moodle_exception
      */
     public function col_name($record) {
-        $cmid = required_param('id', PARAM_INT);
-        $updateurl = new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $cmid, 'id' => $record->id]);
-        $deleteurl = new moodle_url('/mod/cpdlogbook/delete.php', ['cmid' => $cmid, 'id' => $record->id]);
+        $updateurl = new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $this->cmid, 'id' => $record->id]);
+        $deleteurl = new moodle_url(
+                '/mod/cpdlogbook/delete.php',
+                ['cmid' => $this->cmid, 'id' => $record->id, 'sesskey' => sesskey()]
+        );
         return \html_writer::div(
             \html_writer::div($record->name).
             \html_writer::alist([

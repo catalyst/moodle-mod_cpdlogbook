@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-use mod_cpdlogbook\forms\edit_entry;
+use mod_cpdlogbook\form\edit_entry;
 
 require_once('../../config.php');
 
 // Get the course module id and the entry id from either the parameters or the hidden fields.
 $cmid = required_param('cmid', PARAM_INT);
-$id = optional_param('id', null, PARAM_INT);
+$id = optional_param('id', 0, PARAM_INT);
 
 list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'cpdlogbook');
 
@@ -35,11 +35,16 @@ if ($mform->is_cancelled()) {
 } else if ($fromform = $mform->get_data()) {
     // Update the record according to the submitted form data.
 
-    if ($fromform->id != null) {
+    if ($fromform->id != 0) {
+        // If the user is updating an existing record.
         $DB->update_record('cpdlogbook_entries', $fromform);
     } else {
+        // If the user is creating a new record.
         $fromform->cpdlogbook = $cpdlogbook->id;
         $fromform->user = $USER->id;
+
+        // Remove the 'id' property from the $fromform object.
+        unset($fromform->id);
 
         // A placeholder until the CRUD form has the correct required field.
         $fromform->time = time();
@@ -51,7 +56,7 @@ if ($mform->is_cancelled()) {
 
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/edit.php', [ 'cmid' => $cmid, 'id' => $id ]));
 
-if ($id != null) {
+if ($id != 0) {
     $record = $DB->get_record('cpdlogbook_entries', ['id' => $id]);
 
     $PAGE->set_title($record->name);
