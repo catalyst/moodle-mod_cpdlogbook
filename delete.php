@@ -27,12 +27,12 @@ require_sesskey();
 
 // If the cpdlogbook doesn't exist.
 if (! $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $cm->instance])) {
-    print_error('invalidentry');
+    throw new moodle_exception('invalidentry');
 }
 
 // If the entry either doesn't exist OR it doesn't match this cmid.
 if (! $DB->get_record('cpdlogbook_entries', ['id' => $id, 'cpdlogbookid' => $cpdlogbook->id, 'userid' => $USER->id])) {
-    print_error('invalidentry');
+    throw new moodle_exception('invalidentry');
 }
 
 // From here, we can be sure that the entry exists, and is associated with the current user and the cpdlogbook.

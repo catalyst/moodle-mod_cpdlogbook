@@ -26,7 +26,7 @@ list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
 require_course_login($course, false, $cm);
 
 if (! $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ])) {
-    print_error('invalidentry');
+    throw new moodle_exception('invalidentry');
 };
 
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/view.php', [ 'id' => $id ]));
