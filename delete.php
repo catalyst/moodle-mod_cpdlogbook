@@ -25,5 +25,16 @@ require_course_login($course, false, $cm);
 
 require_sesskey();
 
-$DB->delete_records('cpdlogbook_entries', ['id' => $id]);
+// If the cpdlogbook doesn't exist.
+if (! $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $cm->instance])) {
+    print_error('invalidentry');
+}
+
+// If the entry either doesn't exist OR it doesn't match this cmid.
+if (! $DB->get_record('cpdlogbook_entries', ['id' => $id, 'cpdlogbookid' => $cpdlogbook->id, 'userid' => $USER->id])) {
+    print_error('invalidentry');
+}
+
+// From here, we can be sure that the entry exists, and is associated with the current user and the cpdlogbook.
+$DB->delete_records('cpdlogbook_entries', ['id' => $id, 'cpdlogbookid' => $cpdlogbook->id, 'userid' => $USER->id]);
 redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cmid]));
