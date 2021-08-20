@@ -44,7 +44,7 @@ echo html_writer::alist([
 
 echo html_writer::link(new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $id]), 'Insert a record');
 
-$table = new entries_table($id, $record->id, $USER->id, 'cpdlogbook_id');
+$table = new entries_table($id, $record->id, $USER->id, $OUTPUT, 'cpdlogbook_id');
 $table->define_baseurl($PAGE->url);
 $table->out(40, true);
 
