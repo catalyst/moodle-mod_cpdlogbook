@@ -42,7 +42,8 @@ class entries_table extends table_sql {
     public function __construct($cmid, $cpdlogbookid, $userid, $output, $uniqueid) {
         parent::__construct($uniqueid);
 
-        $columns = ['id', 'cpdlogbookid', 'userid', 'time', 'name', 'hours', 'points', 'provider', 'location', 'summary', 'actions'];
+        $columns =
+            ['id', 'cpdlogbookid', 'userid', 'time', 'name', 'hours', 'points', 'provider', 'location', 'summary', 'actions'];
         $this->define_columns($columns);
 
         $headers = $columns;
@@ -54,25 +55,6 @@ class entries_table extends table_sql {
         $this->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbookid=? AND userid=?', [$cpdlogbookid, $userid]);
 
     }
-
-    ///**
-    // * Format the column for the entry name.
-    // *
-    // * At the moment, this uses html_writer methods to add an update and delete button.
-    // *
-    // * @param $record
-    // * @return string
-    // * @throws \coding_exception
-    // * @throws \moodle_exception
-    // */
-    //public function col_name($record) {
-    //
-    //
-    //    return \html_writer::div(
-    //        \html_writer::span($record->name).
-    //            $this->output->render($menu)
-    //    );
-    //}
 
     public function col_userid($record) {
         global $DB;
