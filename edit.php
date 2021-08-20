@@ -26,7 +26,9 @@ list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'cpdlogbook');
 
 require_course_login($course, false, $cm);
 
-$cpdlogbook = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ]);
+if (! $cpdlogbook = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ])) {
+    print_error('invalidentry');
+};
 
 $mform = new edit_entry();
 
@@ -37,6 +39,12 @@ if ($mform->is_cancelled()) {
 
     if ($fromform->id != 0) {
         // If the user is updating an existing record.
+
+        // If the entry doesn't exist or the user doesn't have access to it.
+        if (! $DB->get_record('cpdlogbook_entries', ['id' => $fromform->id, 'cpdlogbookid' => $cm->instance, 'userid' => $USER->id])) {
+            print_error('invalidentry');
+        }
+
         $DB->update_record('cpdlogbook_entries', $fromform);
     } else {
         // If the user is creating a new record.
@@ -57,7 +65,10 @@ if ($mform->is_cancelled()) {
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/edit.php', [ 'cmid' => $cmid, 'id' => $id ]));
 
 if ($id != 0) {
-    $record = $DB->get_record('cpdlogbook_entries', ['id' => $id]);
+    // If the record doesn't exist or the user doesn't have access to it.
+    if (! $record = $DB->get_record('cpdlogbook_entries', ['id' => $id, 'cpdlogbookid' => $cm->instance, 'userid' => $USER->id])) {
+    print_error('invalidentry');
+    }
 
     $PAGE->set_title($record->name);
     $PAGE->set_heading($record->name);

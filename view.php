@@ -25,7 +25,9 @@ list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
 
 require_course_login($course, false, $cm);
 
-$record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ]);
+if (! $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ])) {
+    print_error('invalidentry');
+};
 
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/view.php', [ 'id' => $id ]));
 $PAGE->set_title($record->name);
@@ -44,7 +46,7 @@ echo html_writer::alist([
 
 echo html_writer::link(new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $id]), 'Insert a record');
 
-$table = new entries_table($id, $record->id, $USER->id, 'cpdlogbook_id');
+$table = new entries_table($id, $USER->id, 'cpdlogbook_id');
 $table->define_baseurl($PAGE->url);
 $table->out(40, true);
 

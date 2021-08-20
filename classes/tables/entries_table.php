@@ -27,11 +27,19 @@ class entries_table extends table_sql {
 
     public $cmid;
 
-    public function __construct($cmid, $cpdlogbookid, $userid, $uniqueid) {
+    public function __construct($cmid, $userid, $uniqueid) {
+        global $DB;
+
         parent::__construct($uniqueid);
         $this->cmid = $cmid;
 
-        $this->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbookid=? AND userid=?', [$cpdlogbookid, $userid]);
+        list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'cpdlogbook');
+
+        require_course_login($course, false, $cm);
+
+        $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ]);
+
+        $this->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbookid=? AND userid=?', [$record->id, $userid]);
 
     }
 
