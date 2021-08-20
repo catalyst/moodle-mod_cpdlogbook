@@ -28,10 +28,10 @@ if ($create) {
     $record->id = $id;
 
     list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
-} else {
+
     // If an existing entry is being edited.
     require_course_login($course, false, $cm);
-
+} else {
     // If the entry doesn't exist.
     if (!$record = $DB->get_record('cpdlogbook_entries', ['id' => $id, 'userid' => $USER->id])) {
         throw new moodle_exception('invalidentry');
