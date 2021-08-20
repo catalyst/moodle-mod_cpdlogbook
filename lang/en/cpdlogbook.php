@@ -23,5 +23,3 @@ $string['name'] = 'Name';
 $string['points'] = 'Points';
 $string['entryname'] = 'Name';
 $string['createtitle'] = 'Create a new entry';
-$string['update'] = 'Update';
-$string['delete'] = 'Delete';

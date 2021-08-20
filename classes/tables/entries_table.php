@@ -41,6 +41,13 @@ class entries_table extends table_sql {
      */
     public function __construct($cmid, $cpdlogbookid, $userid, $output, $uniqueid) {
         parent::__construct($uniqueid);
+
+        $columns = ['id', 'cpdlogbookid', 'userid', 'time', 'name', 'hours', 'points', 'provider', 'location', 'summary', 'actions'];
+        $this->define_columns($columns);
+
+        $headers = $columns;
+        $this->define_headers($headers);
+
         $this->cmid = $cmid;
         $this->output = $output;
 
@@ -48,36 +55,24 @@ class entries_table extends table_sql {
 
     }
 
-    /**
-     * Format the column for the entry name.
-     *
-     * At the moment, this uses html_writer methods to add an update and delete button.
-     *
-     * @param $record
-     * @return string
-     * @throws \coding_exception
-     * @throws \moodle_exception
-     */
-    public function col_name($record) {
-        $updateurl = new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $this->cmid, 'id' => $record->id]);
-        $deleteurl = new moodle_url(
-                '/mod/cpdlogbook/delete.php',
-                ['cmid' => $this->cmid, 'id' => $record->id, 'sesskey' => sesskey()]
-        );
-
-        $updatestr = get_string('update', 'mod_cpdlogbook');
-        $deletestr = get_string('delete', 'mod_cpdlogbook');
-
-        // The pix_icons use default moodle icons.
-        $menu = new action_menu();
-        $menu->add(new \action_menu_link_primary($updateurl, new \pix_icon('i/edit', $updatestr), $updatestr));
-        $menu->add(new \action_menu_link_primary($deleteurl, new \pix_icon('i/delete', $deletestr), $deletestr));
-
-        return \html_writer::div(
-            \html_writer::span($record->name).
-                $this->output->render($menu)
-        );
-    }
+    ///**
+    // * Format the column for the entry name.
+    // *
+    // * At the moment, this uses html_writer methods to add an update and delete button.
+    // *
+    // * @param $record
+    // * @return string
+    // * @throws \coding_exception
+    // * @throws \moodle_exception
+    // */
+    //public function col_name($record) {
+    //
+    //
+    //    return \html_writer::div(
+    //        \html_writer::span($record->name).
+    //            $this->output->render($menu)
+    //    );
+    //}
 
     public function col_userid($record) {
         global $DB;
@@ -86,6 +81,24 @@ class entries_table extends table_sql {
 
     public function col_time($record) {
         return userdate(time() - $record->time);
+    }
+
+    public function col_actions($record) {
+        $updateurl = new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $this->cmid, 'id' => $record->id]);
+        $deleteurl = new moodle_url(
+                '/mod/cpdlogbook/delete.php',
+                ['cmid' => $this->cmid, 'id' => $record->id, 'sesskey' => sesskey()]
+        );
+
+        $editstr = get_string('edit');
+        $deletestr = get_string('delete');
+
+        // The pix_icons use default moodle icons.
+        $menu = new action_menu();
+        $menu->add(new \action_menu_link_primary($updateurl, new \pix_icon('i/edit', $editstr), $editstr));
+        $menu->add(new \action_menu_link_primary($deleteurl, new \pix_icon('i/delete', $deletestr), $deletestr));
+
+        return $this->output->render($menu);
     }
 
     public function other_cols($column, $row) {
