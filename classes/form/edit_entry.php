@@ -27,9 +27,6 @@ class edit_entry extends \moodleform {
         $mform->addElement('text', 'name', get_string('entryname', 'mod_cpdlogbook'));
         $mform->setType('name', PARAM_TEXT);
 
-        $mform->addElement('hidden', 'cmid');
-        $mform->setType('cmid', PARAM_INT);
-
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
 

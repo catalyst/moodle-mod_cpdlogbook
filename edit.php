@@ -19,70 +19,40 @@ use mod_cpdlogbook\form\edit_entry;
 require_once('../../config.php');
 
 // Get the course module id and the entry id from either the parameters or the hidden fields.
-$cmid = required_param('cmid', PARAM_INT);
-$id = optional_param('id', 0, PARAM_INT);
+$id = required_param('id', PARAM_INT);
 
-list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'cpdlogbook');
-
-require_course_login($course, false, $cm);
-
-if (! $cpdlogbook = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ])) {
+// If the entry doesn't exist.
+if (! $record = $DB->get_record('cpdlogbook_entries', ['id' => $id, 'userid' => $USER->id])) {
     throw new moodle_exception('invalidentry');
 }
+
+// If the cpdlogbook doesn't exist.
+if (! $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $record->cpdlogbookid])) {
+    throw new moodle_exception('invalidentry');
+}
+
+// Get the course module from the cpdlogbook instance.
+$cm = get_coursemodule_from_instance('cpdlogbook', $cpdlogbook->id, $cpdlogbook->course);
+
+require_course_login($cpdlogbook->course, false, $cm);
 
 $mform = new edit_entry();
 
 if ($mform->is_cancelled()) {
-    redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cmid]));
+    redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cm->id]));
 } else if ($fromform = $mform->get_data()) {
     // Update the record according to the submitted form data.
+    $DB->update_record('cpdlogbook_entries', $fromform);
 
-    if ($fromform->id != 0) {
-        // If the user is updating an existing record.
-
-        // If the entry doesn't exist or the user doesn't have access to it.
-        if (! $DB->get_record('cpdlogbook_entries',
-                ['id' => $fromform->id, 'cpdlogbookid' => $cm->instance, 'userid' => $USER->id]
-        )) {
-            throw new moodle_exception('invalidentry');
-        }
-
-        $DB->update_record('cpdlogbook_entries', $fromform);
-    } else {
-        // If the user is creating a new record.
-        $fromform->cpdlogbookid = $cpdlogbook->id;
-        $fromform->userid = $USER->id;
-
-        // Remove the 'id' property from the $fromform object.
-        unset($fromform->id);
-
-        // A placeholder until the CRUD form has the correct required field.
-        $fromform->time = time();
-
-        $DB->insert_record('cpdlogbook_entries', $fromform);
-    }
-    redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cmid]));
+    redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cm->id]));
 }
 
-$PAGE->set_url(new moodle_url('/mod/cpdlogbook/edit.php', [ 'cmid' => $cmid, 'id' => $id ]));
+$PAGE->set_url(new moodle_url('/mod/cpdlogbook/edit.php', [ 'id' => $id ]));
 
-if ($id != 0) {
-    // If the record doesn't exist or the user doesn't have access to it.
-    if (! $record = $DB->get_record('cpdlogbook_entries', ['id' => $id, 'cpdlogbookid' => $cm->instance, 'userid' => $USER->id])) {
-        throw new moodle_exception('invalidentry');
-    }
+$PAGE->set_title($record->name);
+$PAGE->set_heading($record->name);
 
-    $PAGE->set_title($record->name);
-    $PAGE->set_heading($record->name);
-} else {
-    $record = new stdClass();
-
-    $PAGE->set_title(get_string('createtitle', 'mod_cpdlogbook'));
-    $PAGE->set_heading(get_string('createtitle', 'mod_cpdlogbook'));
-}
 echo $OUTPUT->header();
-
-$record->cmid = $cmid;
 
 $mform->set_data($record);
 $mform->display();

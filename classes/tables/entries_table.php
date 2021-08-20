@@ -25,19 +25,14 @@ use table_sql;
 
 class entries_table extends table_sql {
 
-    public $cmid;
-
     public function __construct($cm, $userid, $uniqueid) {
         global $DB;
 
         parent::__construct($uniqueid);
-        $this->cmid = $cm->id;
-
 
         $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ]);
 
         $this->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbookid=? AND userid=?', [$record->id, $userid]);
-
     }
 
     /**
@@ -51,10 +46,10 @@ class entries_table extends table_sql {
      * @throws \moodle_exception
      */
     public function col_name($record) {
-        $updateurl = new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $this->cmid, 'id' => $record->id]);
+        $updateurl = new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $record->id]);
         $deleteurl = new moodle_url(
                 '/mod/cpdlogbook/delete.php',
-                ['cmid' => $this->cmid, 'id' => $record->id, 'sesskey' => sesskey()]
+                ['id' => $record->id, 'sesskey' => sesskey()]
         );
         return \html_writer::div(
             \html_writer::div($record->name).
