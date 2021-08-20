@@ -25,9 +25,7 @@ list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'cpdlogbook');
 
 require_course_login($course, false, $cm);
 
-if (! $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ])) {
-    throw new moodle_exception('invalidentry');
-};
+$record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ], '*', MUST_EXIST);
 
 $mform = new create_entry();
 

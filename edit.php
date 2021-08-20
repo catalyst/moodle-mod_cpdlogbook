@@ -33,14 +33,10 @@ if ($create) {
     require_course_login($course, false, $cm);
 } else {
     // If the entry doesn't exist.
-    if (!$record = $DB->get_record('cpdlogbook_entries', ['id' => $id, 'userid' => $USER->id])) {
-        throw new moodle_exception('invalidentry');
-    }
+    $record = $DB->get_record('cpdlogbook_entries', ['id' => $id, 'userid' => $USER->id], '*', MUST_EXIST);
 
     // If the cpdlogbook doesn't exist.
-    if (!$cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $record->cpdlogbookid])) {
-        throw new moodle_exception('invalidentry');
-    }
+    $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $record->cpdlogbookid], '*', MUST_EXIST);
 
     // Get the course module from the cpdlogbook instance.
     $cm = get_coursemodule_from_instance('cpdlogbook', $cpdlogbook->id, $cpdlogbook->course);
