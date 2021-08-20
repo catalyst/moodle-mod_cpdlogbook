@@ -27,9 +27,12 @@ class entries_table extends table_sql {
 
     public $cmid;
 
-    public function __construct($cmid, $uniqueid) {
+    public function __construct($cmid, $cpdlogbookid, $userid, $uniqueid) {
         parent::__construct($uniqueid);
         $this->cmid = $cmid;
+
+        $this->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbookid=? AND userid=?', [$cpdlogbookid, $userid]);
+
     }
 
     /**
