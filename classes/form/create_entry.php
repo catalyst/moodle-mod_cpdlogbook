@@ -30,6 +30,9 @@ class create_entry extends \moodleform {
         $mform->addElement('hidden', 'cmid');
         $mform->setType('cmid', PARAM_INT);
 
+        $mform->addElement('hidden', 'create');
+        $mform->setType('create', PARAM_BOOL);
+
         $this->add_action_buttons();
     }
 }

@@ -30,6 +30,9 @@ class edit_entry extends \moodleform {
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
 
+        $mform->addElement('hidden', 'create');
+        $mform->setType('create', PARAM_BOOL);
+
         $this->add_action_buttons();
     }
 }

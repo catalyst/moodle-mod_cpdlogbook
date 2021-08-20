@@ -66,7 +66,7 @@ class entries_table extends table_sql {
     }
 
     public function col_actions($record) {
-        $updateurl = new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $record->id]);
+        $updateurl = new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $record->id, 'create' => false]);
         $deleteurl = new moodle_url(
                 '/mod/cpdlogbook/delete.php',
                 ['id' => $record->id, 'sesskey' => sesskey()]
