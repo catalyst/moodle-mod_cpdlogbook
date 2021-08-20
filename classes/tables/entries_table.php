@@ -20,16 +20,29 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/tablelib.php');
 
+use action_menu;
 use moodle_url;
+use renderer_base;
 use table_sql;
 
 class entries_table extends table_sql {
 
     public $cmid;
+    public $output;
 
-    public function __construct($cmid, $cpdlogbookid, $userid, $uniqueid) {
+    /**
+     * entries_table constructor.
+     *
+     * @param $cmid mixed The course module id.
+     * @param $cpdlogbookid string The id for the cpdlogbook.
+     * @param $userid string The id for the user.
+     * @param $output renderer_base The output renderer to use.
+     * @param $uniqueid
+     */
+    public function __construct($cmid, $cpdlogbookid, $userid, $output, $uniqueid) {
         parent::__construct($uniqueid);
         $this->cmid = $cmid;
+        $this->output = $output;
 
         $this->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbookid=? AND userid=?', [$cpdlogbookid, $userid]);
 
@@ -51,12 +64,18 @@ class entries_table extends table_sql {
                 '/mod/cpdlogbook/delete.php',
                 ['cmid' => $this->cmid, 'id' => $record->id, 'sesskey' => sesskey()]
         );
+
+        $updatestr = get_string('update', 'mod_cpdlogbook');
+        $deletestr = get_string('delete', 'mod_cpdlogbook');
+
+        // The pix_icons use default moodle icons.
+        $menu = new action_menu();
+        $menu->add(new \action_menu_link_primary($updateurl, new \pix_icon('i/edit', $updatestr), $updatestr));
+        $menu->add(new \action_menu_link_primary($deleteurl, new \pix_icon('i/delete', $deletestr), $deletestr));
+
         return \html_writer::div(
-            \html_writer::div($record->name).
-            \html_writer::alist([
-                \html_writer::link($updateurl, 'Update'),
-                \html_writer::link($deleteurl, 'Delete'),
-            ])
+            \html_writer::span($record->name).
+                $this->output->render($menu)
         );
     }
 
