@@ -23,3 +23,4 @@ $string['name'] = 'Name';
 $string['points'] = 'Points';
 $string['entryname'] = 'Name';
 $string['createtitle'] = 'Create a new entry';
+$string['confirmdelete'] = 'Are you sure you want to delete entry "{$a}"?';
