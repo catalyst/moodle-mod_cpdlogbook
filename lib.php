@@ -65,11 +65,9 @@ function cpdlogbook_update_instance($cpdlogbook) {
 function cpdlogbook_delete_instance($id) {
     global $DB;
 
-    $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $id], '*', MUST_EXIST);
+    $DB->delete_records('cpdlogbook_entries', ['cpdlogbookid' => $id]);
 
-    $DB->delete_records('cpdlogbook_entries', ['cpdlogbookid' => $cpdlogbook->id]);
-
-    $DB->delete_records('cpdlogbook', ['id' => $cpdlogbook->id]);
+    $DB->delete_records('cpdlogbook', ['id' => $id]);
 
     return true;
 }
