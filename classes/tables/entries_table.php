@@ -20,6 +20,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/tablelib.php');
 
+use action_link;
 use action_menu;
 use moodle_url;
 use renderer_base;
@@ -78,7 +79,10 @@ class entries_table extends table_sql {
         // The pix_icons use default moodle icons.
         $menu = new action_menu();
         $menu->add(new \action_menu_link_primary($updateurl, new \pix_icon('i/edit', $editstr), $editstr));
-        $menu->add(new \action_menu_link_primary($deleteurl, new \pix_icon('i/delete', $deletestr), $deletestr));
+
+        $deleteaction = new \confirm_action(get_string('confirmdelete', 'mod_cpdlogbook', $record->name));
+        $delete = new action_link($deleteurl, '', $deleteaction, [], new \pix_icon('i/delete', $deletestr));
+        $menu->add_primary_action($delete);
 
         return $this->output->render($menu);
     }
