@@ -15,6 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 use mod_cpdlogbook\form\edit_entry;
+use mod_cpdlogbook\event\entry_created;
 
 require_once('../../config.php');
 
@@ -44,6 +45,8 @@ if ($create) {
     require_course_login($cpdlogbook->course, false, $cm);
 }
 
+$context = context_module::instance($cm->id);
+
 $mform = new edit_entry();
 
 if ($mform->is_cancelled()) {
@@ -56,7 +59,11 @@ if ($mform->is_cancelled()) {
         $fromform->userid = $USER->id;
         $fromform->time = time();
 
-        $DB->insert_record('cpdlogbook_entries', $fromform);
+        $entryid = $DB->insert_record('cpdlogbook_entries', $fromform, true);
+        $newentry = $DB->get_record('cpdlogbook_entries', ['id' => $entryid]);
+
+        // Trigger an entry_created event after the record has been inserted into the database.
+        entry_created::create_from_entry($newentry, $context)->trigger();
     } else {
         // Update the record according to the submitted form data.
         $DB->update_record('cpdlogbook_entries', $fromform);
