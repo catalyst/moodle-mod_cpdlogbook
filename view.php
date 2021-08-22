@@ -59,8 +59,6 @@ if (!$download) {
             'introformat' => $record->introformat,
     ]);
 
-    echo html_writer::link(new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => true]), 'Insert a record');
-
     $table->out(40, true);
 
     echo $OUTPUT->footer();
