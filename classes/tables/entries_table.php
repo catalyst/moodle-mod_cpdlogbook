@@ -36,10 +36,10 @@ class entries_table extends table_sql {
      * @param $cm mixed The course module.
      * @param $userid string The id for the user.
      * @param $output renderer_base The output renderer to use.
-     * @param $actions boolean If true, the actions column is displayed.
+     * @param $download boolean If true, only display the columns to be downloaded.
      * @param $uniqueid
      */
-    public function __construct($cm, $userid, $output, $actions, $uniqueid) {
+    public function __construct($cm, $userid, $output, $download, $uniqueid) {
         global $DB;
 
         parent::__construct($uniqueid);
@@ -48,7 +48,7 @@ class entries_table extends table_sql {
             ['id', 'cpdlogbookid', 'userid', 'time', 'name', 'hours', 'points', 'provider', 'location', 'summary'];
 
         // Only add the actions to the columns if they've been allowed in the constructor.
-        if ($actions) {
+        if ($download) {
             array_push($columns, 'actions');
         }
 
