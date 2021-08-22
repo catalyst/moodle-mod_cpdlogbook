@@ -14,25 +14,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace mod_cpdlogbook\form;
+namespace mod_cpdlogbook\event;
+
+use core\event\base;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir.'/formslib.php');
+class entry_created extends base {
 
-class edit_entry extends \moodleform {
-    public function definition() {
-        $mform = $this->_form;
-
-        $mform->addElement('text', 'name', get_string('entryname', 'mod_cpdlogbook'));
-        $mform->setType('name', PARAM_TEXT);
-
-        $mform->addElement('hidden', 'id');
-        $mform->setType('id', PARAM_INT);
-
-        $mform->addElement('hidden', 'create');
-        $mform->setType('create', PARAM_BOOL);
-
-        $this->add_action_buttons();
+    /**
+     * @param $entry \stdClass
+     * @param $context \context_module
+     */
+    public static function create_from_entry($entry, $context) {
+        $data = [
+            'context' => $context,
+            'objectid' => $entry->id,
+        ];
+        $event = self::create($data);
+        $event->add_record_snapshot('cpdlogbook_entries', $entry);
+        return $event;
     }
+
+    public function init() {
+        $this->data['crud'] = 'c';
+        $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
+        $this->data['objecttable'] = 'cpdlogbook_entries';
+    }
+
 }

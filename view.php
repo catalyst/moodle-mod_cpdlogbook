@@ -25,7 +25,7 @@ list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
 
 require_course_login($course, false, $cm);
 
-$record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ]);
+$record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ], '*', MUST_EXIST);
 
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/view.php', [ 'id' => $id ]));
 $PAGE->set_title($record->name);
@@ -35,16 +35,16 @@ echo $OUTPUT->header();
 
 echo html_writer::alist([
         'id' => $record->id,
-        'course' => $record->courseid,
+        'course' => $record->course,
         'name' => $record->name,
         'totalpoints' => $record->totalpoints,
         'info' => $record->intro,
         'introformat' => $record->introformat,
 ]);
 
-echo html_writer::link(new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $id]), 'Insert a record');
+echo html_writer::link(new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => true]), 'Insert a record');
 
-$table = new entries_table($id, $record->id, $USER->id, $OUTPUT, 'cpdlogbook_id');
+$table = new entries_table($cm, $USER->id, $OUTPUT, 'cpdlogbook_id');
 $table->define_baseurl($PAGE->url);
 $table->out(40, true);
 

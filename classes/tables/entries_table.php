@@ -27,19 +27,19 @@ use table_sql;
 
 class entries_table extends table_sql {
 
-    public $cmid;
     public $output;
 
     /**
      * entries_table constructor.
      *
-     * @param $cmid mixed The course module id.
-     * @param $cpdlogbookid string The id for the cpdlogbook.
+     * @param $cm mixed The course module.
      * @param $userid string The id for the user.
      * @param $output renderer_base The output renderer to use.
      * @param $uniqueid
      */
-    public function __construct($cmid, $cpdlogbookid, $userid, $output, $uniqueid) {
+    public function __construct($cm, $userid, $output, $uniqueid) {
+        global $DB;
+
         parent::__construct($uniqueid);
 
         $columns =
@@ -49,11 +49,11 @@ class entries_table extends table_sql {
         $headers = $columns;
         $this->define_headers($headers);
 
-        $this->cmid = $cmid;
         $this->output = $output;
 
-        $this->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbookid=? AND userid=?', [$cpdlogbookid, $userid]);
+        $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ]);
 
+        $this->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbookid=? AND userid=?', [$record->id, $userid]);
     }
 
     public function col_userid($record) {
@@ -66,10 +66,10 @@ class entries_table extends table_sql {
     }
 
     public function col_actions($record) {
-        $updateurl = new moodle_url('/mod/cpdlogbook/edit.php', ['cmid' => $this->cmid, 'id' => $record->id]);
+        $updateurl = new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $record->id, 'create' => false]);
         $deleteurl = new moodle_url(
                 '/mod/cpdlogbook/delete.php',
-                ['cmid' => $this->cmid, 'id' => $record->id, 'sesskey' => sesskey()]
+                ['id' => $record->id, 'sesskey' => sesskey()]
         );
 
         $editstr = get_string('edit');

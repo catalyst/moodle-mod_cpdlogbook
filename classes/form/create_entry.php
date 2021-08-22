@@ -20,15 +20,15 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/formslib.php');
 
-class edit_entry extends \moodleform {
+class create_entry extends \moodleform {
     public function definition() {
         $mform = $this->_form;
 
         $mform->addElement('text', 'name', get_string('entryname', 'mod_cpdlogbook'));
         $mform->setType('name', PARAM_TEXT);
 
-        $mform->addElement('hidden', 'id');
-        $mform->setType('id', PARAM_INT);
+        $mform->addElement('hidden', 'cmid');
+        $mform->setType('cmid', PARAM_INT);
 
         $mform->addElement('hidden', 'create');
         $mform->setType('create', PARAM_BOOL);
