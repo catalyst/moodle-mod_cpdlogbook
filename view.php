@@ -34,9 +34,10 @@ $table = new entries_table($cm, $USER->id, $OUTPUT, !$download, 'cpdlogbook_id')
 $filename =
         $record->name.' '.fullname($USER).' '.userdate(time(), get_string('strftimedatefullshort', 'langconfig'));
 $table->is_downloading($download, $filename, 'cpdlogbook');
-$table->define_baseurl($PAGE->url);
 
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/view.php', [ 'id' => $id ]));
+
+$table->define_baseurl($PAGE->url);
 
 if (!$download) {
     // If the table is not being downloaded, render the normal page.
@@ -45,6 +46,9 @@ if (!$download) {
     $PAGE->set_heading($record->name);
 
     echo $OUTPUT->header();
+
+    echo $OUTPUT->single_button(new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => true]),
+        get_string('createtitle', 'mod_cpdlogbook'), 'get', ['primary' => true]);
 
     echo html_writer::alist([
             'id' => $record->id,

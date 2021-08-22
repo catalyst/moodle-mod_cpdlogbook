@@ -45,13 +45,12 @@ class entries_table extends table_sql {
         parent::__construct($uniqueid);
 
         $columns =
-            ['id', 'cpdlogbookid', 'userid', 'time', 'name', 'hours', 'points', 'provider', 'location', 'summary'];
+            ['time', 'points', 'name', 'hours', 'provider', 'location', 'summary'];
 
         // Only add the actions to the columns if they've been allowed in the constructor.
         if ($download) {
             array_push($columns, 'actions');
         }
-
         $this->define_columns($columns);
 
         $headers = $columns;
@@ -92,6 +91,10 @@ class entries_table extends table_sql {
         $menu->add_primary_action($delete);
 
         return $this->output->render($menu);
+    }
+
+    public function col_points($record) {
+        return \html_writer::tag('span', $record->points, ['class' => 'badge badge-success']);
     }
 
     public function other_cols($column, $row) {
