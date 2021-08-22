@@ -87,6 +87,10 @@ class entries_table extends table_sql {
         return $this->output->render($menu);
     }
 
+    public function col_points($record) {
+        return \html_writer::tag('span', $record->points, ['class' => 'badge badge-success']);
+    }
+
     public function other_cols($column, $row) {
         return null;
     }
