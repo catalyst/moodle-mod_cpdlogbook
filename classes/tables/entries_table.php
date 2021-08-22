@@ -36,15 +36,22 @@ class entries_table extends table_sql {
      * @param $cm mixed The course module.
      * @param $userid string The id for the user.
      * @param $output renderer_base The output renderer to use.
+     * @param $actions boolean If true, the actions column is displayed.
      * @param $uniqueid
      */
-    public function __construct($cm, $userid, $output, $uniqueid) {
+    public function __construct($cm, $userid, $output, $actions, $uniqueid) {
         global $DB;
 
         parent::__construct($uniqueid);
 
         $columns =
-            ['id', 'cpdlogbookid', 'userid', 'time', 'name', 'hours', 'points', 'provider', 'location', 'summary', 'actions'];
+            ['id', 'cpdlogbookid', 'userid', 'time', 'name', 'hours', 'points', 'provider', 'location', 'summary'];
+
+        // Only add the actions to the columns if they've been allowed in the constructor.
+        if ($actions) {
+            array_push($columns, 'actions');
+        }
+
         $this->define_columns($columns);
 
         $headers = $columns;

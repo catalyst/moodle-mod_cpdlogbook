@@ -20,6 +20,7 @@ require_once('../../config.php');
 require_once($CFG->libdir.'/tablelib.php');
 
 $id = required_param('id', PARAM_INT);
+$download = optional_param('download', false, PARAM_ALPHA);
 
 list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
 
@@ -27,25 +28,38 @@ require_course_login($course, false, $cm);
 
 $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ], '*', MUST_EXIST);
 
+// If the table is being downloaded, then the $actions parameter is set to false.
+$table = new entries_table($cm, $USER->id, $OUTPUT, !$download, 'cpdlogbook_id');
+
+$table->is_downloading($download, 'cpdlogbook'.time(), 'cpdlogbook');
+
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/view.php', [ 'id' => $id ]));
-$PAGE->set_title($record->name);
-$PAGE->set_heading($record->name);
 
-echo $OUTPUT->header();
+if (!$download) {
+    // If the table is not being downloaded, render the normal page.
 
-echo html_writer::alist([
-        'id' => $record->id,
-        'course' => $record->course,
-        'name' => $record->name,
-        'totalpoints' => $record->totalpoints,
-        'info' => $record->intro,
-        'introformat' => $record->introformat,
-]);
+    $PAGE->set_title($record->name);
+    $PAGE->set_heading($record->name);
 
-echo html_writer::link(new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => true]), 'Insert a record');
+    echo $OUTPUT->header();
 
-$table = new entries_table($cm, $USER->id, $OUTPUT, 'cpdlogbook_id');
-$table->define_baseurl($PAGE->url);
-$table->out(40, true);
+    echo html_writer::alist([
+            'id' => $record->id,
+            'course' => $record->course,
+            'name' => $record->name,
+            'totalpoints' => $record->totalpoints,
+            'info' => $record->intro,
+            'introformat' => $record->introformat,
+    ]);
 
-echo $OUTPUT->footer();
+    echo html_writer::link(new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => true]), 'Insert a record');
+
+    $table->define_baseurl($PAGE->url);
+    $table->out(40, true);
+
+    echo $OUTPUT->footer();
+} else {
+    // If the table is being downloaded, only display the table.
+    $table->define_baseurl($PAGE->url);
+    $table->out(40, true);
+}
