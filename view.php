@@ -35,7 +35,7 @@ echo $OUTPUT->header();
 
 echo html_writer::alist([
         'id' => $record->id,
-        'course' => $record->courseid,
+        'course' => $record->course,
         'name' => $record->name,
         'totalpoints' => $record->totalpoints,
         'info' => $record->intro,
