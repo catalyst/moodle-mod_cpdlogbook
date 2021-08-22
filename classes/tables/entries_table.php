@@ -63,7 +63,7 @@ class entries_table extends table_sql {
     }
 
     public function col_time($record) {
-        return userdate(time() - $record->time);
+        return userdate($record->time);
     }
 
     public function col_actions($record) {

@@ -27,6 +27,9 @@ class edit_entry extends \moodleform {
         $mform->addElement('text', 'name', get_string('name', 'mod_cpdlogbook'));
         $mform->setType('name', PARAM_TEXT);
 
+        $mform->addElement('date_time_selector', 'time', get_string('time', 'mod_cpdlogbook'));
+        $mform->setType('time', PARAM_INT);
+
         $mform->addElement('float', 'hours', get_string('hours', 'mod_cpdlogbook'));
         $mform->setType('hours', PARAM_INT);
 
@@ -40,7 +43,7 @@ class edit_entry extends \moodleform {
         $mform->setType('location', PARAM_TEXT);
 
         $mform->addElement('textarea', 'summary', get_string('summary', 'mod_cpdlogbook'));
-        $mform->setType('summary', PARAM_RAW);
+        $mform->setType('summary', PARAM_TEXT);
 
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);

@@ -20,6 +20,7 @@ $string['modulenameplural'] = 'CPD Logbooks';
 $string['cpdlogbook:addinstance'] = 'Add an instance';
 $string['pluginadministration'] = 'Administration';
 $string['name'] = 'Name';
+$string['time'] = 'Time';
 $string['points'] = 'Points';
 $string['hours'] = 'Hours';
 $string['provider'] = 'Provider';
