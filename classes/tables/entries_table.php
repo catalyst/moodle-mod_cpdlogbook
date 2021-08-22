@@ -44,7 +44,7 @@ class entries_table extends table_sql {
         parent::__construct($uniqueid);
 
         $columns =
-            ['id', 'cpdlogbookid', 'userid', 'time', 'name', 'hours', 'points', 'provider', 'location', 'summary', 'actions'];
+            ['time', 'points', 'name', 'hours', 'provider', 'location', 'summary', 'actions'];
         $this->define_columns($columns);
 
         $headers = $columns;
