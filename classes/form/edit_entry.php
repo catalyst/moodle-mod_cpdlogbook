@@ -51,5 +51,4 @@ class edit_entry extends \moodleform {
         $this->add_action_buttons();
     }
 
-
 }
