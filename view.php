@@ -28,8 +28,8 @@ require_course_login($course, false, $cm);
 
 $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ], '*', MUST_EXIST);
 
-// If the table is being downloaded, then the $actions parameter is set to false.
-$table = new entries_table($cm, $USER->id, $OUTPUT, !$download, 'cpdlogbook_id');
+// If the table is being downloaded, then the only show the required columns.
+$table = new entries_table($cm, $USER->id, $OUTPUT, $download, 'cpdlogbook_id');
 
 $filename =
         $record->name.' '.fullname($USER).' '.userdate(time(), get_string('strftimedatefullshort', 'langconfig'));

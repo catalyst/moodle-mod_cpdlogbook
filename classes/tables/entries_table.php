@@ -36,7 +36,7 @@ class entries_table extends table_sql {
      * @param $cm mixed The course module.
      * @param $userid string The id for the user.
      * @param $output renderer_base The output renderer to use.
-     * @param $download boolean If true, only display the columns to be downloaded.
+     * @param $download string The download format. If not '', then only the columns to be downloaded are displayed.
      * @param $uniqueid
      */
     public function __construct($cm, $userid, $output, $download, $uniqueid) {
@@ -48,7 +48,7 @@ class entries_table extends table_sql {
             ['time', 'points', 'name', 'hours', 'provider', 'location', 'summary'];
 
         // Only add the actions to the columns if they've been allowed in the constructor.
-        if ($download) {
+        if (!$download) {
             array_push($columns, 'actions');
         }
         $this->define_columns($columns);
