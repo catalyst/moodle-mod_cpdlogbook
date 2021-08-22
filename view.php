@@ -31,7 +31,10 @@ $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ], '*', MUST_EXI
 // If the table is being downloaded, then the $actions parameter is set to false.
 $table = new entries_table($cm, $USER->id, $OUTPUT, !$download, 'cpdlogbook_id');
 
-$table->is_downloading($download, 'cpdlogbook'.time(), 'cpdlogbook');
+$filename =
+        $record->name.' '.fullname($USER).' '.userdate(time(), get_string('strftimedatefullshort', 'langconfig'));
+$table->is_downloading($download, $filename, 'cpdlogbook');
+$table->define_baseurl($PAGE->url);
 
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/view.php', [ 'id' => $id ]));
 
@@ -54,12 +57,10 @@ if (!$download) {
 
     echo html_writer::link(new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => true]), 'Insert a record');
 
-    $table->define_baseurl($PAGE->url);
     $table->out(40, true);
 
     echo $OUTPUT->footer();
 } else {
     // If the table is being downloaded, only display the table.
-    $table->define_baseurl($PAGE->url);
     $table->out(40, true);
 }
