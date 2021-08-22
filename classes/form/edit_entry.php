@@ -27,6 +27,21 @@ class edit_entry extends \moodleform {
         $mform->addElement('text', 'name', get_string('entryname', 'mod_cpdlogbook'));
         $mform->setType('name', PARAM_TEXT);
 
+        $mform->addElement('float', 'hours', get_string('entryhours', 'mod_cpdlogbook'));
+        $mform->setType('hours', PARAM_INT);
+
+        $mform->addElement('float', 'points', get_string('entrypoints', 'mod_cpdlogbook'));
+        $mform->setType('points', PARAM_INT);
+
+        $mform->addElement('text', 'provider', get_string('entryprovider', 'mod_cpdlogbook'));
+        $mform->setType('provider', PARAM_TEXT);
+
+        $mform->addElement('text', 'location', get_string('entrylocation', 'mod_cpdlogbook'));
+        $mform->setType('location', PARAM_TEXT);
+
+        $mform->addElement('textarea', 'summary', get_string('entrysummary', 'mod_cpdlogbook'));
+        $mform->setType('summary', PARAM_RAW);
+
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
 
@@ -35,4 +50,6 @@ class edit_entry extends \moodleform {
 
         $this->add_action_buttons();
     }
+
+
 }
