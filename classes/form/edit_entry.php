@@ -30,7 +30,7 @@ class edit_entry extends \moodleform {
         $mform->addElement('date_time_selector', 'time', get_string('time', 'mod_cpdlogbook'));
         $mform->setType('time', PARAM_INT);
 
-        $mform->addElement('float', 'hours', get_string('hours', 'mod_cpdlogbook'));
+        $mform->addElement('duration', 'hours', get_string('hours', 'mod_cpdlogbook'));
         $mform->setType('hours', PARAM_INT);
 
         $mform->addElement('float', 'points', get_string('points', 'mod_cpdlogbook'));

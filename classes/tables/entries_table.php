@@ -87,6 +87,10 @@ class entries_table extends table_sql {
         return $this->output->render($menu);
     }
 
+    public function col_hours($record) {
+        return format_time($record->hours);
+    }
+
     public function other_cols($column, $row) {
         return null;
     }
