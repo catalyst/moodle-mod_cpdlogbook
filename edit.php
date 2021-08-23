@@ -25,7 +25,7 @@ $id = required_param('id', PARAM_INT);
 $create = required_param('create', PARAM_BOOL);
 
 if ($create) {
-    // If an entry is being created
+    // If an entry is being created.
     $record = new stdClass();
     $record->id = $id;
 
@@ -70,7 +70,7 @@ if ($mform->is_cancelled()) {
         $DB->update_record('cpdlogbook_entries', $fromform);
         $entry = $DB->get_record('cpdlogbook_entries', ['id' => $fromform->id]);
 
-        // Trigger an entry_updated event
+        // Trigger an entry_updated event.
         entry_updated::create_from_entry($entry, $context)->trigger();
     }
 
