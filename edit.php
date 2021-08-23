@@ -25,7 +25,7 @@ $id = required_param('id', PARAM_INT);
 $create = required_param('create', PARAM_BOOL);
 
 if ($create) {
-    // If an entry is being created
+    // If an entry is being created.
     $record = new stdClass();
     $record->id = $id;
 
@@ -70,7 +70,7 @@ if ($mform->is_cancelled()) {
         $DB->update_record('cpdlogbook_entries', $fromform);
         $entry = $DB->get_record('cpdlogbook_entries', ['id' => $fromform->id]);
 
-        // Trigger an entry_updated event
+        // Trigger an entry_updated event.
         entry_updated::create_from_entry($entry, $context)->trigger();
     }
 
@@ -79,15 +79,19 @@ if ($mform->is_cancelled()) {
 
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/edit.php', [ 'id' => $id, 'create' => $create ]));
 
+// Set the title according to if an entry is being created or updated.
 if ($create) {
-    $PAGE->set_title(get_string('createtitle', 'mod_cpdlogbook'));
-    $PAGE->set_heading(get_string('createtitle', 'mod_cpdlogbook'));
+    $title = get_string('createtitle', 'mod_cpdlogbook');
 } else {
-    $PAGE->set_title($record->name);
-    $PAGE->set_heading($record->name);
+    $title = $record->name;
 }
 
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
+$PAGE->navbar->add($title);
+
 echo $OUTPUT->header();
+echo $OUTPUT->heading($title);
 
 $record->create = $create;
 $mform->set_data($record);

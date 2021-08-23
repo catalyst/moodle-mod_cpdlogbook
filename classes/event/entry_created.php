@@ -30,6 +30,7 @@ class entry_created extends base {
         $data = [
             'context' => $context,
             'objectid' => $entry->id,
+            'other' => ['entryname' => $entry->name],
         ];
         $event = self::create($data);
         $event->add_record_snapshot('cpdlogbook_entries', $entry);
@@ -40,6 +41,15 @@ class entry_created extends base {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
         $this->data['objecttable'] = 'cpdlogbook_entries';
+    }
+
+    public function get_description() {
+        $a = new \stdClass();
+        $a->userid = $this->get_data()['userid'];
+        $a->entryid = $this->get_data()['objectid'];
+        $a->name = $this->get_data()['other']['entryname'];
+
+        return "The user with id '{$a->userid}' created the '{$a->name}' cpdlogbook entry with id '{$a->entryid}'.";
     }
 
 }

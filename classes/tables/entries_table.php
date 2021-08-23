@@ -63,7 +63,7 @@ class entries_table extends table_sql {
     }
 
     public function col_time($record) {
-        return userdate(time() - $record->time);
+        return userdate($record->time);
     }
 
     public function col_actions($record) {
@@ -85,6 +85,10 @@ class entries_table extends table_sql {
         $menu->add_primary_action($delete);
 
         return $this->output->render($menu);
+    }
+
+    public function col_hours($record) {
+        return format_time($record->hours);
     }
 
     public function col_points($record) {
