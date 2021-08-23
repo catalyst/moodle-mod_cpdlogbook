@@ -86,6 +86,7 @@ $PAGE->set_heading($title);
 $PAGE->navbar->add($title);
 
 echo $OUTPUT->header();
+echo $OUTPUT->heading($title);
 
 $record->create = $create;
 $mform->set_data($record);
