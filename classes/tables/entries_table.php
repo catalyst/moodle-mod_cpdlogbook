@@ -44,7 +44,7 @@ class entries_table extends table_sql {
         parent::__construct($uniqueid);
 
         $columns =
-            ['id', 'cpdlogbookid', 'userid', 'time', 'name', 'hours', 'points', 'provider', 'location', 'summary', 'actions'];
+            ['time', 'points', 'name', 'hours', 'provider', 'location', 'summary', 'actions'];
         $this->define_columns($columns);
 
         $headers = $columns;
@@ -89,6 +89,10 @@ class entries_table extends table_sql {
 
     public function col_hours($record) {
         return format_time($record->hours);
+    }
+
+    public function col_points($record) {
+        return \html_writer::tag('span', $record->points, ['class' => 'badge badge-success']);
     }
 
     public function other_cols($column, $row) {

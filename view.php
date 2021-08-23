@@ -42,7 +42,8 @@ echo html_writer::alist([
         'introformat' => $record->introformat,
 ]);
 
-echo html_writer::link(new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => true]), 'Insert a record');
+echo $OUTPUT->single_button(new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => true]),
+    get_string('createtitle', 'mod_cpdlogbook'), 'get', ['primary' => true]);
 
 $table = new entries_table($cm, $USER->id, $OUTPUT, 'cpdlogbook_id');
 $table->define_baseurl($PAGE->url);
