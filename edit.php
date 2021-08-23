@@ -74,13 +74,16 @@ if ($mform->is_cancelled()) {
 
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/edit.php', [ 'id' => $id, 'create' => $create ]));
 
+// Set the title according to if an entry is being created or updated.
 if ($create) {
-    $PAGE->set_title(get_string('createtitle', 'mod_cpdlogbook'));
-    $PAGE->set_heading(get_string('createtitle', 'mod_cpdlogbook'));
+    $title = get_string('createtitle', 'mod_cpdlogbook');
 } else {
-    $PAGE->set_title($record->name);
-    $PAGE->set_heading($record->name);
+    $title = $record->name;
 }
+
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
+$PAGE->navbar->add($title);
 
 echo $OUTPUT->header();
 
