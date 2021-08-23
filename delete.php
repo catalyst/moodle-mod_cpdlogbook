@@ -28,9 +28,13 @@ $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $record->cpdlogbookid], '*'
 $cm = get_coursemodule_from_instance('cpdlogbook', $cpdlogbook->id, $cpdlogbook->course);
 
 require_course_login($cpdlogbook->course, false, $cm);
+$context = context_module::instance($cm->id);
 
 require_sesskey();
 
 // From here, we can be sure that the entry exists, and is associated with the current user and the cpdlogbook.
 $DB->delete_records('cpdlogbook_entries', ['id' => $id, 'cpdlogbookid' => $cpdlogbook->id, 'userid' => $USER->id]);
+
+\mod_cpdlogbook\event\entry_deleted::create_from_entry($record, $context)->trigger();
+
 redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cm->id]));
