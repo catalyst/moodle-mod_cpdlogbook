@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+use mod_cpdlogbook\event\entry_updated;
 use mod_cpdlogbook\form\edit_entry;
 use mod_cpdlogbook\event\entry_created;
 
@@ -67,6 +68,10 @@ if ($mform->is_cancelled()) {
     } else {
         // Update the record according to the submitted form data.
         $DB->update_record('cpdlogbook_entries', $fromform);
+        $entry = $DB->get_record('cpdlogbook_entries', ['id' => $fromform->id]);
+
+        // Trigger an entry_updated event
+        entry_updated::create_from_entry($entry, $context)->trigger();
     }
 
     redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cm->id]));
