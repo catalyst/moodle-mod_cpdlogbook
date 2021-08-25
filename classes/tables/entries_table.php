@@ -44,8 +44,15 @@ class entries_table extends table_sql {
 
         parent::__construct($uniqueid);
 
-        $columns =
-            ['time', 'points', 'name', 'hours', 'provider', 'location', 'summary'];
+        $columns = [
+            'points',
+            'name',
+            'summary',
+            'hours',
+            'provider',
+            'location',
+            'time',
+        ];
 
         // Only add the actions to the columns if they've been allowed in the constructor.
         if (!$download) {
@@ -53,6 +60,7 @@ class entries_table extends table_sql {
         }
         $this->define_columns($columns);
         $this->column_class('time', 'text-right');
+        $this->column_class('points', 'text-right');
         $this->column_class('hours', 'text-right');
         $this->collapsible(false);
 

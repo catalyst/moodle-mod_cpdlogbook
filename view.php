@@ -78,17 +78,11 @@ if (!$download) {
             ['style' => 'margin-bottom: 10px; height: 32px']
     );
 
-    echo $OUTPUT->single_button(new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => true]),
-            get_string('createtitle', 'mod_cpdlogbook'), 'get', ['primary' => true]);
+    echo format_text($record->intro, $record->introformat);
 
-    echo html_writer::alist([
-            'id' => $record->id,
-            'course' => $record->course,
-            'name' => $record->name,
-            'totalpoints' => $record->totalpoints,
-            'info' => $record->intro,
-            'introformat' => $record->introformat,
-    ]);
+    echo $OUTPUT->single_button(
+            new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => true]),
+            get_string('createtitle', 'mod_cpdlogbook'), 'get', ['primary' => true]);
 
     $table->out(40, true);
 
