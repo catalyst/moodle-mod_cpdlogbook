@@ -17,6 +17,7 @@
 namespace mod_cpdlogbook\event;
 
 use core\event\base;
+use moodle_url;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -50,6 +51,11 @@ class entry_created extends base {
         $a->name = $this->get_data()['other']['entryname'];
 
         return "The user with id '{$a->userid}' created the '{$a->name}' cpdlogbook entry with id '{$a->entryid}'.";
+    }
+
+    public function get_url() {
+        $id = $this->get_data()['objectid'];
+        return new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => false]);
     }
 
 }

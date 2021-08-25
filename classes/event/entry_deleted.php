@@ -31,4 +31,13 @@ class entry_deleted extends entry_created {
 
         return "The user with id '{$a->userid}' deleted the '{$a->name}' cpdlogbook entry with id '{$a->entryid}'.";
     }
+
+    /**
+     * The url for a deleted entry doesn't exist, so null is returned.
+     *
+     * @return null
+     */
+    public function get_url() {
+        return null;
+    }
 }
