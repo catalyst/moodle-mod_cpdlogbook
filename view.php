@@ -31,8 +31,8 @@ $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ], '*', MUST_EXI
 // If the table is being downloaded, then the only show the required columns.
 $table = new entries_table($cm, $USER->id, $OUTPUT, $download, 'cpdlogbook_id');
 
-$filename =
-        $record->name.' '.fullname($USER).' '.userdate(time(), get_string('strftimedatefullshort', 'langconfig'));
+$filename = $record->name . ' - ' . fullname($USER) . ' - '
+    . userdate(time(), get_string('strftimedate', 'langconfig'));
 $table->is_downloading($download, $filename, 'cpdlogbook');
 
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/view.php', [ 'id' => $id ]));
