@@ -55,6 +55,7 @@ class entries_table extends table_sql {
 
         $headers = $columns;
         $this->define_headers($headers);
+        $this->show_download_buttons_at([TABLE_P_BOTTOM]);
 
         $this->output = $output;
 
