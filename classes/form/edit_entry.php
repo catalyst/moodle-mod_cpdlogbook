@@ -32,7 +32,7 @@ class edit_entry extends \moodleform {
         $mform->addRule('time', null, 'required', null, 'client');
         $mform->setType('time', PARAM_INT);
 
-        $mform->addElement('float', 'points', get_string('points', 'mod_cpdlogbook'));
+        $mform->addElement('float', 'points', get_string('points', 'mod_cpdlogbook'), ['size' => '4']);
         $mform->addRule('points', null, 'required', null, 'client');
         $mform->setType('points', PARAM_INT);
 
