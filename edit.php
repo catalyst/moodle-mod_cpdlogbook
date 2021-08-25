@@ -24,7 +24,7 @@ $id = required_param('id', PARAM_INT);
 $create = required_param('create', PARAM_BOOL);
 
 if ($create) {
-    // If an entry is being created
+    // If an entry is being created.
     $record = new stdClass();
     $record->id = $id;
 

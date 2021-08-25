@@ -47,8 +47,31 @@ if (!$download) {
 
     echo $OUTPUT->header();
 
+    $entries = $DB->get_records('cpdlogbook_entries', ['cpdlogbookid' => $cm->instance]);
+    $sum = 0;
+    foreach ($entries as $e) {
+        $sum += $e->points;
+    }
+
+    // Output the points as a ratio, ie. 5 / 20.
+    $a = new stdClass();
+    $a->sum = $sum;
+    $a->required = $record->totalpoints;
+    echo html_writer::tag('p', get_string('pointratio', 'mod_cpdlogbook', $a), ['class' => 'h2']);
+
+    // Output the points as a progress bar towards completion.
+    echo html_writer::div(
+        html_writer::div(
+            '',
+            'progress-bar',
+            ['style' => 'width: '.(100 * $sum / $record->totalpoints).'%']
+        ),
+        'progress',
+            ['style' => 'margin-bottom: 10px']
+    );
+
     echo $OUTPUT->single_button(new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => true]),
-        get_string('createtitle', 'mod_cpdlogbook'), 'get', ['primary' => true]);
+            get_string('createtitle', 'mod_cpdlogbook'), 'get', ['primary' => true]);
 
     echo html_writer::alist([
             'id' => $record->id,
