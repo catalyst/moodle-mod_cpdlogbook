@@ -69,7 +69,7 @@ class entries_table extends table_sql {
     }
 
     public function col_time($record) {
-        return userdate($record->time);
+        return userdate($record->time, get_string('strftimedaydate', 'langconfig'));
     }
 
     public function col_actions($record) {
