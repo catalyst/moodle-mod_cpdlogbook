@@ -60,14 +60,22 @@ if (!$download) {
     echo html_writer::tag('p', get_string('pointratio', 'mod_cpdlogbook', $a), ['class' => 'h2']);
 
     // Output the points as a progress bar towards completion.
+    $percent = 100 * $sum / $record->totalpoints;
+    // Clamp the percentage to be between 100 and 0.
+    if ($percent > 100) {
+        $percent = 100;
+    } else if ($percent < 0) {
+        // The percent should never be less than 0, but is still clamped just in case.
+        $percent = 0;
+    }
     echo html_writer::div(
         html_writer::div(
-            '',
-            'progress-bar',
-            ['style' => 'width: '.(100 * $sum / $record->totalpoints).'%']
+            format_float($percent).'%',
+            'progress-bar bg-success',
+            ['style' => 'width: '.$percent.'%;font-size: 2em']
         ),
         'progress',
-            ['style' => 'margin-bottom: 10px']
+            ['style' => 'margin-bottom: 10px; height: 32px']
     );
 
     echo $OUTPUT->single_button(new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => true]),
