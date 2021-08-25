@@ -59,9 +59,10 @@ class entries_table extends table_sql {
             array_push($columns, 'actions');
         }
         $this->define_columns($columns);
-        $this->column_class('time', 'text-right');
-        $this->column_class('points', 'text-right');
-        $this->column_class('hours', 'text-right');
+        $this->column_class('time',     'text-right');
+        $this->column_class('points',   'text-right');
+        $this->column_class('hours',    'text-right');
+        $this->column_style('hours',    'text-wrap', 'none');
         $this->collapsible(false);
 
         $headers = $columns;
@@ -106,7 +107,7 @@ class entries_table extends table_sql {
     }
 
     public function col_hours($record) {
-        return format_time($record->hours);
+        return \html_writer::tag('nobr', format_time($record->hours));
     }
 
     public function col_points($record) {
