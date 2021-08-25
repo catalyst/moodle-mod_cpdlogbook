@@ -52,6 +52,9 @@ class entries_table extends table_sql {
             array_push($columns, 'actions');
         }
         $this->define_columns($columns);
+        $this->column_class('time', 'text-right');
+        $this->column_class('hours', 'text-right');
+        $this->collapsible(false);
 
         $headers = $columns;
         $this->define_headers($headers);
