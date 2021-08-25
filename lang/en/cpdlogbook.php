@@ -27,4 +27,4 @@ $string['location'] = 'Location';
 $string['summary'] = 'Summary';
 $string['createtitle'] = 'Create a new entry';
 $string['confirmdelete'] = 'Are you sure you want to delete entry "{$a}"?';
-$string['pointratio'] = '{$a->sum} / {$a->required}';
+$string['pointratio'] = '{$a->sum} / {$a->required} points';
