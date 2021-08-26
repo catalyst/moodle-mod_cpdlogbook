@@ -48,6 +48,8 @@ if ($create) {
 
 $context = context_module::instance($cm->id);
 
+require_capability('mod/cpdlogbook:edit', $context);
+
 $mform = new edit_entry();
 
 if ($mform->is_cancelled()) {
