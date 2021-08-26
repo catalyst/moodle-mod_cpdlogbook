@@ -58,6 +58,9 @@ class entries_table extends table_sql {
         if (!$download) {
             array_push($columns, 'actions');
         }
+        $this->sort_default_column = 'time';
+        $this->sort_default_order = SORT_DESC;
+
         $this->define_columns($columns);
         $this->column_class('time',     'text-right');
         $this->column_class('points',   'text-right');
