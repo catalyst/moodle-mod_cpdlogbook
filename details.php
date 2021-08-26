@@ -36,6 +36,13 @@ $PAGE->navbar->add($record->name);
 
 echo $OUTPUT->header();
 
+echo $OUTPUT->render(
+    new action_menu_link_primary(
+        new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => false]),
+        new pix_icon('i/edit', get_string('edit')),
+        get_string('edit'))
+);
+
 echo html_writer::alist([
     'Name: '.$record->name,
     'Time: '.$record->time,
