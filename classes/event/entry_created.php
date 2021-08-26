@@ -55,7 +55,7 @@ class entry_created extends base {
 
     public function get_url() {
         $id = $this->get_data()['objectid'];
-        return new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => false]);
+        return new moodle_url('/mod/cpdlogbook/details.php', ['id' => $id]);
     }
 
 }
