@@ -79,6 +79,10 @@ class entries_table extends table_sql {
         $this->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbookid=? AND userid=?', [$record->id, $userid]);
     }
 
+    public function col_name($record) {
+        return \html_writer::link(new moodle_url('/mod/cpdlogbook/details.php', ['id' => $record->id]), $record->name);
+    }
+
     public function col_userid($record) {
         global $DB;
         return fullname($DB->get_record('user', ['id' => $record->userid]));
