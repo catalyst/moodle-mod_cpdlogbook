@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+use mod_cpdlogbook\output\progressbar;
 use mod_cpdlogbook\tables\entries_table;
 
 require_once('../../config.php');
@@ -68,15 +69,9 @@ if (!$download) {
         // The percent should never be less than 0, but is still clamped just in case.
         $percent = 0;
     }
-    echo html_writer::div(
-        html_writer::div(
-            format_float($percent).'%',
-            'progress-bar bg-success',
-            ['style' => 'width: '.$percent.'%;font-size: 2em']
-        ),
-        'progress',
-            ['style' => 'margin-bottom: 10px; height: 32px']
-    );
+
+    $progressbar = new progressbar($percent);
+    echo $OUTPUT->render($progressbar);
 
     echo format_text($record->intro, $record->introformat);
 
