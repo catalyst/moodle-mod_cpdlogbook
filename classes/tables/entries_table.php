@@ -110,11 +110,21 @@ class entries_table extends table_sql {
     }
 
     public function col_hours($record) {
-        return \html_writer::tag('nobr', format_time($record->hours));
+        // Only render this within a 'nobr' tag if the table isn't being downloaded.
+        if ($this->download == '') {
+            return \html_writer::tag('nobr', format_time($record->hours));
+        } else {
+            return format_time($record->hours);
+        }
     }
 
     public function col_points($record) {
-        return \html_writer::tag('span', $record->points, ['class' => 'badge badge-success']);
+        // Only display the badge if the table isn't being downloaded.
+        if ($this->download == '') {
+            return \html_writer::tag('span', $record->points, ['class' => 'badge badge-success']);
+        } else {
+            return $record->points;
+        }
     }
 
     public function other_cols($column, $row) {
