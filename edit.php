@@ -31,6 +31,8 @@ require_once('../../config.php');
 // Get the course module id and the entry id from either the parameters or the hidden fields.
 $id = required_param('id', PARAM_INT);
 $create = required_param('create', PARAM_BOOL);
+// This parameter is used to check if the user accessed the form from the record's details.
+$fromdetails = optional_param('fromdetails', false, PARAM_BOOL);
 
 if ($create) {
     // If an entry is being created.
@@ -60,8 +62,14 @@ require_capability('mod/cpdlogbook:edit', $context);
 
 $mform = new edit_entry();
 
+if (!$fromdetails) {
+    $url = new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cm->id]);
+} else {
+    $url = new moodle_url('/mod/cpdlogbook/details.php', ['id' => $id]);
+}
+
 if ($mform->is_cancelled()) {
-    redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cm->id]));
+    redirect($url);
 } else if ($fromform = $mform->get_data()) {
     if ($create) {
         unset($fromform->id);
@@ -84,7 +92,7 @@ if ($mform->is_cancelled()) {
         entry_updated::create_from_entry($entry, $context)->trigger();
     }
 
-    redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cm->id]));
+    redirect($url);
 }
 
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/edit.php', [ 'id' => $id, 'create' => $create ]));
@@ -104,6 +112,7 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading($title);
 
 $record->create = $create;
+$record->fromdetails = $fromdetails;
 $mform->set_data($record);
 $mform->display();
 

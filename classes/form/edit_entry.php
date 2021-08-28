@@ -75,6 +75,9 @@ class edit_entry extends \moodleform {
         $mform->addElement('hidden', 'create');
         $mform->setType('create', PARAM_BOOL);
 
+        $mform->addElement('hidden', 'fromdetails');
+        $mform->setType('fromdetails', PARAM_BOOL);
+
         $this->add_action_buttons();
     }
 

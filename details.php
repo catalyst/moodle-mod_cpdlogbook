@@ -56,7 +56,7 @@ echo $OUTPUT->header();
 
 if (has_capability('mod/cpdlogbook:edit', $context)) {
     echo $OUTPUT->single_button(
-            new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => false]),
+            new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => false, 'fromdetails' => true]),
             get_string('edittitle', 'mod_cpdlogbook'), 'get', ['primary' => true]);
 }
 
