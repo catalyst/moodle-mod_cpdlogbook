@@ -14,6 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * The mod_cpdlogbook entries_table table.
+ *
+ * @package mod_cpdlogbook
+ * @copyright 2021 Jordan Shatte <jsha773@hotmail.com>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_cpdlogbook\tables;
 
 defined('MOODLE_INTERNAL') || die();
@@ -26,18 +34,26 @@ use moodle_url;
 use renderer_base;
 use table_sql;
 
+/**
+ * Class entries_table
+ *
+ * @package mod_cpdlogbook
+ */
 class entries_table extends table_sql {
 
+    /**
+     * @var renderer_base
+     */
     public $output;
 
     /**
      * entries_table constructor.
      *
-     * @param $cm mixed The course module.
-     * @param $userid string The id for the user.
-     * @param $output renderer_base The output renderer to use.
-     * @param $download string The download format. If not '', then only the columns to be downloaded are displayed.
-     * @param $uniqueid
+     * @param mixed $cm The course module.
+     * @param string $userid The id for the user.
+     * @param string  $output The output renderer to use.
+     * @param renderer_base $download The download format. If not '', then only the columns to be downloaded are displayed.
+     * @param string $uniqueid
      */
     public function __construct($cm, $userid, $output, $download, $uniqueid) {
         global $DB;
@@ -79,6 +95,13 @@ class entries_table extends table_sql {
         $this->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbookid=? AND userid=?', [$record->id, $userid]);
     }
 
+    /**
+     * Format the name column.
+     *
+     * @param \stdClass $record
+     * @return string
+     * @throws \moodle_exception
+     */
     public function col_name($record) {
         if ($this->download == '') {
             return \html_writer::link(new moodle_url('/mod/cpdlogbook/details.php', ['id' => $record->id]), $record->name);
@@ -87,15 +110,37 @@ class entries_table extends table_sql {
         }
     }
 
+    /**
+     * Format the userid column.
+     *
+     * @param \stdClass $record
+     * @return \lang_string|string
+     * @throws \dml_exception
+     */
     public function col_userid($record) {
         global $DB;
         return fullname($DB->get_record('user', ['id' => $record->userid]));
     }
 
+    /**
+     * Format the time column.
+     *
+     * @param \stdClass $record
+     * @return string
+     * @throws \coding_exception
+     */
     public function col_time($record) {
         return userdate($record->time, get_string('strftimedaydate', 'langconfig'));
     }
 
+    /**
+     * Format the actions column.
+     *
+     * @param \stdClass $record
+     * @return bool|string
+     * @throws \coding_exception
+     * @throws \moodle_exception
+     */
     public function col_actions($record) {
         $updateurl = new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $record->id, 'create' => false]);
         $deleteurl = new moodle_url(
@@ -117,6 +162,12 @@ class entries_table extends table_sql {
         return $this->output->render($menu);
     }
 
+    /**
+     * Format the hours column.
+     *
+     * @param \stdClass $record
+     * @return \lang_string|string
+     */
     public function col_hours($record) {
         // Only render this within a 'nobr' tag if the table isn't being downloaded.
         if ($this->download == '') {
@@ -126,6 +177,12 @@ class entries_table extends table_sql {
         }
     }
 
+    /**
+     * Format the points column
+     *
+     * @param \stdClass $record
+     * @return string
+     */
     public function col_points($record) {
         // Only display the badge if the table isn't being downloaded.
         if ($this->download == '') {
@@ -135,6 +192,13 @@ class entries_table extends table_sql {
         }
     }
 
+    /**
+     * The default format for all other columns.
+     *
+     * @param array|object $column
+     * @param string $row
+     * @return null
+     */
     public function other_cols($column, $row) {
         return null;
     }

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The mod_cpdlogbook entry_updated event.
+ * The mod_cpdlogbook course_module_viewed event.
  *
  * @package mod_cpdlogbook
  * @copyright 2021 Jordan Shatte <jsha773@hotmail.com>
@@ -45,7 +45,7 @@ class course_module_viewed extends \core\event\course_module_viewed {
     /**
      * This is used when restoring course logs where it is required that we
      * map the objectid to it's new value in the new course.
-     * 
+     *
      * @return string[]
      */
     public static function get_objectid_mapping() {
