@@ -22,6 +22,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use mod_cpdlogbook\event\entry_viewed;
+
 require_once('../../config.php');
 
 $id = required_param('id', PARAM_INT);
@@ -45,6 +47,9 @@ if ($record->userid != $USER->id) {
 
 $context = context_module::instance($cm->id);
 require_capability('mod/cpdlogbook:view', $context);
+
+// Trigger the entry_viewed event.
+entry_viewed::create_from_entry($record, $context)->trigger();
 
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/details.php', ['id' => $id]));
 $PAGE->set_title($record->name);
