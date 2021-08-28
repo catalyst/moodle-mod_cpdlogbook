@@ -65,7 +65,8 @@ class edit_entry extends \moodleform {
         $mform->addElement('text', 'location', get_string('location', 'mod_cpdlogbook'));
         $mform->setType('location', PARAM_TEXT);
 
-        $mform->addElement('textarea', 'summary', get_string('summary', 'mod_cpdlogbook'));
+        $mform->addElement('textarea', 'summary', get_string('summary', 'mod_cpdlogbook'),
+            ['rows' => '5', 'cols' => '50']);
         $mform->setType('summary', PARAM_TEXT);
 
         $mform->addElement('hidden', 'id');
