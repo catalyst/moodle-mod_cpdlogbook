@@ -18,7 +18,11 @@ require_once('../../config.php');
 
 $id = required_param('id', PARAM_INT);
 
-$record = $DB->get_record('cpdlogbook_entries', ['id' => $id], '*', MUST_EXIST);
+// If the record doesn't exist, then require that the user is logged in before throwing an error.
+if (! $record = $DB->get_record('cpdlogbook_entries', ['id' => $id], '*')) {
+    require_login();
+    throw new dml_missing_record_exception('cpdlogbook_entries');
+};
 $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $record->cpdlogbookid], '*', MUST_EXIST);
 
 $cm = get_coursemodule_from_instance('cpdlogbook', $cpdlogbook->id, $cpdlogbook->course);

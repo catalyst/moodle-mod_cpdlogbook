@@ -80,7 +80,11 @@ class entries_table extends table_sql {
     }
 
     public function col_name($record) {
-        return \html_writer::link(new moodle_url('/mod/cpdlogbook/details.php', ['id' => $record->id]), $record->name);
+        if ($this->download == '') {
+            return \html_writer::link(new moodle_url('/mod/cpdlogbook/details.php', ['id' => $record->id]), $record->name);
+        } else {
+            return $record->name;
+        }
     }
 
     public function col_userid($record) {

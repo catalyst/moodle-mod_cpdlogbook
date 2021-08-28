@@ -23,6 +23,7 @@ defined('MOODLE_INTERNAL') || die();
 
 class entry_created extends base {
 
+
     /**
      * @param $entry \stdClass
      * @param $context \context_module
