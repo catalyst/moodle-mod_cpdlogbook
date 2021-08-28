@@ -14,8 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * The standard functions used by the plugin.
+ *
+ * @package mod_cpdlogbook
+ * @copyright 2021 Jordan Shatte <jsha773@hotmail.com>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Check if a feature is supporte by the plugin.
+ *
+ * @param string $feature
+ * @return bool|null
+ */
 function cpdlogbook_supports($feature) {
     switch($feature) {
         case FEATURE_MOD_INTRO:
@@ -28,7 +42,7 @@ function cpdlogbook_supports($feature) {
 /**
  * Add a cpdlogbook module to a course.
  *
- * @param $cpdlogbook
+ * @param stdClass $cpdlogbook
  * @return int new cpdlogbook instance id
  * @throws dml_exception
  */
@@ -43,7 +57,7 @@ function cpdlogbook_add_instance($cpdlogbook) {
 /**
  * Update an existing cpdlogbook instance.
  *
- * @param $cpdlogbook
+ * @param stdClass $cpdlogbook
  * @return bool
  * @throws dml_exception
  */
@@ -58,7 +72,7 @@ function cpdlogbook_update_instance($cpdlogbook) {
 /**
  * Delete a cpdlogbook instance.
  *
- * @param $id
+ * @param int $id
  * @return bool
  * @throws dml_exception
  */
