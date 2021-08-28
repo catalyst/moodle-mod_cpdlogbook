@@ -99,6 +99,10 @@ jobs:
         if: matrix.moodle-branch == 'MOODLE_39_STABLE'
         run: moodle-plugin-ci codechecker
 
+      - name: Run moodlecheck
+        if: matrix.moodle-branch == 'MOODLE_39_STABLE'
+        run: moodle-plugin-ci moodlecheck
+
       - name: Run validate
         if: ${{ always() }}
         run: moodle-plugin-ci validate
