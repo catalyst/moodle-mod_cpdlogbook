@@ -99,10 +99,6 @@ jobs:
         if: matrix.moodle-branch == 'MOODLE_39_STABLE'
         run: moodle-plugin-ci codechecker
 
-      - name: Run moodlecheck
-        if: matrix.moodle-branch == 'MOODLE_39_STABLE'
-        run: moodle-plugin-ci moodlecheck
-
       - name: Run validate
         if: ${{ always() }}
         run: moodle-plugin-ci validate
@@ -120,9 +116,9 @@ jobs:
         run: moodle-plugin-ci grunt
 
       # PHPDoc works but needs a *LOT* of love
-      #- name: Run phpdoc
-      #  if: ${{ always() }}
-      #  run: moodle-plugin-ci phpdoc
+      - name: Run phpdoc
+        if: ${{ always() }}
+        run: moodle-plugin-ci phpdoc
 
       - name: Run phpunit
         if: ${{ always() }}
