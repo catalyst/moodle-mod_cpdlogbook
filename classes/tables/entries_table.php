@@ -63,16 +63,23 @@ class entries_table extends table_sql {
         $columns = [
             'points',
             'name',
-            'summary',
             'hours',
             'provider',
             'location',
             'time',
+            'actions',
         ];
 
-        // Only add the actions to the columns if they've been allowed in the constructor.
-        if (!$download) {
-            array_push($columns, 'actions');
+        if ($download) {
+            $columns = [
+                'points',
+                'name',
+                'summary',
+                'hours',
+                'provider',
+                'location',
+                'time',
+            ];
         }
         $this->sort_default_column = 'time';
         $this->sort_default_order = SORT_DESC;
@@ -104,7 +111,11 @@ class entries_table extends table_sql {
      */
     public function col_name($record) {
         if ($this->download == '') {
-            return \html_writer::link(new moodle_url('/mod/cpdlogbook/details.php', ['id' => $record->id]), $record->name);
+            $html = \html_writer::link(new moodle_url('/mod/cpdlogbook/details.php',
+                ['id' => $record->id]), $record->name);
+            $html .= '<br>';
+            $html .= format_text($record->summary);
+            return $html;
         } else {
             return $record->name;
         }
@@ -130,7 +141,7 @@ class entries_table extends table_sql {
      * @throws \coding_exception
      */
     public function col_time($record) {
-        return userdate($record->time, get_string('strftimedaydate', 'langconfig'));
+        return userdate($record->time, get_string('summarydate', 'mod_cpdlogbook'));
     }
 
     /**

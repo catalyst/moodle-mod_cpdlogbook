@@ -33,6 +33,7 @@ $string['duration'] = 'Duration';
 $string['provider'] = 'Provider';
 $string['location'] = 'Location';
 $string['summary'] = 'Summary';
+$string['summarydate'] = '%a, %d %b %Y';
 $string['createtitle'] = 'Create a new entry';
 $string['edittitle'] = 'Edit this entry';
 $string['confirmdelete'] = 'Are you sure you want to delete entry "{$a}"?';
