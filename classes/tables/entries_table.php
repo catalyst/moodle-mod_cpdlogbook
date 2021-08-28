@@ -173,7 +173,7 @@ class entries_table extends table_sql {
         if ($this->download == '') {
             return \html_writer::tag('nobr', format_time($record->hours));
         } else {
-            return format_time($record->hours);
+            return $record->hours / HOURSECS;
         }
     }
 
