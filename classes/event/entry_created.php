@@ -14,6 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * The mod_cpdlogbook entry_created event.
+ *
+ * @package mod_cpdlogbook
+ * @copyright 2021 Jordan Shatte <jsha773@hotmail.com>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_cpdlogbook\event;
 
 use core\event\base;
@@ -21,12 +29,20 @@ use moodle_url;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Class entry_created.
+ *
+ * @package mod_cpdlogbook
+ */
 class entry_created extends base {
 
 
     /**
-     * @param $entry \stdClass
-     * @param $context \context_module
+     * Create an entry_created event given an entry and a context.
+     * @param \stdClass $entry
+     * @param \context_module $context
+     * @return base
+     * @throws \coding_exception
      */
     public static function create_from_entry($entry, $context) {
         $data = [
@@ -39,12 +55,22 @@ class entry_created extends base {
         return $event;
     }
 
+    /**
+     * Sets crud, edulevel and objecttable data for the event.
+     *
+     * @return void
+     */
     public function init() {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
         $this->data['objecttable'] = 'cpdlogbook_entries';
     }
 
+    /**
+     * Returns the description of the event.
+     *
+     * @return string
+     */
     public function get_description() {
         $a = new \stdClass();
         $a->userid = $this->get_data()['userid'];
@@ -54,6 +80,12 @@ class entry_created extends base {
         return "The user with id '{$a->userid}' created the '{$a->name}' cpdlogbook entry with id '{$a->entryid}'.";
     }
 
+    /**
+     * Returns a link to the details page for this record created.
+     *
+     * @return moodle_url
+     * @throws \moodle_exception
+     */
     public function get_url() {
         $id = $this->get_data()['objectid'];
         return new moodle_url('/mod/cpdlogbook/details.php', ['id' => $id]);

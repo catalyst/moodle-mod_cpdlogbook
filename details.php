@@ -14,6 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Details page. Used to show entry details.
+ *
+ * @package mod_cpdlogbook
+ * @copyright 2021 Jordan Shatte <jsha773@hotmail.com>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 require_once('../../config.php');
 
 $id = required_param('id', PARAM_INT);

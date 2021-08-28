@@ -14,6 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * The mod_cpdlogbook progressbar renderable.
+ *
+ * @package mod_cpdlogbook
+ * @copyright 2021 Jordan Shatte <jsha773@hotmail.com>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_cpdlogbook\output;
 
 defined('MOODLE_INTERNAL') || die();
@@ -22,10 +30,24 @@ use renderable;
 use renderer_base;
 use templatable;
 
+/**
+ * Class progressbar
+ *
+ * @package mod_cpdlogbook
+ */
 class progressbar implements renderable, templatable {
 
+    /**
+     * The completion percentage.
+     * @var float
+     */
     public $percent;
 
+    /**
+     * progressbar constructor.
+     *
+     * @param float $percent
+     */
     public function __construct($percent) {
         $this->percent = $percent;
     }

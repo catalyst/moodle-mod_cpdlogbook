@@ -14,6 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * View page. Used as the default page when viewing the activity.
+ *
+ * @package mod_cpdlogbook
+ * @copyright 2021 Jordan Shatte <jsha773@hotmail.com>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 use mod_cpdlogbook\output\progressbar;
 use mod_cpdlogbook\tables\entries_table;
 use mod_cpdlogbook\event\course_module_viewed;

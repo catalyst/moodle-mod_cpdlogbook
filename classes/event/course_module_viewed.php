@@ -14,17 +14,40 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * The mod_cpdlogbook course_module_viewed event.
+ *
+ * @package mod_cpdlogbook
+ * @copyright 2021 Jordan Shatte <jsha773@hotmail.com>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_cpdlogbook\event;
 
-
+/**
+ * Class course_module_viewed
+ *
+ * @package mod_cpdlogbook
+ */
 class course_module_viewed extends \core\event\course_module_viewed {
 
+    /**
+     * Sets crud, edulevel and objecttable data for the event.
+     *
+     * @return void
+     */
     public function init() {
         $this->data['crud'] = 'r';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
         $this->data['objecttable'] = 'cpdlogbook';
     }
 
+    /**
+     * This is used when restoring course logs where it is required that we
+     * map the objectid to it's new value in the new course.
+     *
+     * @return string[]
+     */
     public static function get_objectid_mapping() {
         return ['db' => 'cpdlogbook', 'restore' => 'cpdlogbook'];
     }

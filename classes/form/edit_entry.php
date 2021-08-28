@@ -14,13 +14,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * The mod_cpdlogbook edit_entry form.
+ *
+ * @package mod_cpdlogbook
+ * @copyright 2021 Jordan Shatte <jsha773@hotmail.com>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_cpdlogbook\form;
 
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/formslib.php');
 
+/**
+ * Class edit_entry
+ *
+ * @package mod_cpdlogbook
+ */
 class edit_entry extends \moodleform {
+
+    /**
+     * The definition of the form. Used to add elements and rules to the form.
+     *
+     * @throws \coding_exception
+     */
     public function definition() {
         $mform = $this->_form;
 

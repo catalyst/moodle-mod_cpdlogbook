@@ -14,15 +14,38 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * The mod_cpdlogbook entry_updated event.
+ *
+ * @package mod_cpdlogbook
+ * @copyright 2021 Jordan Shatte <jsha773@hotmail.com>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_cpdlogbook\event;
 
+/**
+ * Class entry_updated
+ *
+ * @package mod_cpdlogbook
+ */
 class entry_updated extends entry_created {
 
+    /**
+     * Sets crud data for the event.
+     *
+     * @return void
+     */
     public function init() {
         parent::init();
         $this->data['crud'] = 'u';
     }
 
+    /**
+     * Returns the description of the event.
+     *
+     * @return string
+     */
     public function get_description() {
         $a = new \stdClass();
         $a->userid = $this->get_data()['userid'];

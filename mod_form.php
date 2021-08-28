@@ -14,11 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * The form displayed when adding the activity to a course.
+ *
+ * @package mod_cpdlogbook
+ * @copyright 2021 Jordan Shatte <jsha773@hotmail.com>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/course/moodleform_mod.php');
 
+/**
+ * Class mod_cpdlogbook_mod_form
+ */
 class mod_cpdlogbook_mod_form extends moodleform_mod {
+
+    /**
+     * The definition of the form. Used to add elements and rules to the form.
+     *
+     * @throws coding_exception
+     */
     public function definition() {
         $mform = $this->_form;
 
