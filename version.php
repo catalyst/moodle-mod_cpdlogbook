@@ -18,7 +18,7 @@
  * CPD Logbook module version information
  *
  * @package   mod_cpdlogbook
- * @copyright
+ * @copyright Jordan Shatte <jsha773@hotmail.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
