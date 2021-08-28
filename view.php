@@ -16,6 +16,7 @@
 
 use mod_cpdlogbook\output\progressbar;
 use mod_cpdlogbook\tables\entries_table;
+use mod_cpdlogbook\event\course_module_viewed;
 
 require_once('../../config.php');
 require_once($CFG->libdir.'/tablelib.php');
@@ -28,6 +29,10 @@ list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
 require_course_login($course, false, $cm);
 
 $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ], '*', MUST_EXIST);
+
+// Trigger the course_module_viewed event
+$eventdata = ['context' => context_module::instance($id), 'objectid' => $record->id];
+course_module_viewed::create($eventdata)->trigger();
 
 // If the table is being downloaded, then the only show the required columns.
 $table = new entries_table($cm, $USER->id, $OUTPUT, $download, 'cpdlogbook_id');
