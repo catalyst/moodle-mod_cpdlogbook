@@ -28,7 +28,7 @@ require_course_login($cpdlogbook->course, false, $cm);
 // This can be changed for different capabilities.
 // For example, a 'readall' capability could allow someone to see an entry even if they didn't create it.
 if ($record->userid != $USER->id) {
-    throw new moodle_exception('requireloginerror');
+    throw new moodle_exception('invalidaccess');
 }
 
 $context = context_module::instance($cm->id);
