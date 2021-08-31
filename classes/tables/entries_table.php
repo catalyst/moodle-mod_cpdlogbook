@@ -141,7 +141,12 @@ class entries_table extends table_sql {
      * @throws \coding_exception
      */
     public function col_time($record) {
-        return userdate($record->time, get_string('summarydate', 'mod_cpdlogbook'));
+        if ($this->download == '') {
+            return userdate($record->time, get_string('summarydate', 'mod_cpdlogbook'));
+        } else {
+            // If the table is being downloaded, then export the time as a date in a friendly format.
+            return userdate($record->time, get_string('exportdate', 'mod_cpdlogbook'));
+        }
     }
 
     /**
@@ -184,6 +189,7 @@ class entries_table extends table_sql {
         if ($this->download == '') {
             return \html_writer::tag('nobr', format_time($record->hours));
         } else {
+            // If the table is being downloaded, then display the time in hours.
             return $record->hours / HOURSECS;
         }
     }
