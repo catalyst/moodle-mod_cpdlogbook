@@ -91,7 +91,28 @@ class entries_table extends table_sql {
         $this->column_style('hours',    'text-wrap', 'none');
         $this->collapsible(false);
 
-        $headers = $columns;
+        $headers = [
+            get_string('points', 'mod_cpdlogbook'),
+            get_string('name', 'mod_cpdlogbook'),
+            get_string('duration', 'mod_cpdlogbook'),
+            get_string('provider', 'mod_cpdlogbook'),
+            get_string('location', 'mod_cpdlogbook'),
+            get_string('date'),
+            get_string('actions'),
+        ];
+
+        if ($download) {
+            $headers = [
+                get_string('points', 'mod_cpdlogbook'),
+                get_string('name', 'mod_cpdlogbook'),
+                get_string('summary', 'mod_cpdlogbook'),
+                get_string('duration', 'mod_cpdlogbook'),
+                get_string('provider', 'mod_cpdlogbook'),
+                get_string('location', 'mod_cpdlogbook'),
+                get_string('date'),
+            ];
+        }
+
         $this->define_headers($headers);
         $this->show_download_buttons_at([TABLE_P_BOTTOM]);
 
