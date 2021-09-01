@@ -85,6 +85,7 @@ if ($mform->is_cancelled()) {
         entry_created::create_from_entry($newentry, $context)->trigger();
     } else {
         // Update the record according to the submitted form data.
+        $fromform->modifieddate = time();
         $DB->update_record('cpdlogbook_entries', $fromform);
         $entry = $DB->get_record('cpdlogbook_entries', ['id' => $fromform->id]);
 

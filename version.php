@@ -25,4 +25,4 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'mod_cpdlogbook';
-$plugin->version = 2021080303;
+$plugin->version = 2021080304;
