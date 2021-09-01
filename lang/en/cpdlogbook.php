@@ -31,6 +31,7 @@ $string['name'] = 'Name';
 $string['points'] = 'Points';
 $string['duration'] = 'Duration';
 $string['completiondate'] = 'Completion Date';
+$string['creationdate'] = 'Creation Date';
 $string['provider'] = 'Provider';
 $string['location'] = 'Location';
 $string['summary'] = 'Summary';
