@@ -46,7 +46,7 @@ function xmldb_cpdlogbook_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2021080302, 'mod', 'cpdlogbook');
     }
 
-    if ($oldversion < 2021080303) { // Adds 'creationtime' field
+    if ($oldversion < 2021080303) { // Adds 'creationdate' field
         // Define field creationdate to be added to cpdlogbook_entries.
         $table = new xmldb_table('cpdlogbook_entries');
         $field = new xmldb_field('creationdate', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'userid');
@@ -58,6 +58,20 @@ function xmldb_cpdlogbook_upgrade($oldversion) {
 
         // Cpdlogbook savepoint reached.
         upgrade_mod_savepoint(true, 2021080303, 'cpdlogbook');
+    }
+
+    if ($oldversion < 2021080304) { // Adds 'modifieddate' field
+        // Define field modifieddate to be added to cpdlogbook_entries.
+        $table = new xmldb_table('cpdlogbook_entries');
+        $field = new xmldb_field('modifieddate', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'creationdate');
+
+        // Conditionally launch add field modifieddate.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cpdlogbook savepoint reached.
+        upgrade_mod_savepoint(true, 2021080304, 'cpdlogbook');
     }
 
     return true;

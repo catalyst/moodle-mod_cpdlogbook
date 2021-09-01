@@ -75,7 +75,9 @@ echo html_writer::alist([
     get_string('provider', 'mod_cpdlogbook').': '.$record->provider,
     get_string('location', 'mod_cpdlogbook').': '.$record->location,
     get_string('creationdate', 'mod_cpdlogbook').': '
-        .userdate($record->creationdate, get_string('summarydate', 'mod_cpdlogbook'))
+        .userdate($record->creationdate, get_string('summarydate', 'mod_cpdlogbook')),
+    get_string('modifieddate', 'mod_cpdlogbook').': '
+        .userdate($record->modifieddate, get_string('summarydate', 'mod_cpdlogbook')),
 ]);
 
 echo $OUTPUT->footer();
