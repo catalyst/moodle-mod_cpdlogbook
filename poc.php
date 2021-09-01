@@ -44,7 +44,7 @@ echo html_writer::tag(
     html_writer::tag('input', '', ['name' => 'start', 'value' => $start]).
     html_writer::tag('input', '', ['name' => 'target', 'value' => $target]).
     html_writer::tag('input', '', ['name' => 'diff', 'value' => $diff]).
-    html_writer::tag('button', 'Submit', ['type'=>'submit'])
+    html_writer::tag('button', 'Submit', ['type' => 'submit'])
 );
 
 // Calculate the given start time.
@@ -55,10 +55,20 @@ $targettime = strtotime($target);
 
 // If there is a 'goal' date.
 if ($targettime != false) {
-    // While the variable $time is after $targettime, move it back by $diff.
-    // A for loop is used to avoid an infinite while loop for this testing page.
-    for ($i = 0; $targettime < $time && $i < 10000; $i++) {
-        $time = strtotime('-'.$diff, $time);
+
+    // Search for the period in the future or in the past as necessary.
+    if ($targettime < $time) {
+        // While the variable $time is after $targettime, move it back by $diff.
+        // A for loop is used to avoid an infinite while loop for this testing page.
+        for ($i = 0; $targettime < $time && $i < 10000; $i++) {
+            $time = strtotime('-' . $diff, $time);
+        }
+    } else {
+        for ($i = 0; $targettime > $time && $i < 10000; $i++) {
+            $time = strtotime('+' . $diff, $time);
+        }
+        // Since the for loop finds the start of the proceeding time period, the time must be reduced.
+        $time = strtotime('-' . $diff, $time);
     }
 }
 
