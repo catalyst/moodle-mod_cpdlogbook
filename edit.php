@@ -76,7 +76,6 @@ if ($mform->is_cancelled()) {
 
         $fromform->cpdlogbookid = $cm->instance;
         $fromform->userid = $USER->id;
-        $fromform->time = time();
 
         $entryid = $DB->insert_record('cpdlogbook_entries', $fromform, true);
         $newentry = $DB->get_record('cpdlogbook_entries', ['id' => $entryid]);
