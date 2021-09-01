@@ -70,7 +70,7 @@ echo html_writer::alist([
     get_string('completiondate', 'mod_cpdlogbook').': '
         .userdate($record->completiondate, get_string('summarydate', 'mod_cpdlogbook')),
     get_string('points', 'mod_cpdlogbook').': '.$record->points,
-    get_string('duration', 'mod_cpdlogbook').': '.format_time($record->hours),
+    get_string('duration', 'mod_cpdlogbook').': '.format_time($record->duration),
     get_string('summary', 'mod_cpdlogbook').': '.$record->summary,
     get_string('provider', 'mod_cpdlogbook').': '.$record->provider,
     get_string('location', 'mod_cpdlogbook').': '.$record->location,

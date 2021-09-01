@@ -55,9 +55,9 @@ class edit_entry extends \moodleform {
         $mform->addRule('points', null, 'required', null, 'client');
         $mform->setType('points', PARAM_INT);
 
-        $mform->addElement('duration', 'hours', get_string('duration', 'mod_cpdlogbook'), ['optional' => false]);
-        $mform->setDefault('hours', HOURSECS);
-        $mform->setType('hours', PARAM_INT);
+        $mform->addElement('duration', 'duration', get_string('duration', 'mod_cpdlogbook'), ['optional' => false]);
+        $mform->setDefault('duration', HOURSECS);
+        $mform->setType('duration', PARAM_INT);
 
         $mform->addElement('text', 'provider', get_string('provider', 'mod_cpdlogbook'));
         $mform->setType('provider', PARAM_TEXT);

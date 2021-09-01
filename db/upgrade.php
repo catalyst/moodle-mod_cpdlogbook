@@ -74,5 +74,17 @@ function xmldb_cpdlogbook_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2021080304, 'cpdlogbook');
     }
 
+    if ($oldversion < 2021080305) { // Renames hours to duration
+        // Rename field time on table cpdlogbook_entries to duration.
+        $table = new xmldb_table('cpdlogbook_entries');
+        $field = new xmldb_field('hours', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '3600', 'name');
+
+        // Launch rename field hours.
+        $dbman->rename_field($table, $field, 'duration');
+
+        // Cpdlogbook savepoint reached.
+        upgrade_mod_savepoint(true, 2021080305, 'cpdlogbook');
+    }
+
     return true;
 }
