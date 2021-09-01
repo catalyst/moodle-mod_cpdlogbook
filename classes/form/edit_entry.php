@@ -47,9 +47,9 @@ class edit_entry extends \moodleform {
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
 
-        $mform->addElement('date_selector', 'time', get_string('date'));
-        $mform->addRule('time', null, 'required', null, 'client');
-        $mform->setType('time', PARAM_INT);
+        $mform->addElement('date_selector', 'completiondate', get_string('completiondate', 'mod_cpdlogbook'));
+        $mform->addRule('completiondate', null, 'required', null, 'client');
+        $mform->setType('completiondate', PARAM_INT);
 
         $mform->addElement('float', 'points', get_string('points', 'mod_cpdlogbook'), ['size' => '4']);
         $mform->addRule('points', null, 'required', null, 'client');

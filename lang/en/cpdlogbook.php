@@ -30,6 +30,7 @@ $string['pluginadministration'] = 'Administration';
 $string['name'] = 'Name';
 $string['points'] = 'Points';
 $string['duration'] = 'Duration';
+$string['completiondate'] = 'Completion Date';
 $string['provider'] = 'Provider';
 $string['location'] = 'Location';
 $string['summary'] = 'Summary';

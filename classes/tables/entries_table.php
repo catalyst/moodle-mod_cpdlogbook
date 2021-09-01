@@ -66,7 +66,7 @@ class entries_table extends table_sql {
             'hours',
             'provider',
             'location',
-            'time',
+            'completiondate',
             'actions',
         ];
 
@@ -78,14 +78,14 @@ class entries_table extends table_sql {
                 'hours',
                 'provider',
                 'location',
-                'time',
+                'completiondate',
             ];
         }
-        $this->sort_default_column = 'time';
+        $this->sort_default_column = 'completiondate';
         $this->sort_default_order = SORT_DESC;
 
         $this->define_columns($columns);
-        $this->column_class('time',     'text-right');
+        $this->column_class('completiondate',     'text-right');
         $this->column_class('points',   'text-right');
         $this->column_class('hours',    'text-right');
         $this->column_style('hours',    'text-wrap', 'none');
@@ -97,7 +97,7 @@ class entries_table extends table_sql {
             get_string('duration', 'mod_cpdlogbook'),
             get_string('provider', 'mod_cpdlogbook'),
             get_string('location', 'mod_cpdlogbook'),
-            get_string('date'),
+            get_string('completiondate', 'mod_cpdlogbook'),
             get_string('actions'),
         ];
 
@@ -109,7 +109,7 @@ class entries_table extends table_sql {
                 get_string('duration', 'mod_cpdlogbook'),
                 get_string('provider', 'mod_cpdlogbook'),
                 get_string('location', 'mod_cpdlogbook'),
-                get_string('date'),
+                get_string('completiondate', 'mod_cpdlogbook'),
             ];
         }
 
@@ -155,18 +155,18 @@ class entries_table extends table_sql {
     }
 
     /**
-     * Format the time column.
+     * Format the completiondate column.
      *
      * @param \stdClass $record
      * @return string
      * @throws \coding_exception
      */
-    public function col_time($record) {
+    public function col_completiondate($record) {
         if ($this->download == '') {
-            return userdate($record->time, get_string('summarydate', 'mod_cpdlogbook'));
+            return userdate($record->completiondate, get_string('summarydate', 'mod_cpdlogbook'));
         } else {
             // If the table is being downloaded, then export the time as a date in a friendly format.
-            return userdate($record->time, get_string('exportdate', 'mod_cpdlogbook'));
+            return userdate($record->completiondate, get_string('exportdate', 'mod_cpdlogbook'));
         }
     }
 
