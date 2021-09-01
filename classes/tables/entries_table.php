@@ -63,7 +63,7 @@ class entries_table extends table_sql {
         $columns = [
             'points',
             'name',
-            'hours',
+            'duration',
             'provider',
             'location',
             'completiondate',
@@ -75,7 +75,7 @@ class entries_table extends table_sql {
                 'points',
                 'name',
                 'summary',
-                'hours',
+                'duration',
                 'provider',
                 'location',
                 'completiondate',
@@ -87,8 +87,8 @@ class entries_table extends table_sql {
         $this->define_columns($columns);
         $this->column_class('completiondate',     'text-right');
         $this->column_class('points',   'text-right');
-        $this->column_class('hours',    'text-right');
-        $this->column_style('hours',    'text-wrap', 'none');
+        $this->column_class('duration',    'text-right');
+        $this->column_style('duration',    'text-wrap', 'none');
         $this->collapsible(false);
 
         $headers = [
@@ -106,7 +106,7 @@ class entries_table extends table_sql {
                 get_string('points', 'mod_cpdlogbook'),
                 get_string('name', 'mod_cpdlogbook'),
                 get_string('summary', 'mod_cpdlogbook'),
-                get_string('duration', 'mod_cpdlogbook'),
+                get_string('duration', 'mod_cpdlogbook').' ('.get_string('hours').')',
                 get_string('provider', 'mod_cpdlogbook'),
                 get_string('location', 'mod_cpdlogbook'),
                 get_string('completiondate', 'mod_cpdlogbook'),
@@ -200,18 +200,18 @@ class entries_table extends table_sql {
     }
 
     /**
-     * Format the hours column.
+     * Format the duration column.
      *
      * @param \stdClass $record
      * @return \lang_string|string
      */
-    public function col_hours($record) {
+    public function col_duration($record) {
         // Only render this within a 'nobr' tag if the table isn't being downloaded.
         if ($this->download == '') {
-            return \html_writer::tag('nobr', format_time($record->hours));
+            return \html_writer::tag('nobr', format_time($record->duration));
         } else {
             // If the table is being downloaded, then display the time in hours.
-            return $record->hours / HOURSECS;
+            return $record->duration / HOURSECS;
         }
     }
 
