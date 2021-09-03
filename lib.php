@@ -85,3 +85,21 @@ function cpdlogbook_delete_instance($id) {
 
     return true;
 }
+
+/**
+ * This function extends the settings navigation block for the site.
+ *
+ * It is safe to rely on PAGE here as we will only ever be within the module
+ * context when this is called
+ *
+ * @param settings_navigation $settings
+ * @param navigation_node $cpdlogbooknode
+ * @return void
+ */
+function cpdlogbook_extend_settings_navigation($settings, $cpdlogbooknode) {
+    global $PAGE;
+    $cpdlogbooknode->add(
+        get_string('periods', 'mod_cpdlogbook'),
+        new moodle_url('/mod/cpdlogbook/periods.php', ['id' => $PAGE->cm->id])
+    );
+}
