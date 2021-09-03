@@ -86,5 +86,30 @@ function xmldb_cpdlogbook_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2021080305, 'cpdlogbook');
     }
 
+    if ($oldversion < 2021080306) {
+
+        // Define table cpdlogbook_periods to be created.
+        $table = new xmldb_table('cpdlogbook_periods');
+
+        // Adding fields to table cpdlogbook_periods.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('startdate', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('enddate', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('cpdlogbookid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+
+        // Adding keys to table cpdlogbook_periods.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('cpdlogbookid', XMLDB_KEY_FOREIGN, ['cpdlogbookid'], 'cpdlogbook', ['id']);
+
+        // Conditionally launch create table for cpdlogbook_periods.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Cpdlogbook savepoint reached.
+        upgrade_mod_savepoint(true, 2021080306, 'cpdlogbook');
+    }
+
+
     return true;
 }
