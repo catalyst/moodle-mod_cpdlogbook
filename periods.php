@@ -22,6 +22,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use mod_cpdlogbook\tables\periods_table;
+
 require_once('../../config.php');
 
 $id = required_param('id', PARAM_INT);
@@ -38,5 +40,9 @@ $PAGE->set_title(get_string('periods', 'mod_cpdlogbook'));
 $PAGE->set_heading(get_string('periods', 'mod_cpdlogbook'));
 
 echo $OUTPUT->header();
+
+$table = new periods_table($cm, 'cpdlogbook_periods');
+$table->define_baseurl($PAGE->url);
+$table->out(40, true);
 
 echo $OUTPUT->footer();
