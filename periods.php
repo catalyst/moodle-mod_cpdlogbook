@@ -27,6 +27,7 @@ use mod_cpdlogbook\tables\periods_table;
 require_once('../../config.php');
 
 $id = required_param('id', PARAM_INT);
+$insert = optional_param('insert', false, PARAM_BOOL);
 
 list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
 
@@ -34,12 +35,26 @@ require_course_login($course, false, $cm);
 
 $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ], '*', MUST_EXIST);
 
+if ($insert) {
+    $DB->insert_record('cpdlogbook_periods', [
+        'startdate' => time(),
+        'enddate' => strtotime('+1 month', time()),
+        'cpdlogbookid' => $cm->instance,
+    ]);
+    redirect(new moodle_url('/mod/cpdlogbook/periods.php', [ 'id' => $id ]));
+}
+
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/periods.php', [ 'id' => $id ]));
 
 $PAGE->set_title(get_string('periods', 'mod_cpdlogbook'));
 $PAGE->set_heading(get_string('periods', 'mod_cpdlogbook'));
 
 echo $OUTPUT->header();
+
+echo $OUTPUT->single_button(
+    new moodle_url('/mod/cpdlogbook/periods.php', ['id' => $id, 'insert' => true]),
+    get_string('add')
+);
 
 $table = new periods_table($cm, 'cpdlogbook_periods');
 $table->define_baseurl($PAGE->url);
