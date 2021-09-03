@@ -42,3 +42,6 @@ $string['createtitle'] = 'Create a new entry';
 $string['edittitle'] = 'Edit this entry';
 $string['confirmdelete'] = 'Are you sure you want to delete entry "{$a}"?';
 $string['pointratio'] = '{$a->sum} / {$a->required} points';
+$string['periods'] = 'Periods';
+$string['startdate'] = 'Start date';
+$string['enddate'] = 'End date';
