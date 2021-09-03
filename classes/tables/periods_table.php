@@ -65,8 +65,8 @@ class periods_table extends table_sql {
         $this->collapsible(false);
 
         $headers = [
-                get_string('startdate', 'mod_cpdlogbook'),
-                get_string('enddate','mod_cpdlogbook'),
+            get_string('startdate', 'mod_cpdlogbook'),
+            get_string('enddate', 'mod_cpdlogbook'),
         ];
 
         $this->define_headers($headers);
@@ -75,6 +75,26 @@ class periods_table extends table_sql {
         $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ]);
 
         $this->set_sql('*', '{cpdlogbook_periods}', 'cpdlogbookid=?', [$record->id]);
+    }
+
+    /**
+     * Formats the startdate column.
+     *
+     * @param \stdClass $record
+     * @return string
+     */
+    public function col_startdate($record) {
+        return userdate($record->startdate);
+    }
+
+    /**
+     * Formats the enddate column.
+     *
+     * @param \stdClass $record
+     * @return string
+     */
+    public function col_enddate($record) {
+        return userdate($record->enddate);
     }
 
     /**

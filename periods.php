@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * View page. Used as the default page when viewing the activity.
+ * Periods page. Used to access the cpdlogbook periods.
  *
  * @package mod_cpdlogbook
  * @copyright 2021 Jordan Shatte <jsha773@hotmail.com>
@@ -46,8 +46,9 @@ if ($insert) {
 
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/periods.php', [ 'id' => $id ]));
 
-$PAGE->set_title(get_string('periods', 'mod_cpdlogbook'));
-$PAGE->set_heading(get_string('periods', 'mod_cpdlogbook'));
+$title = get_string('periods', 'mod_cpdlogbook');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
 
 echo $OUTPUT->header();
 
