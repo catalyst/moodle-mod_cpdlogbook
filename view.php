@@ -38,7 +38,7 @@ require_course_login($course, false, $cm);
 
 $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ], '*', MUST_EXIST);
 
-// Trigger the course_module_viewed event
+// Trigger the course_module_viewed event.
 $eventdata = ['context' => context_module::instance($id), 'objectid' => $record->id];
 course_module_viewed::create($eventdata)->trigger();
 

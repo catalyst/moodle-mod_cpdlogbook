@@ -23,6 +23,7 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="cpdlogbookid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="periodid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="creationdate" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="modifieddate" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="completiondate" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -37,6 +38,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="cpdlogbookid" TYPE="foreign" FIELDS="cpdlogbookid" REFTABLE="cpdlogbook" REFFIELDS="id"/>
         <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="periodid" TYPE="foreign" FIELDS="periodid" REFTABLE="cpdlogbook_periods" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="cpdlogbook_periods" COMMENT="Default comment for the table, please edit me">

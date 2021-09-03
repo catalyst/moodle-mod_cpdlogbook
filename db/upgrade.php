@@ -110,6 +110,25 @@ function xmldb_cpdlogbook_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2021080306, 'cpdlogbook');
     }
 
+    if ($oldversion < 2021080307) {
+
+        // Define field periodid to be added to cpdlogbook_entries.
+        $table = new xmldb_table('cpdlogbook_entries');
+        $field = new xmldb_field('periodid', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'userid');
+        // Define key periodid (foreign) to be added to cpdlogbook_entries.
+        $key = new xmldb_key('periodid', XMLDB_KEY_FOREIGN, ['periodid'], 'cpdlogbook_periods', ['id']);
+
+        // Conditionally launch add field periodid.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Launch add key periodid.
+        $dbman->add_key($table, $key);
+
+        // Cpdlogbook savepoint reached.
+        upgrade_mod_savepoint(true, 2021080307, 'cpdlogbook');
+    }
 
     return true;
 }
