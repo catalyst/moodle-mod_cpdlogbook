@@ -70,7 +70,6 @@ if ($mform->is_cancelled()) {
         $entryid = $DB->insert_record('cpdlogbook_periods', $fromform, true);
     } else {
         // Update the record according to the submitted form data.
-        $fromform->modifieddate = time();
         $DB->update_record('cpdlogbook_periods', $fromform);
         $entry = $DB->get_record('cpdlogbook_periods', ['id' => $fromform->id]);
     }

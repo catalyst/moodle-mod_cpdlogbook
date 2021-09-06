@@ -44,7 +44,7 @@ class edit_period extends \moodleform {
         $mform = $this->_form;
 
         $mform->addElement('date_selector', 'startdate', get_string('startdate', 'mod_cpdlogbook'));
-        $mform->setType('startdate', PARAM_TEXT);
+        $mform->setType('startdate', PARAM_INT);
         $mform->addRule('startdate', null, 'required', null, 'client');
 
         $mform->addElement('date_selector', 'enddate', get_string('enddate', 'mod_cpdlogbook'));

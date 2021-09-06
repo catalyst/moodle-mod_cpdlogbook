@@ -41,6 +41,10 @@ use table_sql;
  */
 class periods_table extends table_sql {
 
+    /**
+     * @var renderer_base
+     */
+    public $output;
 
     /**
      * entries_table constructor.
@@ -112,21 +116,21 @@ class periods_table extends table_sql {
      */
     public function col_actions($record) {
         $updateurl = new moodle_url('/mod/cpdlogbook/editperiod.php', ['id' => $record->id, 'create' => false]);
-        //$deleteurl = new moodle_url(
-        //        '/mod/cpdlogbook/delete.php',
-        //        ['id' => $record->id, 'sesskey' => sesskey()]
-        //);
+        $deleteurl = new moodle_url(
+                '/mod/cpdlogbook/delete.php',
+                ['id' => $record->id, 'sesskey' => sesskey(), 'type' => 'period']
+        );
 
         $editstr = get_string('edit');
-        //$deletestr = get_string('delete');
+        $deletestr = get_string('delete');
 
         // The pix_icons use default moodle icons.
         $menu = new action_menu();
         $menu->add(new \action_menu_link_primary($updateurl, new \pix_icon('i/edit', $editstr), $editstr));
 
-        //$deleteaction = new \confirm_action(get_string('confirmdelete', 'mod_cpdlogbook', $record->name));
-        //$delete = new action_link($deleteurl, '', $deleteaction, [], new \pix_icon('i/delete', $deletestr));
-        //$menu->add_primary_action($delete);
+        $deleteaction = new \confirm_action(get_string('confirmdelete', 'mod_cpdlogbook', $record->id));
+        $delete = new action_link($deleteurl, '', $deleteaction, [], new \pix_icon('i/delete', $deletestr));
+        $menu->add_primary_action($delete);
 
         return $this->output->render($menu);
     }
