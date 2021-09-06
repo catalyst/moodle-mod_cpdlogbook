@@ -46,9 +46,10 @@ class periods_table extends table_sql {
      * entries_table constructor.
      *
      * @param mixed $cm The course module.
+     * @param renderer_base $output The output renderer.
      * @param string $uniqueid
      */
-    public function __construct($cm, $uniqueid) {
+    public function __construct($cm, $output, string $uniqueid) {
         global $DB;
 
         parent::__construct($uniqueid);
@@ -56,6 +57,7 @@ class periods_table extends table_sql {
         $columns = [
             'startdate',
             'enddate',
+            'actions',
         ];
 
         $this->sort_default_column = 'startdate';
@@ -67,10 +69,13 @@ class periods_table extends table_sql {
         $headers = [
             get_string('startdate', 'mod_cpdlogbook'),
             get_string('enddate', 'mod_cpdlogbook'),
+            get_string('actions')
         ];
 
         $this->define_headers($headers);
         $this->show_download_buttons_at([TABLE_P_BOTTOM]);
+
+        $this->output = $output;
 
         $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ]);
 
@@ -95,6 +100,35 @@ class periods_table extends table_sql {
      */
     public function col_enddate($record) {
         return userdate($record->enddate);
+    }
+
+    /**
+     * Format the actions column.
+     *
+     * @param \stdClass $record
+     * @return bool|string
+     * @throws \coding_exception
+     * @throws \moodle_exception
+     */
+    public function col_actions($record) {
+        $updateurl = new moodle_url('/mod/cpdlogbook/editperiod.php', ['id' => $record->id, 'create' => false]);
+        //$deleteurl = new moodle_url(
+        //        '/mod/cpdlogbook/delete.php',
+        //        ['id' => $record->id, 'sesskey' => sesskey()]
+        //);
+
+        $editstr = get_string('edit');
+        //$deletestr = get_string('delete');
+
+        // The pix_icons use default moodle icons.
+        $menu = new action_menu();
+        $menu->add(new \action_menu_link_primary($updateurl, new \pix_icon('i/edit', $editstr), $editstr));
+
+        //$deleteaction = new \confirm_action(get_string('confirmdelete', 'mod_cpdlogbook', $record->name));
+        //$delete = new action_link($deleteurl, '', $deleteaction, [], new \pix_icon('i/delete', $deletestr));
+        //$menu->add_primary_action($delete);
+
+        return $this->output->render($menu);
     }
 
     /**
