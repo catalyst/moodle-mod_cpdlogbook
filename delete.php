@@ -25,24 +25,49 @@
 require_once('../../config.php');
 
 $id = required_param('id', PARAM_INT);
+$type = optional_param('type', 'entry', PARAM_TEXT);
 
-// If the entry doesn't exist.
-$record = $DB->get_record('cpdlogbook_entries', ['id' => $id, 'userid' => $USER->id], '*', MUST_EXIST);
+if ($type == 'period') {
+    // If the entry doesn't exist.
+    $record = $DB->get_record('cpdlogbook_periods', ['id' => $id], '*', MUST_EXIST);
 
-// If the cpdlogbook doesn't exist.
-$cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $record->cpdlogbookid], '*', MUST_EXIST);
+    // If the cpdlogbook doesn't exist.
+    $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $record->cpdlogbookid], '*', MUST_EXIST);
 
-// Get the course module from the cpdlogbook instance.
-$cm = get_coursemodule_from_instance('cpdlogbook', $cpdlogbook->id, $cpdlogbook->course);
+    // Get the course module from the cpdlogbook instance.
+    $cm = get_coursemodule_from_instance('cpdlogbook', $cpdlogbook->id, $cpdlogbook->course);
 
-require_course_login($cpdlogbook->course, false, $cm);
-$context = context_module::instance($cm->id);
+    require_course_login($cpdlogbook->course, false, $cm);
+    $context = context_module::instance($cm->id);
 
-require_sesskey();
+    require_sesskey();
 
-// From here, we can be sure that the entry exists, and is associated with the current user and the cpdlogbook.
-$DB->delete_records('cpdlogbook_entries', ['id' => $id, 'cpdlogbookid' => $cpdlogbook->id, 'userid' => $USER->id]);
+    // From here, we can be sure that the entry exists, and is associated with the current user and the cpdlogbook.
+    $DB->delete_records('cpdlogbook_periods', ['id' => $id, 'cpdlogbookid' => $cpdlogbook->id]);
 
-\mod_cpdlogbook\event\entry_deleted::create_from_entry($record, $context)->trigger();
+    redirect(new moodle_url('/mod/cpdlogbook/periods.php', ['id' => $cm->id]));
+} else {
+    $conditions = ['id' => $id, 'userid' => $USER->id];
 
-redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cm->id]));
+    // If the entry doesn't exist.
+    $record = $DB->get_record('cpdlogbook_entries', ['id' => $id, 'userid' => $USER->id], '*', MUST_EXIST);
+
+    // If the cpdlogbook doesn't exist.
+    $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $record->cpdlogbookid], '*', MUST_EXIST);
+
+    // Get the course module from the cpdlogbook instance.
+    $cm = get_coursemodule_from_instance('cpdlogbook', $cpdlogbook->id, $cpdlogbook->course);
+
+    require_course_login($cpdlogbook->course, false, $cm);
+    $context = context_module::instance($cm->id);
+
+    require_sesskey();
+
+    $conditions['cpdlogbookid'] = $cpdlogbook->id;
+
+    // From here, we can be sure that the entry exists, and is associated with the current user and the cpdlogbook.
+    $DB->delete_records('cpdlogbook_entries', ['id' => $id, 'userid' => $USER->id, 'cpdlogbook' => $cpdlogbook->id]);
+    \mod_cpdlogbook\event\entry_deleted::create_from_entry($record, $context)->trigger();
+
+    redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cm->id]));
+}
