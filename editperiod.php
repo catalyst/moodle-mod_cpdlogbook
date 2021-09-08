@@ -29,48 +29,55 @@ require_once('../../config.php');
 
 // Get the course module id and the entry id from either the parameters or the hidden fields.
 $id = required_param('id', PARAM_INT);
-$create = required_param('create', PARAM_BOOL);
+$create = optional_param('create', 'false', PARAM_BOOL);
+
+$PAGE->set_url(new moodle_url('/mod/cpdlogbook/editperiod.php', [ 'id' => $id, 'create' => $create ]));
 
 if ($create) {
     // If an entry is being created.
-    $record = new stdClass();
-    $record->id = $id;
+    $period = new period();
 
-    list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
+    // If the form has been submitted and $id has been set to 0.
+    if ($id == 0) {
+        // Get the hidden cpdlogbookid field.
+        $id = required_param('cpdlogbookid', PARAM_INT);
+        $period->set('cpdlogbookid', $id);
 
-    // If an existing entry is being edited.
-    require_course_login($course, false, $cm);
+        // Check that the cpdlogbook instance exists .
+        $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $id], '*', MUST_EXIST);
+
+        // Get the course module from the cpdlogbook instance.
+        $cm = get_coursemodule_from_instance('cpdlogbook', $cpdlogbook->id, $cpdlogbook->course);
+    } else {
+        list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
+        $period->set('cpdlogbookid', $cm->instance);
+    }
 } else {
-    // If the entry doesn't exist.
-    $record = (new period($id))->to_record();
+    // Get the existing entry.
+    $period = new period($id);
 
-    // If the cpdlogbook doesn't exist.
-    $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $record->cpdlogbookid], '*', MUST_EXIST);
+    // Check that the cpdlogbook instance exists .
+    $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $period->get('cpdlogbookid')], '*', MUST_EXIST);
 
     // Get the course module from the cpdlogbook instance.
     $cm = get_coursemodule_from_instance('cpdlogbook', $cpdlogbook->id, $cpdlogbook->course);
-
-    require_course_login($cpdlogbook->course, false, $cm);
 }
+
+require_course_login($cm->course, false, $cm);
 
 $context = context_module::instance($cm->id);
 
-$mform = new edit_period();
-
+$mform = new edit_period($PAGE->url, [
+    'persistent' => $period,
+    'create' => $create,
+]);
 
 $url = new moodle_url('/mod/cpdlogbook/periods.php', ['id' => $cm->id]);
 
 if ($mform->is_cancelled()) {
     redirect($url);
 } else if ($fromform = $mform->get_data()) {
-    unset($fromform->create);
-    unset($fromform->submitbutton);
-
     if ($create) {
-        unset($fromform->id);
-
-        $fromform->cpdlogbookid = $cm->instance;
-
         $newperiod = new period(0, $fromform);
         $newperiod->create();
     } else {
@@ -81,8 +88,6 @@ if ($mform->is_cancelled()) {
 
     redirect($url);
 }
-
-$PAGE->set_url(new moodle_url('/mod/cpdlogbook/periods.php', [ 'id' => $id, 'create' => $create ]));
 
 // Set the title according to if an entry is being created or updated.
 if ($create) {
@@ -98,8 +103,9 @@ $PAGE->navbar->add($title);
 echo $OUTPUT->header();
 echo $OUTPUT->heading($title);
 
-$record->create = $create;
-$mform->set_data($record);
+echo $id.PHP_EOL;
+echo $create;
+
 $mform->display();
 
 echo $OUTPUT->footer();

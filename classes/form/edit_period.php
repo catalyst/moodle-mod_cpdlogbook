@@ -24,6 +24,9 @@
 
 namespace mod_cpdlogbook\form;
 
+use core\form\persistent;
+use mod_cpdlogbook\persistent\period;
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/formslib.php');
@@ -33,7 +36,21 @@ require_once($CFG->libdir.'/formslib.php');
  *
  * @package mod_cpdlogbook
  */
-class edit_period extends \moodleform {
+class edit_period extends persistent {
+
+    /**
+     * The class for the persistent.
+     *
+     * @var string
+     */
+    protected static $persistentclass = 'mod_cpdlogbook\\persistent\\period';
+
+    /**
+     * The fields to remove when creating the period.
+     *
+     * @var string[]
+     */
+    protected static $fieldstoremove = ['submitbutton', 'create'];
 
     /**
      * The definition of the form. Used to add elements and rules to the form.
@@ -44,20 +61,39 @@ class edit_period extends \moodleform {
         $mform = $this->_form;
 
         $mform->addElement('date_selector', 'startdate', get_string('startdate', 'mod_cpdlogbook'));
-        $mform->setType('startdate', PARAM_INT);
         $mform->addRule('startdate', null, 'required', null, 'client');
 
         $mform->addElement('date_selector', 'enddate', get_string('enddate', 'mod_cpdlogbook'));
-        $mform->addRule('enddate', null, 'required', null, 'client');
-        $mform->setType('enddate', PARAM_INT);
 
         $mform->addElement('hidden', 'id');
-        $mform->setType('id', PARAM_INT);
+
+        $mform->addElement('hidden', 'cpdlogbookid');
 
         $mform->addElement('hidden', 'create');
         $mform->setType('create', PARAM_BOOL);
+        $mform->setConstant('create', $this->_customdata['create']);
 
         $this->add_action_buttons();
     }
 
+    /**
+     * Additional validation. Checks for period overlaps.
+     *
+     * @param \stdClass $data
+     * @param array $files
+     * @param array $errors
+     * @return array
+     * @throws \coding_exception
+     */
+    protected function extra_validation($data, $files, array &$errors) {
+        $newerrors = [];
+
+        // If there aren't existing errors for these fields and they cause an overlap.
+        if (period::overlaps(new period(0, $data))) {
+            $newerrors['startdate'] = 'This overlaps with an existing period';
+            $newerrors['enddate'] = 'This overlaps with an existing period';
+        }
+
+        return $newerrors;
+    }
 }
