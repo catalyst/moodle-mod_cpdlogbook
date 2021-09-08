@@ -24,6 +24,8 @@
 
 namespace mod_cpdlogbook\persistent;
 
+use coding_exception;
+
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -100,5 +102,41 @@ class period extends \core\persistent {
         );
 
         return $record ? $record->id : 0;
+    }
+
+    /**
+     * Check that the start and end dates don't overlap.
+     *
+     * @throws coding_exception
+     */
+    protected function before_validate() {
+        if (self::overlaps($this)) {
+            throw new coding_exception('Overlap');
+        }
+    }
+
+    /**
+     * Checks if a given period overlaps with existing periods.
+     *
+     * @param period $period
+     * @return boolean
+     * @throws \coding_exception
+     */
+    public static function overlaps($period) {
+        $records = self::get_records(['cpdlogbookid' => $period->get('cpdlogbookid')]);
+        foreach ($records as $record) {
+            if ($record->get('id') != $period->get('id')) {
+                // Is the period before the record?
+                $before = $period->get('enddate') < $record->get('startdate');
+
+                // Is the period after the record?
+                $after = $period->get('startdate') > $record->get('enddate');
+
+                if (!$before && !$after) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
