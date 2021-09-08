@@ -22,6 +22,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use mod_cpdlogbook\persistent\period;
+
 require_once('../../config.php');
 
 $id = required_param('id', PARAM_INT);
@@ -29,10 +31,10 @@ $type = optional_param('type', 'entry', PARAM_TEXT);
 
 if ($type == 'period') {
     // If the entry doesn't exist.
-    $record = $DB->get_record('cpdlogbook_periods', ['id' => $id], '*', MUST_EXIST);
+    $period = new period($id);
 
     // If the cpdlogbook doesn't exist.
-    $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $record->cpdlogbookid], '*', MUST_EXIST);
+    $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $period->get('cpdlogbookid')], '*', MUST_EXIST);
 
     // Get the course module from the cpdlogbook instance.
     $cm = get_coursemodule_from_instance('cpdlogbook', $cpdlogbook->id, $cpdlogbook->course);
@@ -43,7 +45,7 @@ if ($type == 'period') {
     require_sesskey();
 
     // From here, we can be sure that the entry exists, and is associated with the current user and the cpdlogbook.
-    $DB->delete_records('cpdlogbook_periods', ['id' => $id, 'cpdlogbookid' => $cpdlogbook->id]);
+    $period->delete();
 
     redirect(new moodle_url('/mod/cpdlogbook/periods.php', ['id' => $cm->id]));
 } else {

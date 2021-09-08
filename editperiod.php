@@ -23,6 +23,7 @@
  */
 
 use mod_cpdlogbook\form\edit_period;
+use mod_cpdlogbook\persistent\period;
 
 require_once('../../config.php');
 
@@ -41,7 +42,7 @@ if ($create) {
     require_course_login($course, false, $cm);
 } else {
     // If the entry doesn't exist.
-    $record = $DB->get_record('cpdlogbook_periods', ['id' => $id], '*', MUST_EXIST);
+    $record = (new period($id))->to_record();
 
     // If the cpdlogbook doesn't exist.
     $cpdlogbook = $DB->get_record('cpdlogbook', ['id' => $record->cpdlogbookid], '*', MUST_EXIST);
@@ -62,16 +63,20 @@ $url = new moodle_url('/mod/cpdlogbook/periods.php', ['id' => $cm->id]);
 if ($mform->is_cancelled()) {
     redirect($url);
 } else if ($fromform = $mform->get_data()) {
+    unset($fromform->create);
+    unset($fromform->submitbutton);
+
     if ($create) {
         unset($fromform->id);
 
         $fromform->cpdlogbookid = $cm->instance;
 
-        $entryid = $DB->insert_record('cpdlogbook_periods', $fromform, true);
+        $newperiod = new period(0, $fromform);
+        $newperiod->create();
     } else {
         // Update the record according to the submitted form data.
-        $DB->update_record('cpdlogbook_periods', $fromform);
-        $entry = $DB->get_record('cpdlogbook_periods', ['id' => $fromform->id]);
+        $newperiod = new period($fromform->id, $fromform);
+        $newperiod->update();
     }
 
     redirect($url);
