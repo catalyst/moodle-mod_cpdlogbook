@@ -57,4 +57,29 @@ class period extends \core\persistent {
         ];
     }
 
+    /**
+     * Validate the start date.
+     *
+     * @param int $value
+     * @return bool
+     * @throws \coding_exception
+     */
+    protected function validate_startdate($value) {
+        $enddate = $this->raw_get('enddate');
+
+        return $value < $enddate;
+    }
+
+    /**
+     * Validate the end date.
+     *
+     * @param int $value
+     * @return bool
+     * @throws \coding_exception
+     */
+    protected function validate_enddate($value) {
+        $startdate = $this->raw_get('startdate');
+
+        return $startdate < $value;
+    }
 }
