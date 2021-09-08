@@ -82,4 +82,26 @@ class period extends \core\persistent {
 
         return $startdate < $value;
     }
+
+    /**
+     * Finds a valid period for a given date and cpdlogbook instance.
+     * Returns the id of the period if found, and 0 if no period is found.
+     *
+     * @param int $date
+     * @param int $cpdlogbookid
+     * @return int
+     * @throws \coding_exception
+     */
+    public static function get_period_for_date($date, $cpdlogbookid) {
+        $records = self::get_records(['cpdlogbookid' => $cpdlogbookid]);
+        // If there is any valid period, return the id.
+        foreach ($records as $record) {
+            if ($record->get('startdate') < $date && $record->get('enddate') > $date) {
+                return $record->get('id');
+            }
+        }
+
+        // Else return 0.
+        return 0;
+    }
 }

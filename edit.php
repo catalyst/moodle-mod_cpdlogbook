@@ -25,6 +25,7 @@
 use mod_cpdlogbook\event\entry_updated;
 use mod_cpdlogbook\form\edit_entry;
 use mod_cpdlogbook\event\entry_created;
+use mod_cpdlogbook\persistent\period;
 
 require_once('../../config.php');
 
@@ -71,6 +72,8 @@ if (!$fromdetails) {
 if ($mform->is_cancelled()) {
     redirect($url);
 } else if ($fromform = $mform->get_data()) {
+    $fromform->periodid = period::get_period_for_date($fromform->completiondate, $cm->instance);
+
     if ($create) {
         unset($fromform->id);
 
