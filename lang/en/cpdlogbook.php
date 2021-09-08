@@ -45,3 +45,4 @@ $string['pointratio'] = '{$a->sum} / {$a->required} points';
 $string['periods'] = 'Periods';
 $string['startdate'] = 'Start date';
 $string['enddate'] = 'End date';
+$string['startendinvalid'] = 'Start date after end date';

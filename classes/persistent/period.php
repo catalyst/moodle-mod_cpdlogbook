@@ -63,26 +63,34 @@ class period extends \core\persistent {
      * Validate the start date.
      *
      * @param int $value
-     * @return bool
+     * @return true|\lang_string
      * @throws \coding_exception
      */
     protected function validate_startdate($value) {
         $enddate = $this->raw_get('enddate');
 
-        return $value < $enddate;
+        if ($value < $enddate) {
+            return true;
+        } else {
+            return new \lang_string('startendinvalid', 'mod_cpdlogbook');
+        }
     }
 
     /**
      * Validate the end date.
      *
      * @param int $value
-     * @return bool
+     * @return true|\lang_string
      * @throws \coding_exception
      */
     protected function validate_enddate($value) {
         $startdate = $this->raw_get('startdate');
 
-        return $startdate < $value;
+        if ($startdate < $value) {
+            return true;
+        } else {
+            return new \lang_string('startendinvalid', 'mod_cpdlogbook');
+        }
     }
 
     /**
@@ -102,17 +110,6 @@ class period extends \core\persistent {
         );
 
         return $record ? $record->id : 0;
-    }
-
-    /**
-     * Check that the start and end dates don't overlap.
-     *
-     * @throws coding_exception
-     */
-    protected function before_validate() {
-        if (self::overlaps($this)) {
-            throw new coding_exception('Overlap');
-        }
     }
 
     /**
