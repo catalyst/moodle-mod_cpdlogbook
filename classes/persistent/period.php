@@ -93,15 +93,12 @@ class period extends \core\persistent {
      * @throws \coding_exception
      */
     public static function get_period_for_date($date, $cpdlogbookid) {
-        $records = self::get_records(['cpdlogbookid' => $cpdlogbookid]);
-        // If there is any valid period, return the id.
-        foreach ($records as $record) {
-            if ($record->get('startdate') <= $date && $record->get('enddate') >= $date) {
-                return $record->get('id');
-            }
-        }
+        global $DB;
+        $record = $DB->get_record_sql(
+            'SELECT * FROM {cpdlogbook_periods} WHERE startdate <= ? AND enddate >= ? AND cpdlogbookid = ?',
+            [$date, $date, $cpdlogbookid]
+        );
 
-        // Else return 0.
-        return 0;
+        return $record ? $record->id : 0;
     }
 }
