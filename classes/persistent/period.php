@@ -49,12 +49,16 @@ class period extends \core\persistent {
         return [
             'startdate' => [
                 'type' => PARAM_INT,
+                'null' => NULL_NOT_ALLOWED,
             ],
             'enddate' => [
                 'type' => PARAM_INT,
+                'null' => NULL_NOT_ALLOWED,
             ],
             'cpdlogbookid' => [
                 'type' => PARAM_INT,
+                'null' => NULL_NOT_ALLOWED,
+                'default' => 0,
             ]
         ];
     }
