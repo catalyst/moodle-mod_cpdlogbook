@@ -64,6 +64,7 @@ class edit_period extends persistent {
         $mform->addRule('startdate', null, 'required', null, 'client');
 
         $mform->addElement('date_selector', 'enddate', get_string('enddate', 'mod_cpdlogbook'));
+        $mform->addRule('enddate', null, 'required', null, 'client');
 
         $mform->addElement('hidden', 'id');
 
@@ -90,8 +91,8 @@ class edit_period extends persistent {
 
         // If there aren't existing errors for these fields and they cause an overlap.
         if (period::overlaps(new period(0, $data))) {
-            $newerrors['startdate'] = 'This overlaps with an existing period';
-            $newerrors['enddate'] = 'This overlaps with an existing period';
+            $newerrors['startdate'] = get_string('overlap', 'mod_cpdlogbook');
+            $newerrors['enddate'] = get_string('overlap', 'mod_cpdlogbook');
         }
 
         return $newerrors;
