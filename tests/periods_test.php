@@ -61,8 +61,5 @@ class periods_test extends \advanced_testcase {
         // Test dates where 0 should be returned.
         $this->assertEquals(0, period::get_period_for_date(strtotime('2021-09-01'), $cpdlogbookid));
         $this->assertEquals(0, period::get_period_for_date(strtotime('2021-09-11'), $cpdlogbookid));
-
-        // Delete the period.
-        $p1->delete();
     }
 }
