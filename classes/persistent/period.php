@@ -96,7 +96,7 @@ class period extends \core\persistent {
         $records = self::get_records(['cpdlogbookid' => $cpdlogbookid]);
         // If there is any valid period, return the id.
         foreach ($records as $record) {
-            if ($record->get('startdate') < $date && $record->get('enddate') > $date) {
+            if ($record->get('startdate') <= $date && $record->get('enddate') >= $date) {
                 return $record->get('id');
             }
         }
