@@ -117,6 +117,48 @@ class period extends \core\persistent {
     }
 
     /**
+     * After a record has been updated.
+     *
+     * @param bool $result
+     */
+    protected function after_update($result) {
+        // Only update the entries if the update was successful.
+        if ($result) {
+            $this->update_entries();
+        }
+    }
+
+    /**
+     * After a record has been created.
+     */
+    protected function after_create() {
+        $this->update_entries();
+    }
+
+    /**
+     * Updates entries so that entries that used to belong to this period are unassociated, and then all entries that now apply
+     * are updated to reflect that.
+     *
+     * @throws \dml_exception
+     * @throws coding_exception
+     */
+    public function update_entries() {
+        global $DB;
+        $id = $this->get('id');
+        $cpdlogbookid = $this->get('cpdlogbookid');
+        // Remove the association with existing entries.
+        $DB->execute(
+            'UPDATE {cpdlogbook_entries} SET periodid = 0 WHERE periodid = ? AND cpdlogbookid = ?',
+            [ $id, $cpdlogbookid ]
+        );
+        // Update existing periods that now fall within this period.
+        $DB->execute(
+            'UPDATE {cpdlogbook_entries} SET periodid = ? WHERE completiondate <= ? AND completiondate >= ? AND cpdlogbookid = ?',
+            [ $id, $this->get('enddate'), $this->get('startdate'), $cpdlogbookid ]
+        );
+    }
+
+    /**
      * Checks if a given period overlaps with existing periods.
      *
      * @param period $period
