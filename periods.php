@@ -42,6 +42,17 @@ $PAGE->set_heading($title);
 
 echo $OUTPUT->header();
 
+// Get the number of entries without a period.
+$entries = $DB->get_records('cpdlogbook_entries', ['periodid' => 0]);
+$count = count($entries);
+// If there are any entries like this, display a notification.
+if ($count != 0) {
+    echo $OUTPUT->notification(
+        get_string('invalidentries', 'mod_cpdlogbook', $count),
+        \core\output\notification::NOTIFY_WARNING
+    );
+}
+
 echo $OUTPUT->single_button(
     new moodle_url('/mod/cpdlogbook/editperiod.php', ['id' => $id, 'create' => true]),
     get_string('add')
