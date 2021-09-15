@@ -136,6 +136,22 @@ class period extends \core\persistent {
     }
 
     /**
+     * Updates entries before deleting the period.
+     *
+     * @throws \dml_exception
+     * @throws coding_exception
+     */
+    protected function before_delete() {
+        global $DB;
+        $id = $this->get('id');
+        $cpdlogbookid = $this->get('cpdlogbookid');
+        $DB->execute(
+                'UPDATE {cpdlogbook_entries} SET periodid = 0 WHERE periodid = ? AND cpdlogbookid = ?',
+                [ $id, $cpdlogbookid ]
+        );
+    }
+
+    /**
      * Updates entries so that entries that used to belong to this period are unassociated, and then all entries that now apply
      * are updated to reflect that.
      *

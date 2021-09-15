@@ -47,3 +47,4 @@ $string['startdate'] = 'Start date';
 $string['enddate'] = 'End date';
 $string['startendinvalid'] = 'Start date after end date';
 $string['overlap'] = 'This overlaps with an existing period';
+$string['invalidentries'] = 'There are {$a} entries without an appropriate period.';
