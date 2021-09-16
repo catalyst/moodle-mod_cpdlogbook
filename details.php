@@ -85,11 +85,13 @@ echo html_writer::alist([
 $fs = get_file_storage();
 if ($files = $fs->get_area_files($context->id, 'mod_cpdlogbook', 'attachments', $record->id)) {
     foreach ($files as $file) {
-        $fileurl = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(), $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $file->get_filename());
-        $download_url = $fileurl->get_port() ? $fileurl->get_scheme() . '://' . $fileurl->get_host() . $fileurl->get_path() . ':' . $fileurl->get_port() : $fileurl->get_scheme() . '://' . $fileurl->get_host() . $fileurl->get_path();
-        echo '<a href="' . $download_url . '">' . $file->get_filename() . '</a><br/>';
+        $fileurl = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(), $file->get_filearea(),
+        $file->get_itemid(), $file->get_filepath(), $file->get_filename());
+        $downloadurl = $fileurl->get_port() ? $fileurl->get_scheme() . '://' . $fileurl->get_host() . $fileurl->get_path() . ':' 
+        . $fileurl->get_port() : $fileurl->get_scheme() . '://' . $fileurl->get_host() . $fileurl->get_path();
+        echo '<a href="' . $downloadurl . '">' . $file->get_filename() . '</a><br/>';
     }
-    echo html_writer::div("There are attachments"); //for debugging
+    echo html_writer::div("There are attachments"); // For debugging.
 } else {
     echo html_writer::div("No attachments");
 }
