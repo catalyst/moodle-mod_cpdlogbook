@@ -24,6 +24,8 @@
 
 namespace mod_cpdlogbook\form;
 
+use mod_cpdlogbook\persistent\period;
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/formslib.php');
@@ -34,6 +36,21 @@ require_once($CFG->libdir.'/formslib.php');
  * @package mod_cpdlogbook
  */
 class edit_entry extends \moodleform {
+
+    /**
+     * @var int
+     */
+    private $cpdlogbookid;
+
+    /**
+     * Sets the cpdlogbookid field.
+     * This field is only used in validation.
+     *
+     * @param $id
+     */
+    public function set_cpdlogbookid($id) {
+        $this->cpdlogbookid = $id;
+    }
 
     /**
      * The definition of the form. Used to add elements and rules to the form.
@@ -79,6 +96,25 @@ class edit_entry extends \moodleform {
         $mform->setType('fromdetails', PARAM_BOOL);
 
         $this->add_action_buttons();
+    }
+
+    /**
+     * Form validation.
+     *
+     * @param array $data
+     * @param array $files
+     * @return array
+     * @throws \coding_exception
+     */
+    public function validation($data, $files) {
+        $errors = [];
+
+        // If there is no period, then add an error to the array.
+        if (period::get_period_for_date($data['completiondate'], $this->cpdlogbookid) == 0) {
+            $errors['completiondate'] = get_string('noperiods', 'mod_cpdlogbook');
+        }
+
+        return $errors;
     }
 
 }

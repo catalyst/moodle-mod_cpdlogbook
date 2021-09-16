@@ -62,6 +62,12 @@ $context = context_module::instance($cm->id);
 require_capability('mod/cpdlogbook:edit', $context);
 
 $mform = new edit_entry();
+// Set the cpdlogbookid used for validation.
+if ($create) {
+    $mform->set_cpdlogbookid($cm->instance);
+} else {
+    $mform->set_cpdlogbookid($record->cpdlogbookid);
+}
 
 if (!$fromdetails) {
     $url = new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cm->id]);
