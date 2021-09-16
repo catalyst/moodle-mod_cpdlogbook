@@ -121,7 +121,7 @@ function cpdlogbook_extend_settings_navigation($settings, $cpdlogbooknode) {
  */
 function mod_cpdlogbook_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
     if ($context->contextlevel != CONTEXT_MODULE) {
-        return false; 
+        return false;
     }
 
     if ($filearea != 'attachments') {
