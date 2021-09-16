@@ -29,6 +29,7 @@ use mod_cpdlogbook\persistent\period;
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/formslib.php');
+require_once('lib.php');
 
 /**
  * Class edit_entry
@@ -85,6 +86,8 @@ class edit_entry extends \moodleform {
         $mform->addElement('textarea', 'summary', get_string('summary', 'mod_cpdlogbook'),
             ['rows' => '5', 'cols' => '50']);
         $mform->setType('summary', PARAM_TEXT);
+
+        $mform->addElement('filemanager', 'attachments', get_string('attachments', 'mod_cpdlogbook'), null);
 
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);

@@ -25,6 +25,8 @@
 use mod_cpdlogbook\event\entry_viewed;
 
 require_once('../../config.php');
+require_once($CFG->libdir.'/formslib.php');
+require_once('lib.php');
 
 $id = required_param('id', PARAM_INT);
 
@@ -79,5 +81,19 @@ echo html_writer::alist([
     get_string('modifieddate', 'mod_cpdlogbook').': '
         .userdate($record->modifieddate, get_string('summarydate', 'mod_cpdlogbook')),
 ]);
+
+$fs = get_file_storage();
+if ($files = $fs->get_area_files($context->id, 'mod_cpdlogbook', 'attachments', $record->id)) {
+    foreach ($files as $file) {
+        $fileurl = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(), $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $file->get_filename());
+        $download_url = $fileurl->get_port() ? $fileurl->get_scheme() . '://' . $fileurl->get_host() . $fileurl->get_path() . ':' . $fileurl->get_port() : $fileurl->get_scheme() . '://' . $fileurl->get_host() . $fileurl->get_path();
+        echo '<a href="' . $download_url . '">' . $file->get_filename() . '</a><br/>';
+    }
+    echo html_writer::div("There are attachments"); //for debugging
+} else {
+    echo html_writer::div("No attachments");
+}
+
+
 
 echo $OUTPUT->footer();

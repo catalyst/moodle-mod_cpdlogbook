@@ -28,6 +28,8 @@ use mod_cpdlogbook\event\entry_created;
 use mod_cpdlogbook\persistent\period;
 
 require_once('../../config.php');
+require_once($CFG->libdir.'/formslib.php');
+require_once('lib.php');
 
 // Get the course module id and the entry id from either the parameters or the hidden fields.
 $id = required_param('id', PARAM_INT);
@@ -39,6 +41,10 @@ if ($create) {
     // If an entry is being created.
     $record = new stdClass();
     $record->id = $id;
+    $record->attachments = $draftitemid;
+
+    $draftitemid = file_get_submitted_draft_itemid('attachments');
+    file_prepare_draft_area($draftitemid, $id, 'mod_cpdlogbook', 'attachments', $record->id);
 
     list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
 
@@ -89,6 +95,8 @@ if ($mform->is_cancelled()) {
 
         $entryid = $DB->insert_record('cpdlogbook_entries', $fromform, true);
         $newentry = $DB->get_record('cpdlogbook_entries', ['id' => $entryid]);
+
+        file_save_draft_area_files($fromform->attachments, $context->id, 'mod_cpdlogbook', 'attachments', $entryid);
 
         // Trigger an entry_created event after the record has been inserted into the database.
         entry_created::create_from_entry($newentry, $context)->trigger();

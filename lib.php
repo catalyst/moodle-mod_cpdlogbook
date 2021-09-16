@@ -103,3 +103,26 @@ function cpdlogbook_extend_settings_navigation($settings, $cpdlogbooknode) {
         new moodle_url('/mod/cpdlogbook/periods.php', ['id' => $PAGE->cm->id])
     );
 }
+
+function mod_cpdlogbook_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
+
+    if ($filearea != 'attachments') {
+        return false;
+    }
+
+    $fs = get_file_storage();
+
+    $filename = array_pop($args);
+    if (empty($args)) {
+        $filepath = '/';
+    } else {
+        $filepath = '/'.implode('/', $args).'/';
+    }
+
+    $file = $fs->get_file($context->id, 'mod_cpdlogbook', $filearea, $itemid, $filepath, $filename);
+    if (!$file) {
+        return false;
+    }
+
+    send_stored_file($file, 0, 0, $forcedownload, $options);
+}
