@@ -29,6 +29,7 @@ use mod_cpdlogbook\persistent\period;
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/formslib.php');
+require_once('lib.php');
 
 /**
  * Class edit_entry

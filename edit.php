@@ -28,6 +28,8 @@ use mod_cpdlogbook\event\entry_created;
 use mod_cpdlogbook\persistent\period;
 
 require_once('../../config.php');
+require_once($CFG->libdir.'/formslib.php');
+require_once('lib.php');
 
 // Get the course module id and the entry id from either the parameters or the hidden fields.
 $id = required_param('id', PARAM_INT);
@@ -39,6 +41,10 @@ if ($create) {
     // If an entry is being created.
     $record = new stdClass();
     $record->id = $id;
+    $record->attachments = $draftitemid;
+
+    $draftitemid = file_get_submitted_draft_itemid('attachments');
+    file_prepare_draft_area($draftitemid, $id, 'mod_cpdlogbook', 'attachments', $record->id);
 
     list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
 
