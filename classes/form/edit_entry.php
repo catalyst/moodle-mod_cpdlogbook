@@ -46,7 +46,7 @@ class edit_entry extends \moodleform {
      * Sets the cpdlogbookid field.
      * This field is only used in validation.
      *
-     * @param $id
+     * @param int $id
      */
     public function set_cpdlogbookid($id) {
         $this->cpdlogbookid = $id;
@@ -110,8 +110,15 @@ class edit_entry extends \moodleform {
         $errors = [];
 
         // If there is no period, then add an error to the array.
-        if (period::get_period_for_date($data['completiondate'], $this->cpdlogbookid) == 0) {
+        $periodid = period::get_period_for_date($data['completiondate'], $this->cpdlogbookid);
+        if ($periodid == 0) {
             $errors['completiondate'] = get_string('noperiods', 'mod_cpdlogbook');
+        } else {
+            // If the period does exist but the end date is in the past, add an error to the array.
+            $period = new period($periodid);
+            if ($period->get('enddate') < time()) {
+                $errors['completiondate'] = get_string('pastperiod', 'mod_cpdlogbook');
+            }
         }
 
         return $errors;
