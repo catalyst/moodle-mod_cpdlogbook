@@ -50,3 +50,4 @@ $string['overlap'] = 'This overlaps with an existing period';
 $string['invalidentries'] = 'There are {$a} entries without an appropriate period.';
 $string['nocurrentperiod'] = 'There is no period in for today, so no entries can be added.';
 $string['daterestriction'] = 'This date must be between {$a->start} and {$a->end}.';
+$string['lessthanzero'] = 'This value cannot be less than zero.';

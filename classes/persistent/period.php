@@ -59,6 +59,11 @@ class period extends \core\persistent {
                 'type' => PARAM_INT,
                 'null' => NULL_NOT_ALLOWED,
                 'default' => 0,
+            ],
+            'points' => [
+                'type' => PARAM_INT,
+                'null' => NULL_NOT_ALLOWED,
+                'default' => 0,
             ]
         ];
     }
@@ -94,6 +99,20 @@ class period extends \core\persistent {
             return true;
         } else {
             return new \lang_string('startendinvalid', 'mod_cpdlogbook');
+        }
+    }
+
+    /**
+     * Validate the points.
+     *
+     * @param int $value
+     * @return bool|\lang_string
+     */
+    protected function validate_points($value) {
+        if ($value < 0) {
+            return new \lang_string('lessthanzero', 'mod_cpdlogbook');
+        } else {
+            return true;
         }
     }
 

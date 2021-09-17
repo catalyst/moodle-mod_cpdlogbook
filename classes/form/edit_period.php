@@ -66,6 +66,10 @@ class edit_period extends persistent {
         $mform->addElement('date_selector', 'enddate', get_string('enddate', 'mod_cpdlogbook'));
         $mform->addRule('enddate', null, 'required', null, 'client');
 
+        $mform->addElement('float', 'points', get_string('points', 'mod_cpdlogbook'));
+        $mform->setType('points', PARAM_INT);
+        $mform->addRule('points', null, 'required', null, 'client');
+
         $mform->addElement('hidden', 'id');
 
         $mform->addElement('hidden', 'cpdlogbookid');
