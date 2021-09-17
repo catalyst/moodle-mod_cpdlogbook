@@ -61,6 +61,7 @@ class periods_table extends table_sql {
         $columns = [
             'startdate',
             'enddate',
+            'points',
             'actions',
         ];
 
@@ -73,6 +74,7 @@ class periods_table extends table_sql {
         $headers = [
             get_string('startdate', 'mod_cpdlogbook'),
             get_string('enddate', 'mod_cpdlogbook'),
+            get_string('points', 'mod_cpdlogbook'),
             get_string('actions')
         ];
 

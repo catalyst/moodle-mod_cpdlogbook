@@ -161,5 +161,20 @@ function xmldb_cpdlogbook_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2021080308, 'cpdlogbook');
     }
 
+    if ($oldversion < 2021080309) {
+
+        // Define field points to be added to cpdlogbook_periods.
+        $table = new xmldb_table('cpdlogbook_periods');
+        $field = new xmldb_field('points', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'timemodified');
+
+        // Conditionally launch add field points.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cpdlogbook savepoint reached.
+        upgrade_mod_savepoint(true, 2021080309, 'cpdlogbook');
+    }
+
     return true;
 }

@@ -51,6 +51,9 @@ if ($create) {
     } else {
         list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
         $period->set('cpdlogbookid', $cm->instance);
+
+        $instance = $DB->get_record('cpdlogbook', ['id' => $cm->instance]);
+        $period->set('points', $instance->totalpoints);
     }
 } else {
     // Get the existing entry.
