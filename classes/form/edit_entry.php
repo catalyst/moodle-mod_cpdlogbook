@@ -109,15 +109,25 @@ class edit_entry extends \moodleform {
     public function validation($data, $files) {
         $errors = [];
 
-        // If there is no period, then add an error to the array.
-        $periodid = period::get_period_for_date($data['completiondate'], $this->cpdlogbookid);
-        if ($periodid == 0) {
-            $errors['completiondate'] = get_string('noperiods', 'mod_cpdlogbook');
+        // If there is no period for the current time, then add an error to the array.
+        $currentperiod = period::get_period_for_date(time(), $this->cpdlogbookid);
+        if ($currentperiod == 0) {
+            $errors['completiondate'] = get_string('nocurrentperiod', 'mod_cpdlogbook');
         } else {
-            // If the period does exist but the end date is in the past, add an error to the array.
-            $period = new period($periodid);
-            if ($period->get('enddate') < time()) {
-                $errors['completiondate'] = get_string('pastperiod', 'mod_cpdlogbook');
+            $entryperiod = period::get_period_for_date($data['completiondate'], $this->cpdlogbookid);
+            // If the entry doesn't fall into the current period.
+            if ($entryperiod != $currentperiod) {
+                $period = new period($currentperiod);
+                $format = get_string('summarydate', 'mod_cpdlogbook');
+                // Add an error giving the valid start and end times.
+                $errors['completiondate'] = get_string(
+                    'daterestriction',
+                    'mod_cpdlogbook',
+                    [
+                        'start' => userdate($period->get('startdate'), $format),
+                        'end' => userdate($period->get('enddate'), $format),
+                    ]
+                );
             }
         }
 

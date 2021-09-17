@@ -48,5 +48,5 @@ $string['enddate'] = 'End date';
 $string['startendinvalid'] = 'Start date after end date';
 $string['overlap'] = 'This overlaps with an existing period';
 $string['invalidentries'] = 'There are {$a} entries without an appropriate period.';
-$string['noperiods'] = 'This date does not fall into any periods.';
-$string['pastperiod'] = 'This date falls into a past period.';
+$string['nocurrentperiod'] = 'There is no period in for today, so no entries can be added.';
+$string['daterestriction'] = 'This date must be between {$a->start} and {$a->end}.';
