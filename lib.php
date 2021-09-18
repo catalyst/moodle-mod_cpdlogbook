@@ -125,9 +125,12 @@ function mod_cpdlogbook_pluginfile($course, $cm, $context, $filearea, $args, $fo
         return false;
     }
 
+    $itemid = array_shift($args);
+
     $fs = get_file_storage();
 
     $filename = array_pop($args);
+    $filepath = '';
     if (empty($args)) {
         $filepath = '/';
     } else {
