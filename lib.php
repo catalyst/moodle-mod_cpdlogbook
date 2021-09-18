@@ -127,13 +127,12 @@ function mod_cpdlogbook_pluginfile($course, $cm, $context, $filearea, $args, $fo
     if ($filearea != 'attachments') {
         return false;
     }
-
+    
     require_login($course, true, $cm);
 
     if (!has_capability('mod/cpdlogbook:view', $context)) {
         return false;
     }
-
     $itemid = array_shift($args);
 
     $fs = get_file_storage();
