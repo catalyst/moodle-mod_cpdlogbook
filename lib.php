@@ -107,7 +107,7 @@ function cpdlogbook_extend_settings_navigation($settings, $cpdlogbooknode) {
 /**
  * This function is a required callback function, currently missing some security checks I think
  * From the File_API documentation (https://docs.moodle.org/dev/File_API):
- * 
+ *
  * Serve the files from the MYPLUGIN file areas
  *
  * @param stdClass $course the course object

@@ -41,10 +41,6 @@ if ($create) {
     // If an entry is being created.
     $record = new stdClass();
     $record->id = $id;
-    $record->attachments = $draftitemid;
-
-    $draftitemid = file_get_submitted_draft_itemid('attachments');
-    file_prepare_draft_area($draftitemid, $id, 'mod_cpdlogbook', 'attachments', $record->id);
 
     list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
 
@@ -64,6 +60,10 @@ if ($create) {
 }
 
 $context = context_module::instance($cm->id);
+
+$draftitemid = file_get_submitted_draft_itemid('attachments');
+file_prepare_draft_area($draftitemid, $context->id, 'mod_cpdlogbook', 'attachments', $record->id);
+$record->attachments = $draftitemid;
 
 require_capability('mod/cpdlogbook:edit', $context);
 
@@ -103,8 +103,11 @@ if ($mform->is_cancelled()) {
     } else {
         // Update the record according to the submitted form data.
         $fromform->modifieddate = time();
+
         $DB->update_record('cpdlogbook_entries', $fromform);
         $entry = $DB->get_record('cpdlogbook_entries', ['id' => $fromform->id]);
+
+        file_save_draft_area_files($fromform->attachments, $context->id, 'mod_cpdlogbook', 'attachments', $fromform->id);
 
         // Trigger an entry_updated event.
         entry_updated::create_from_entry($entry, $context)->trigger();

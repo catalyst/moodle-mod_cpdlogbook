@@ -87,7 +87,7 @@ if ($files = $fs->get_area_files($context->id, 'mod_cpdlogbook', 'attachments', 
     foreach ($files as $file) {
         $fileurl = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(), $file->get_filearea(),
         $file->get_itemid(), $file->get_filepath(), $file->get_filename());
-        $downloadurl = $fileurl->get_port() ? $fileurl->get_scheme() . '://' . $fileurl->get_host() . $fileurl->get_path() . ':' 
+        $downloadurl = $fileurl->get_port() ? $fileurl->get_scheme() . '://' . $fileurl->get_host() . $fileurl->get_path() . ':'
         . $fileurl->get_port() : $fileurl->get_scheme() . '://' . $fileurl->get_host() . $fileurl->get_path();
         echo '<a href="' . $downloadurl . '">' . $file->get_filename() . '</a><br/>';
     }
