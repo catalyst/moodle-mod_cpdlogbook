@@ -41,10 +41,6 @@ if ($create) {
     // If an entry is being created.
     $record = new stdClass();
     $record->id = $id;
-    $record->attachments = $draftitemid;
-
-    $draftitemid = file_get_submitted_draft_itemid('attachments');
-    file_prepare_draft_area($draftitemid, $id, 'mod_cpdlogbook', 'attachments', $record->id);
 
     list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
 
