@@ -85,7 +85,8 @@ echo html_writer::alist([
 $fs = get_file_storage();
 if ($files = $fs->get_area_files($context->id, 'mod_cpdlogbook', 'attachments', $record->id)) {
     foreach ($files as $file) {
-        $url = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(), $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $file->get_filename(), true);
+        $url = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(),
+        $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $file->get_filename(), true);
         echo '<a href="' . $url . '">' . $file->get_filename() . '</a><br/>';
     }
 } else {
