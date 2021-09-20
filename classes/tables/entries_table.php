@@ -30,6 +30,7 @@ require_once($CFG->libdir.'/tablelib.php');
 
 use action_link;
 use action_menu;
+use mod_cpdlogbook\persistent\period;
 use moodle_url;
 use renderer_base;
 use table_sql;
@@ -45,6 +46,11 @@ class entries_table extends table_sql {
      * @var renderer_base
      */
     public $output;
+
+    /**
+     * @var int
+     */
+    public $periodid;
 
     /**
      * entries_table constructor.
@@ -67,6 +73,7 @@ class entries_table extends table_sql {
             'provider',
             'location',
             'completiondate',
+            'periodid',
             'actions',
         ];
 
@@ -79,6 +86,7 @@ class entries_table extends table_sql {
                 'provider',
                 'location',
                 'completiondate',
+                'periodid',
             ];
         }
         $this->sort_default_column = 'completiondate';
@@ -98,6 +106,7 @@ class entries_table extends table_sql {
             get_string('provider', 'mod_cpdlogbook'),
             get_string('location', 'mod_cpdlogbook'),
             get_string('completiondate', 'mod_cpdlogbook'),
+            get_string('period', 'mod_cpdlogbook'),
             get_string('actions'),
         ];
 
@@ -110,6 +119,7 @@ class entries_table extends table_sql {
                 get_string('provider', 'mod_cpdlogbook'),
                 get_string('location', 'mod_cpdlogbook'),
                 get_string('completiondate', 'mod_cpdlogbook'),
+                get_string('period', 'mod_cpdlogbook'),
             ];
         }
 
@@ -117,6 +127,7 @@ class entries_table extends table_sql {
         $this->show_download_buttons_at([TABLE_P_BOTTOM]);
 
         $this->output = $output;
+        $this->periodid = period::get_period_for_date(time(), $cm->instance);
 
         $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ]);
 
@@ -227,6 +238,29 @@ class entries_table extends table_sql {
             return \html_writer::tag('span', $record->points, ['class' => 'badge badge-success']);
         } else {
             return $record->points;
+        }
+    }
+
+    /**
+     * Format the periodid.
+     *
+     * @param \stdClass $record
+     * @return string
+     * @throws \coding_exception
+     */
+    public function col_periodid($record) {
+        // Don't format the periodid if the table is being downloaded.
+        if ($this->download != '') {
+            return $record->periodid;
+        } else {
+            // Bootstrap classes are used to colour the text.
+            if ($record->periodid == 0) {
+                return \html_writer::span(get_string('noperiod', 'mod_cpdlogbook'), 'text-danger');
+            } else if ($record->periodid == $this->periodid) {
+                return \html_writer::span(get_string('currentperiod', 'mod_cpdlogbook'), 'text-success');
+            } else {
+                return $record->periodid;
+            }
         }
     }
 
