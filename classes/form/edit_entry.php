@@ -24,6 +24,8 @@
 
 namespace mod_cpdlogbook\form;
 
+use mod_cpdlogbook\persistent\period;
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/formslib.php');
@@ -34,6 +36,21 @@ require_once($CFG->libdir.'/formslib.php');
  * @package mod_cpdlogbook
  */
 class edit_entry extends \moodleform {
+
+    /**
+     * @var int
+     */
+    private $cpdlogbookid;
+
+    /**
+     * Sets the cpdlogbookid field.
+     * This field is only used in validation.
+     *
+     * @param int $id
+     */
+    public function set_cpdlogbookid($id) {
+        $this->cpdlogbookid = $id;
+    }
 
     /**
      * The definition of the form. Used to add elements and rules to the form.
@@ -79,6 +96,42 @@ class edit_entry extends \moodleform {
         $mform->setType('fromdetails', PARAM_BOOL);
 
         $this->add_action_buttons();
+    }
+
+    /**
+     * Form validation.
+     *
+     * @param array $data
+     * @param array $files
+     * @return array
+     * @throws \coding_exception
+     */
+    public function validation($data, $files) {
+        $errors = [];
+
+        // If there is no period for the current time, then add an error to the array.
+        $currentperiod = period::get_period_for_date(time(), $this->cpdlogbookid);
+        if ($currentperiod == 0) {
+            $errors['completiondate'] = get_string('nocurrentperiod', 'mod_cpdlogbook');
+        } else {
+            $entryperiod = period::get_period_for_date($data['completiondate'], $this->cpdlogbookid);
+            // If the entry doesn't fall into the current period.
+            if ($entryperiod != $currentperiod) {
+                $period = new period($currentperiod);
+                $format = get_string('summarydate', 'mod_cpdlogbook');
+                // Add an error giving the valid start and end times.
+                $errors['completiondate'] = get_string(
+                    'daterestriction',
+                    'mod_cpdlogbook',
+                    [
+                        'start' => userdate($period->get('startdate'), $format),
+                        'end' => userdate($period->get('enddate'), $format),
+                    ]
+                );
+            }
+        }
+
+        return $errors;
     }
 
 }
