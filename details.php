@@ -25,8 +25,6 @@
 use mod_cpdlogbook\event\entry_viewed;
 
 require_once('../../config.php');
-require_once($CFG->libdir.'/formslib.php');
-require_once('lib.php');
 
 $id = required_param('id', PARAM_INT);
 
@@ -85,13 +83,9 @@ echo html_writer::alist([
 $fs = get_file_storage();
 if ($files = $fs->get_area_files($context->id, 'mod_cpdlogbook', 'attachments', $record->id)) {
     foreach ($files as $file) {
-        $fileurl = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(), $file->get_filearea(),
-        $file->get_itemid(), $file->get_filepath(), $file->get_filename());
-        $downloadurl = $fileurl->get_port() ? $fileurl->get_scheme() . '://' . $fileurl->get_host() . $fileurl->get_path() . ':'
-        . $fileurl->get_port() : $fileurl->get_scheme() . '://' . $fileurl->get_host() . $fileurl->get_path();
-        echo '<a href="' . $downloadurl . '">' . $file->get_filename() . '</a><br/>';
+        $url = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(), $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $file->get_filename(), true);
+        echo '<a href="' . $url . '">' . $file->get_filename() . '</a><br/>';
     }
-    echo html_writer::div("There are attachments"); // For debugging.
 } else {
     echo html_writer::div("No attachments");
 }

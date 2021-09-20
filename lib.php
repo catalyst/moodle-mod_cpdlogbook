@@ -105,7 +105,7 @@ function cpdlogbook_extend_settings_navigation($settings, $cpdlogbooknode) {
 }
 
 /**
- * This function is a required callback function, currently missing some security checks I think
+ * This function is a required callback function
  * From the File_API documentation (https://docs.moodle.org/dev/File_API):
  *
  * Serve the files from the MYPLUGIN file areas
@@ -115,13 +115,22 @@ function cpdlogbook_extend_settings_navigation($settings, $cpdlogbooknode) {
  * @param stdClass $context the context
  * @param string $filearea the name of the file area
  * @param array $args extra arguments (itemid, path)
- * @param bool $forcedownload whether or not force download
+ * @param bool $forcedownload whether or not to force download
  * @param array $options additional options affecting the file serving
  * @return bool false if the file not found, just send the file otherwise and do not return anything
  */
 function mod_cpdlogbook_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
+    if ($context->contextlevel != CONTEXT_MODULE) {
+        return false; 
+    }
 
     if ($filearea != 'attachments') {
+        return false;
+    }
+
+    require_login($course, true, $cm);
+
+    if (!has_capability('mod/cpdlogbook:view', $context)) {
         return false;
     }
 
@@ -142,5 +151,5 @@ function mod_cpdlogbook_pluginfile($course, $cm, $context, $filearea, $args, $fo
         return false;
     }
 
-    send_stored_file($file, 0, 0, $forcedownload, $options);
+    send_stored_file($file, 0, 0, true, $options);
 }
