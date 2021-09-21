@@ -37,6 +37,7 @@ $string['provider'] = 'Provider';
 $string['location'] = 'Location';
 $string['summary'] = 'Summary';
 $string['period'] = 'Period';
+$string['reflection'] = 'Reflection';
 $string['summarydate'] = '%a, %d %b %Y';
 $string['exportdate'] = '%Y-%m-%d';
 $string['createtitle'] = 'Create a new entry';

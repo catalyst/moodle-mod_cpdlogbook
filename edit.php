@@ -86,6 +86,10 @@ if ($mform->is_cancelled()) {
 } else if ($fromform = $mform->get_data()) {
     $fromform->periodid = period::get_period_for_date($fromform->completiondate, $cm->instance);
 
+    // Extracts usable data from raw editor form.
+    $fromform->reflection = $fromform->reflectionraw['text'];
+    $fromform->reflectionformat = $fromform->reflectionraw['format'];
+
     if ($create) {
         unset($fromform->id);
 
@@ -134,6 +138,7 @@ echo $OUTPUT->heading($title);
 
 $record->create = $create;
 $record->fromdetails = $fromdetails;
+$record->reflectionraw = ['text' => $record->reflection, 'format' => $record->reflectionformat];
 $mform->set_data($record);
 $mform->display();
 

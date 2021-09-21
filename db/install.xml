@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/cpdlogbook/db" VERSION="20210917" COMMENT="XMLDB file for Moodle mod/cpdlogbook"
+<XMLDB PATH="mod/cpdlogbook/db" VERSION="20210921" COMMENT="XMLDB file for Moodle mod/cpdlogbook"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -33,6 +33,8 @@
         <FIELD NAME="provider" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="location" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="summary" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="reflection" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="reflectionformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
