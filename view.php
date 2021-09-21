@@ -86,7 +86,10 @@ if (!$download) {
     $progressbar = new progressbar($percent);
     echo $OUTPUT->render($progressbar);
 
-    echo format_text($record->intro, $record->introformat);
+    // Formats URLs inside intro to properly display images.
+    $formattedintro = file_rewrite_pluginfile_urls($record->intro, 'pluginfile.php', context_module::instance($id)->id,
+        'mod_cpdlogbook', 'intro', null);
+    echo format_text($formattedintro, $record->introformat);
 
     echo $OUTPUT->single_button(
             new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => true]),
