@@ -23,6 +23,7 @@
  */
 
 use mod_cpdlogbook\output\progressbar;
+use mod_cpdlogbook\persistent\period;
 use mod_cpdlogbook\tables\entries_table;
 use mod_cpdlogbook\event\course_module_viewed;
 
@@ -42,20 +43,10 @@ $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ], '*', MUST_EXI
 $eventdata = ['context' => context_module::instance($id), 'objectid' => $record->id];
 course_module_viewed::create($eventdata)->trigger();
 
-// If the table is being downloaded, then the only show the required columns.
-$table = new entries_table($cm, $USER->id, $OUTPUT, $download, 'cpdlogbook_id');
-
-$filename = $record->name . ' - ' . fullname($USER) . ' - '
-    . userdate(time(), get_string('strftimedate', 'langconfig'));
-$table->is_downloading($download, $filename, 'cpdlogbook');
-
 $PAGE->set_url(new moodle_url('/mod/cpdlogbook/view.php', [ 'id' => $id ]));
-
-$table->define_baseurl($PAGE->url);
 
 if (!$download) {
     // If the table is not being downloaded, render the normal page.
-
     $PAGE->set_title($record->name);
     $PAGE->set_heading($record->name);
 
@@ -95,10 +86,36 @@ if (!$download) {
             new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => true]),
             get_string('createtitle', 'mod_cpdlogbook'), 'get', ['primary' => true]);
 
+    $format = get_string('summarydate', 'mod_cpdlogbook');
+    $periods = period::get_records(['cpdlogbookid' => $cm->instance], 'startdate', 'DESC');
+    // Create a table for each period.
+    foreach ($periods as $period) {
+        echo html_writer::tag('h2', userdate($period->get('startdate'), $format).' - '.userdate($period->get('enddate'), $format));
+        $table = new entries_table($cm, $USER->id, $OUTPUT, $download, $period->get('id'), 'cpdlogbook_id_'.$period->get('id'));
+        $table->is_downloading($download);
+
+        $table->define_baseurl($PAGE->url);
+        $table->out(40, true);
+
+        echo html_writer::div('', 'mt-5');
+    }
+
+    // Create an additional 'unassigned' table.
+    echo html_writer::tag('h2', get_string('noperiod', 'mod_cpdlogbook'));
+    $table = new entries_table($cm, $USER->id, $OUTPUT, $download, 0, 'cpdlogbook_id_0');
+    $table->is_downloading($download);
+    $table->define_baseurl($PAGE->url);
     $table->out(40, true);
 
     echo $OUTPUT->footer();
 } else {
-    // If the table is being downloaded, only display the table.
+    // If the table is being downloaded, then the only show the required columns.
+    $table = new entries_table($cm, $USER->id, $OUTPUT, $download, -1, 'cpdlogbook_id');
+
+    $filename = $record->name . ' - ' . fullname($USER) . ' - '
+            . userdate(time(), get_string('strftimedate', 'langconfig'));
+    $table->is_downloading($download, $filename, 'cpdlogbook');
+    $table->define_baseurl($PAGE->url);
+
     $table->out(40, true);
 }
