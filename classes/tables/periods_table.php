@@ -86,6 +86,8 @@ class periods_table extends table_sql {
         $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ]);
 
         $this->set_sql('*', '{cpdlogbook_periods}', 'cpdlogbookid=?', [$record->id]);
+
+        $this->no_sorting('actions');
     }
 
     /**

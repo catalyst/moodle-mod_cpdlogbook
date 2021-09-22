@@ -137,6 +137,8 @@ class entries_table extends table_sql {
             $this->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbookid=? AND userid=? AND periodid=?',
                 [$record->id, $userid, $periodid]);
         }
+
+        $this->no_sorting('actions');
     }
 
     /**
