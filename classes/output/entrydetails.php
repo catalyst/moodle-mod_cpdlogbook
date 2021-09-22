@@ -70,6 +70,7 @@ class entrydetails implements renderable, templatable {
         $data = $this->entry;
         $data->completiondate = userdate($data->completiondate, get_string('summarydate', 'mod_cpdlogbook'));
         $data->duration = format_time($data->duration);
+        $data->summary = format_text($data->summary);
         $data->files = [];
         foreach ($this->files as $file) {
             $url = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(),

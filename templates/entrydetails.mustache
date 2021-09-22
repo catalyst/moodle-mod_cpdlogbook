@@ -35,7 +35,7 @@
         "points": 3,
         "duration": "1 hour",
         "location": "Brisbane",
-        "summary": "I read a lot of things",
+        "summary": "<div>I read a lot of things.<br><a href=\"https://place.com\">https://place.com</a></div>",
         "provider": "UNE",
     }
 }}
@@ -56,7 +56,7 @@
     <div class="mb-5">{{ location }}</div>
 
     <h2>Summary</h2>
-    <div class="mb-5">{{ summary }}</div>
+    <div class="mb-5">{{& summary }}</div>
 
     <h2>Provider</h2>
     <div class="mb-5">{{ provider }}</div>
