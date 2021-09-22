@@ -68,7 +68,7 @@ if ($type == 'period') {
     $conditions['cpdlogbookid'] = $cpdlogbook->id;
 
     // From here, we can be sure that the entry exists, and is associated with the current user and the cpdlogbook.
-    $DB->delete_records('cpdlogbook_entries', ['id' => $id, 'userid' => $USER->id, 'cpdlogbook' => $cpdlogbook->id]);
+    $DB->delete_records('cpdlogbook_entries', ['id' => $id, 'userid' => $USER->id, 'cpdlogbookid' => $cpdlogbook->id]);
     \mod_cpdlogbook\event\entry_deleted::create_from_entry($record, $context)->trigger();
 
     redirect(new moodle_url('/mod/cpdlogbook/view.php', ['id' => $cm->id]));
