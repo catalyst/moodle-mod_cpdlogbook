@@ -86,6 +86,8 @@ class edit_entry extends \moodleform {
             ['rows' => '5', 'cols' => '50']);
         $mform->setType('summary', PARAM_TEXT);
 
+        $mform->addElement('filemanager', 'attachments', get_string('attachments', 'mod_cpdlogbook'), null);
+
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
 

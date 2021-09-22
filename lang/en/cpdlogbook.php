@@ -51,3 +51,4 @@ $string['invalidentries'] = 'There are {$a} entries without an appropriate perio
 $string['nocurrentperiod'] = 'There is no period in for today, so no entries can be added.';
 $string['daterestriction'] = 'This date must be between {$a->start} and {$a->end}.';
 $string['lessthanzero'] = 'This value cannot be less than zero.';
+$string['attachments'] = 'Attachments';

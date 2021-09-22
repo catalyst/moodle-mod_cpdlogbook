@@ -103,3 +103,52 @@ function cpdlogbook_extend_settings_navigation($settings, $cpdlogbooknode) {
         new moodle_url('/mod/cpdlogbook/periods.php', ['id' => $PAGE->cm->id])
     );
 }
+
+/**
+ * This function is a required callback function
+ * From the File_API documentation (https://docs.moodle.org/dev/File_API):
+ *
+ * Serve the files from the MYPLUGIN file areas
+ *
+ * @param stdClass $course the course object
+ * @param stdClass $cm the course module object
+ * @param stdClass $context the context
+ * @param string $filearea the name of the file area
+ * @param array $args extra arguments (itemid, path)
+ * @param bool $forcedownload whether or not to force download
+ * @param array $options additional options affecting the file serving
+ * @return bool false if the file not found, just send the file otherwise and do not return anything
+ */
+function mod_cpdlogbook_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
+    if ($context->contextlevel != CONTEXT_MODULE) {
+        return false;
+    }
+
+    if ($filearea != 'attachments') {
+        return false;
+    }
+    
+    require_login($course, true, $cm);
+
+    if (!has_capability('mod/cpdlogbook:view', $context)) {
+        return false;
+    }
+    $itemid = array_shift($args);
+
+    $fs = get_file_storage();
+
+    $filename = array_pop($args);
+    $filepath = '';
+    if (empty($args)) {
+        $filepath = '/';
+    } else {
+        $filepath = '/'.implode('/', $args).'/';
+    }
+
+    $file = $fs->get_file($context->id, 'mod_cpdlogbook', $filearea, $itemid, $filepath, $filename);
+    if (!$file) {
+        return false;
+    }
+
+    send_stored_file($file, 0, 0, true, $options);
+}
