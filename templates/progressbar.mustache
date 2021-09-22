@@ -30,11 +30,14 @@
 
     Example context (json):
     {
-        "percent": 25.0
+        "percent": 25.0,
+        "targetdiff": 9.0
     }
 }}
 <div class="progress rounded-lg" style="margin-bottom: 10px;height: 32px">
     <div class="progress-bar bg-success progress-bar-striped" style="width: {{ percent }}%;font-size: 2em">
         {{ percent }}%
+    </div>
+    <div class="progress-bar bg-warning progress-bar-striped" style="width: {{ targetdiff }}%;font-size: 2em">
     </div>
 </div>

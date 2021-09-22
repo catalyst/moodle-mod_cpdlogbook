@@ -52,30 +52,42 @@ if (!$download) {
 
     echo $OUTPUT->header();
 
-    $entries = $DB->get_records('cpdlogbook_entries', ['cpdlogbookid' => $cm->instance]);
-    $sum = 0;
-    foreach ($entries as $e) {
-        $sum += $e->points;
+    $periodid = period::get_period_for_date(time(), $cm->instance);
+
+    if ($periodid != 0) {
+        $period = new period($periodid);
+
+        $entries = $DB->get_records('cpdlogbook_entries', ['cpdlogbookid' => $cm->instance, 'periodid' => $periodid]);
+        $sum = 0;
+        foreach ($entries as $e) {
+            $sum += $e->points;
+        }
+
+        // Output the points as a ratio, ie. 5 / 20.
+        $a = new stdClass();
+        $a->sum = $sum;
+        $a->required = $period->get('points');
+        echo html_writer::tag('p', get_string('pointratio', 'mod_cpdlogbook', $a), ['class' => 'h2']);
+
+        // Output the points as a progress bar towards completion.
+        $percent = 100 * $sum / $period->get('points');
+        // Clamp the percentage to be between 100 and 0.
+        if ($percent > 100) {
+            $percent = 100;
+        } else if ($percent < 0) {
+            // The percent should never be less than 0, but is still clamped just in case.
+            $percent = 0;
+        }
+
+        // The target percentage given the current time.
+        $target = 100 * (time() - $period->get('startdate')) / ($period->get('enddate') - $period->get('startdate'));
+        $a->sum = format_float($target);
+        echo html_writer::tag('p', get_string('targetratio', 'mod_cpdlogbook', $a));
+
+
+        $progressbar = new progressbar($percent, $target);
+        echo $OUTPUT->render($progressbar);
     }
-
-    // Output the points as a ratio, ie. 5 / 20.
-    $a = new stdClass();
-    $a->sum = $sum;
-    $a->required = $record->totalpoints;
-    echo html_writer::tag('p', get_string('pointratio', 'mod_cpdlogbook', $a), ['class' => 'h2']);
-
-    // Output the points as a progress bar towards completion.
-    $percent = 100 * $sum / $record->totalpoints;
-    // Clamp the percentage to be between 100 and 0.
-    if ($percent > 100) {
-        $percent = 100;
-    } else if ($percent < 0) {
-        // The percent should never be less than 0, but is still clamped just in case.
-        $percent = 0;
-    }
-
-    $progressbar = new progressbar($percent);
-    echo $OUTPUT->render($progressbar);
 
     // Formats URLs inside intro to properly display images.
     $formattedintro = file_rewrite_pluginfile_urls($record->intro, 'pluginfile.php', context_module::instance($id)->id,

@@ -54,7 +54,18 @@ $string['confirmdelete'] = 'Are you sure you want to delete entry "{$a}"?';
 $string['createtitle'] = 'Create a new entry';
 $string['edittitle'] = 'Edit this entry';
 
+
 // Errors and invalid data.
+$string['confirmdelete'] = 'Are you sure you want to delete entry "{$a}"?';
+$string['pointratio'] = '{$a->sum} / {$a->required} points';
+$string['targetratio'] = 'Target: {$a->sum} / {$a->required} points';
+$string['periods'] = 'Periods';
+$string['startdate'] = 'Start date';
+$string['enddate'] = 'End date';
+$string['startendinvalid'] = 'Start date after end date';
+$string['overlap'] = 'This overlaps with an existing period';
+$string['invalidentries'] = 'There are {$a} entries without an appropriate period.';
+$string['nocurrentperiod'] = 'There is no period for today, so no entries can be added.';
 $string['daterestriction'] = 'This date must be between {$a->start} and {$a->end}.';
 $string['invalidentries'] = 'There are {$a} entries without an appropriate period.';
 $string['lessthanzero'] = 'This value cannot be less than zero.';
