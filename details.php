@@ -87,7 +87,8 @@ if ($files = $fs->get_area_files($context->id, 'mod_cpdlogbook', 'attachments', 
     foreach ($files as $file) {
         $url = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(),
         $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $file->get_filename(), true);
-        echo '<a href="' . $url . '">' . $file->get_filename() . '</a><br/>';
+        echo html_writer::link($url, $file->get_filename());
+        echo html_writer::tag('br', '');
     }
 } else {
     echo html_writer::div("No attachments");
