@@ -30,6 +30,7 @@ require_once($CFG->libdir.'/tablelib.php');
 
 use action_link;
 use action_menu;
+use mod_cpdlogbook\persistent\period;
 use moodle_url;
 use renderer_base;
 use table_sql;
@@ -51,11 +52,12 @@ class entries_table extends table_sql {
      *
      * @param mixed $cm The course module.
      * @param string $userid The id for the user.
-     * @param string  $output The output renderer to use.
-     * @param renderer_base $download The download format. If not '', then only the columns to be downloaded are displayed.
+     * @param renderer_base  $output The output renderer to use.
+     * @param string $download The download format. If not '', then only the columns to be downloaded are displayed.
+     * @param int $periodid
      * @param string $uniqueid
      */
-    public function __construct($cm, $userid, $output, $download, $uniqueid) {
+    public function __construct($cm, $userid, $output, $download, $periodid, $uniqueid) {
         global $DB;
 
         parent::__construct($uniqueid);
@@ -79,6 +81,8 @@ class entries_table extends table_sql {
                 'provider',
                 'location',
                 'completiondate',
+                'startdate',
+                'enddate',
             ];
         }
         $this->sort_default_column = 'completiondate';
@@ -110,6 +114,8 @@ class entries_table extends table_sql {
                 get_string('provider', 'mod_cpdlogbook'),
                 get_string('location', 'mod_cpdlogbook'),
                 get_string('completiondate', 'mod_cpdlogbook'),
+                get_string('startdate', 'mod_cpdlogbook'),
+                get_string('enddate', 'mod_cpdlogbook'),
             ];
         }
 
@@ -120,7 +126,17 @@ class entries_table extends table_sql {
 
         $record = $DB->get_record('cpdlogbook', [ 'id' => $cm->instance ]);
 
-        $this->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbookid=? AND userid=?', [$record->id, $userid]);
+        if ($download) {
+            $this->set_sql(
+                'E.*, P.startdate, P.enddate',
+                '{cpdlogbook_entries} E LEFT JOIN {cpdlogbook_periods} P ON E.periodid=P.id',
+                'E.cpdlogbookid=? AND userid=?',
+                [$record->id, $userid]
+            );
+        } else {
+            $this->set_sql('*', '{cpdlogbook_entries}', 'cpdlogbookid=? AND userid=? AND periodid=?',
+                [$record->id, $userid, $periodid]);
+        }
     }
 
     /**
@@ -227,6 +243,36 @@ class entries_table extends table_sql {
             return \html_writer::tag('span', $record->points, ['class' => 'badge badge-success']);
         } else {
             return $record->points;
+        }
+    }
+
+    /**
+     * Format the startdate column.
+     *
+     * @param \stdClass $record
+     * @return string
+     * @throws \coding_exception
+     */
+    public function col_startdate($record) {
+        if ($record->startdate == 0) {
+            return '';
+        } else {
+            return userdate($record->startdate, get_string('exportdate', 'mod_cpdlogbook'));
+        }
+    }
+
+    /**
+     * Format the enddate column.
+     *
+     * @param \stdClass $record
+     * @return string
+     * @throws \coding_exception
+     */
+    public function col_enddate($record) {
+        if ($record->enddate == 0) {
+            return '';
+        } else {
+            return userdate($record->enddate, get_string('exportdate', 'mod_cpdlogbook'));
         }
     }
 
