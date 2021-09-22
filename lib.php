@@ -120,6 +120,8 @@ function cpdlogbook_extend_settings_navigation($settings, $cpdlogbooknode) {
  * @return bool false if the file not found, just send the file otherwise and do not return anything
  */
 function mod_cpdlogbook_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
+    global $DB, $USER;
+
     if ($context->contextlevel != CONTEXT_MODULE) {
         return false;
     }
@@ -127,7 +129,6 @@ function mod_cpdlogbook_pluginfile($course, $cm, $context, $filearea, $args, $fo
     if ($filearea != 'attachments') {
         return false;
     }
-    
     require_login($course, true, $cm);
 
     if (!has_capability('mod/cpdlogbook:view', $context)) {
@@ -136,6 +137,12 @@ function mod_cpdlogbook_pluginfile($course, $cm, $context, $filearea, $args, $fo
     $itemid = array_shift($args);
 
     $fs = get_file_storage();
+
+    // Check that the file area is accessible by the user.
+    $entry = $DB->get_record('cpdlogbook_entries', ['id' => $itemid]);
+    if ($entry->userid != $USER->id) {
+        return false;
+    }
 
     $filename = array_pop($args);
     $filepath = '';
