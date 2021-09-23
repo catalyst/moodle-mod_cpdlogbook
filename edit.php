@@ -67,7 +67,9 @@ $record->attachments = $draftitemid;
 
 require_capability('mod/cpdlogbook:edit', $context);
 
-$mform = new edit_entry();
+$reflectionoptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'context' => $context);
+
+$mform = new edit_entry($reflectionoptions);
 // Set the cpdlogbookid used for validation.
 if ($create) {
     $mform->set_cpdlogbookid($cm->instance);
@@ -87,8 +89,13 @@ if ($mform->is_cancelled()) {
     $fromform->periodid = period::get_period_for_date($fromform->completiondate, $cm->instance);
 
     // Extracts usable data from raw editor form.
-    $fromform->reflection = $fromform->reflectionraw['text'];
-    $fromform->reflectionformat = $fromform->reflectionraw['format'];
+    $fromform->reflection = $fromform->reflection_editor['text'];
+    $fromform->reflectionformat = $fromform->reflection_editor['format'];
+
+    $fromform = file_prepare_standard_editor($fromform, 'reflection', $reflectionoptions, $context, 'mod_cpdlogbook',
+        'reflection', $fromform->id);
+    $fromform = file_postupdate_standard_editor($fromform, 'reflection', $reflectionoptions, $context, 'mod_cpdlogbook',
+        'reflection', $fromform->id);
 
     if ($create) {
         unset($fromform->id);
@@ -129,6 +136,11 @@ if ($create) {
     $title = $record->name;
 }
 
+// Sets reflection section when editing form.
+if (!$create) {
+    $record->reflection_editor = ['text' => $record->reflection, 'format' => $record->reflectionformat];
+}
+
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
 $PAGE->navbar->add($title);
@@ -138,7 +150,6 @@ echo $OUTPUT->heading($title);
 
 $record->create = $create;
 $record->fromdetails = $fromdetails;
-$record->reflectionraw = ['text' => $record->reflection, 'format' => $record->reflectionformat];
 $mform->set_data($record);
 $mform->display();
 
