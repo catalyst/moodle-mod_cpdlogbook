@@ -48,12 +48,12 @@
             </div>
             
             <div class="mb-5">
-                <h2 class="ml-3">Reflection</h2>
+                <h2 class="ml-3">{{#str}} reflection, mod_cpdlogbook {{/str}}</h2>
                 <div class="card p-2">{{& reflection }}</div>
             </div>
 
             <div class="mb-5">
-                <h2 class="ml-3">Attachments</h2>
+                <h2 class="ml-3">{{#str}} attachments, mod_cpdlogbook {{/str}}</h2>
                 <div class="card p-2">
                     {{#files}}
                     <div>
@@ -67,20 +67,20 @@
         <div class="col-md-4">
             <div class="card px-3 pt-3 mb-5">
                 <div>
-                    <h3 class="ml-3">Details</h3>
+                    <h3 class="ml-3">{{#str}} details {{/str}}</h3>
                     <p>
-                        <b>Points:</b> {{ points }} <br>
-                        <b>Duration:</b> {{ duration }} <br>
-                        <b>Completion Date:</b> {{ completiondate }}
+                        <b>{{#str}} points, mod_cpdlogbook {{/str}}:</b> {{ points }} <br>
+                        <b>{{#str}} duration, mod_cpdlogbook {{/str}}:</b> {{ duration }} <br>
+                        <b>{{#str}} completiondate, mod_cpdlogbook {{/str}}:</b> {{ completiondate }}
                     </p>
                 </div>
             </div>
 
             <div class="card px-3 pt-3">
-                <h3 class="ml-3">Provider Info</h3>
+                <h3 class="ml-3">{{#str}} provider, mod_cpdlogbook {{/str}} {{#str}} info {{/str}}</h3>
                 <p>
-                    <b>Provider:</b> {{ provider }} <br>
-                    <b>Location:</b> {{ location }}
+                    <b>{{#str}} provider, mod_cpdlogbook {{/str}}:</b> {{ provider }} <br>
+                    <b>{{#str}} location, mod_cpdlogbook {{/str}}:</b> {{ location }}
                 </p>
             </div>
         </div>
