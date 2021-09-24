@@ -47,4 +47,16 @@ class renderer extends plugin_renderer_base {
         return parent::render_from_template('mod_cpdlogbook/progressbar', $data);
     }
 
+    /**
+     * Render the entry details.
+     *
+     * @param entrydetails $entrydetails
+     * @return bool|string
+     * @throws \moodle_exception
+     */
+    public function render_entrydetails(entrydetails  $entrydetails) {
+        $data = $entrydetails->export_for_template($this);
+        return parent::render_from_template('mod_cpdlogbook/entrydetails', $data);
+    }
+
 }

@@ -1,0 +1,72 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template mod_cpdlogbook/entrydetails
+
+    Template purpose and description.
+
+    Classes required for JS:
+    * none
+
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * none
+
+    Example context (json):
+    {
+        "name": "Reading",
+        "completiondate": "Fri, 3 Dec 2021",
+        "points": 3,
+        "duration": "1 hour",
+        "location": "Brisbane",
+        "summary": "<div>I read a lot of things.<br><a href=\"https://place.com\">https://place.com</a></div>",
+        "provider": "UNE",
+    }
+}}
+<div>
+    <h2>Name</h2>
+    <div class="mb-5">{{ name }}</div>
+
+    <h2>Completion Date</h2>
+    <div class="mb-5">{{ completiondate }}</div>
+
+    <h2>Points</h2>
+    <div class="mb-5">{{ points }}</div>
+
+    <h2>Duration</h2>
+    <div class="mb-5">{{ duration }}</div>
+
+    <h2>Location</h2>
+    <div class="mb-5">{{ location }}</div>
+
+    <h2>Summary</h2>
+    <div class="mb-5">{{& summary }}</div>
+
+    <h2>Provider</h2>
+    <div class="mb-5">{{ provider }}</div>
+
+    <h2>Attachments</h2>
+    <div class="mb-5">
+    {{#files}}
+        <div>
+            <a class="link-primary" href="{{ url }}">{{ filename }}</a>
+        </div>
+    {{/files}}
+    </div>
+</div>

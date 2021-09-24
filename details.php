@@ -23,6 +23,7 @@
  */
 
 use mod_cpdlogbook\event\entry_viewed;
+use mod_cpdlogbook\output\entrydetails;
 
 require_once('../../config.php');
 require_once($CFG->libdir.'/formslib.php');
@@ -61,39 +62,15 @@ $PAGE->navbar->add($record->name);
 
 echo $OUTPUT->header();
 
+$fs = get_file_storage();
+$files = $fs->get_area_files($context->id, 'mod_cpdlogbook', 'attachments', $record->id);
+$entrydetails = new entrydetails($record, $files);
+echo $OUTPUT->render($entrydetails);
+
 if (has_capability('mod/cpdlogbook:edit', $context)) {
     echo $OUTPUT->single_button(
             new moodle_url('/mod/cpdlogbook/edit.php', ['id' => $id, 'create' => false, 'fromdetails' => true]),
             get_string('edittitle', 'mod_cpdlogbook'), 'get', ['primary' => true]);
 }
-
-echo html_writer::alist([
-    get_string('name', 'mod_cpdlogbook').': '.$record->name,
-    get_string('completiondate', 'mod_cpdlogbook').': '
-        .userdate($record->completiondate, get_string('summarydate', 'mod_cpdlogbook')),
-    get_string('points', 'mod_cpdlogbook').': '.$record->points,
-    get_string('duration', 'mod_cpdlogbook').': '.format_time($record->duration),
-    get_string('summary', 'mod_cpdlogbook').': '.$record->summary,
-    get_string('provider', 'mod_cpdlogbook').': '.$record->provider,
-    get_string('location', 'mod_cpdlogbook').': '.$record->location,
-    get_string('creationdate', 'mod_cpdlogbook').': '
-        .userdate($record->creationdate, get_string('summarydate', 'mod_cpdlogbook')),
-    get_string('modifieddate', 'mod_cpdlogbook').': '
-        .userdate($record->modifieddate, get_string('summarydate', 'mod_cpdlogbook')),
-]);
-
-$fs = get_file_storage();
-if ($files = $fs->get_area_files($context->id, 'mod_cpdlogbook', 'attachments', $record->id)) {
-    foreach ($files as $file) {
-        $url = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(),
-        $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $file->get_filename(), true);
-        echo html_writer::link($url, $file->get_filename());
-        echo html_writer::tag('br', '');
-    }
-} else {
-    echo html_writer::div("No attachments");
-}
-
-
 
 echo $OUTPUT->footer();
