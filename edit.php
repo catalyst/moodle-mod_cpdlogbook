@@ -66,8 +66,7 @@ $context = context_module::instance($cm->id);
 $reflectionoptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'context' => $context);
 $record = file_prepare_standard_editor($record, 'reflection', $reflectionoptions, $context, 'mod_cpdlogbook',
         'reflection', $create ? null : $record->id);
-
-$reflectiondraft = file_get_submitted_draft_itemid('attachments');
+$reflectiondraft = file_get_submitted_draft_itemid('reflection');
 file_prepare_draft_area($reflectiondraft, $context->id, 'mod_cpdlogbook', 'reflection', $record->id);
 
 
@@ -102,14 +101,18 @@ if ($mform->is_cancelled()) {
         $fromform->cpdlogbookid = $cm->instance;
         $fromform->userid = $USER->id;
         $fromform->creationdate = time();
-        $fromform = file_postupdate_standard_editor($fromform, 'reflection', $reflectionoptions, $context,
-                'mod_cpdlogbook', 'reflection', null);
-
 
         $entryid = $DB->insert_record('cpdlogbook_entries', $fromform, true);
+        $fromform->id = $entryid;
+
+        $fromform = file_postupdate_standard_editor($fromform, 'reflection', $reflectionoptions, $context,
+                'mod_cpdlogbook', 'reflection', $entryid);
+
+        $DB->update_record('cpdlogbook_entries', $fromform);
+
         $entry = $DB->get_record('cpdlogbook_entries', ['id' => $entryid]);
 
-
+        // This function requires the entry id to work correctly, otherwise the files aren't linked correctly.
         file_save_draft_area_files($fromform->attachments, $context->id, 'mod_cpdlogbook', 'attachments', $entryid);
 
         // Trigger an entry_created event after the record has been inserted into the database.
