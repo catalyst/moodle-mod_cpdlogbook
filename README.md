@@ -39,16 +39,16 @@ This project was undertaken as part of the Information Technology Project (COSC3
 
 ## Developers
 
-Jordan Shatte @UndeclaredVariable [jshatte@myune.edu.au](mailto:jshatte@myune.edu.au)
+Jordan Shatte [@UndeclaredVariable](https://github.com/UndeclaredVariable)
 
-Caleb Hill @ZingerBoxBlues [chill33@myune.edu.au](mailto:chill33@myune.edu.au)
+Caleb Hill [@ZingerBoxBlues](https://github.com/ZingerBoxBlues)
 
-Jack Moloney @jackdmoloney [jmolon21@myune.edu.au](mailto:jmolon21@myune.edu.au)
+Jack Moloney [@jackdmoloney](https://github.com/jackdmoloney)
 
-Jesse Flemming @ad-miral [jflemmi3@myune.edu.au](mailto:jflemmi3@myune.edu.au)
+Jesse Flemming [@ad-miral](https://github.com/ad-miral)
 
-Lukas Dimitrios @PillowIsSoft [ldimitri@myune.edu.au](mailto:ldimitri@myune.edu.au)
+Lukas Dimitrios [@PillowIsSoft](https://github.com/PillowIsSoft)
 
 ## Client
 
-Brendan Heywood @brendanheywood [brendan@catalyst-au.net](mailto:brendan@catalyst-au.net)
+Brendan Heywood [@brendanheywood](https://github.com/brendanheywood)
