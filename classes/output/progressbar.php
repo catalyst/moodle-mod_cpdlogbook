@@ -70,9 +70,7 @@ class progressbar implements renderable, templatable {
         $data->percent = format_float($this->percent);
         // Calculate the difference between the current percent and the target.
         $data->targetdiff = format_float($this->target - $this->percent);
-        if ($data->targetdiff < 0) {
-            $data->targetdiff = 0;
-        }
+        $data->hastarget = $data->targetdiff > 0;
         return $data;
     }
 
