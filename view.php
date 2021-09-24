@@ -57,11 +57,7 @@ if (!$download) {
     if ($periodid != 0) {
         $period = new period($periodid);
 
-        $entries = $DB->get_records('cpdlogbook_entries', ['cpdlogbookid' => $cm->instance, 'periodid' => $periodid]);
-        $sum = 0;
-        foreach ($entries as $e) {
-            $sum += $e->points;
-        }
+        $sum = $period->total_entry_points();
 
         // Output the points as a ratio, ie. 5 / 20.
         $a = new stdClass();
@@ -84,8 +80,7 @@ if (!$download) {
         $a->sum = format_float($target * $period->get('points'));
         echo html_writer::tag('p', get_string('targetpoints', 'mod_cpdlogbook', $a));
 
-
-        $progressbar = new progressbar($percent, 100*$target);
+        $progressbar = new progressbar($percent, 100 * $target);
         echo $OUTPUT->render($progressbar);
     }
 
