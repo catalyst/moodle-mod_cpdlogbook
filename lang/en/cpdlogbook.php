@@ -58,7 +58,7 @@ $string['edittitle'] = 'Edit this entry';
 // Errors and invalid data.
 $string['confirmdelete'] = 'Are you sure you want to delete entry "{$a}"?';
 $string['pointratio'] = '{$a->sum} / {$a->required} points';
-$string['targetratio'] = 'Target: {$a->sum} / {$a->required} points';
+$string['targetpoints'] = 'By now you should have at least {$a->sum} points for the current period.';
 $string['periods'] = 'Periods';
 $string['startdate'] = 'Start date';
 $string['enddate'] = 'End date';

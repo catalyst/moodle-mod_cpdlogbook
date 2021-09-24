@@ -80,12 +80,12 @@ if (!$download) {
         }
 
         // The target percentage given the current time.
-        $target = 100 * (time() - $period->get('startdate')) / ($period->get('enddate') - $period->get('startdate'));
-        $a->sum = format_float($target);
-        echo html_writer::tag('p', get_string('targetratio', 'mod_cpdlogbook', $a));
+        $target = (time() - $period->get('startdate')) / ($period->get('enddate') - $period->get('startdate'));
+        $a->sum = format_float($target * $period->get('points'));
+        echo html_writer::tag('p', get_string('targetpoints', 'mod_cpdlogbook', $a));
 
 
-        $progressbar = new progressbar($percent, $target);
+        $progressbar = new progressbar($percent, 100*$target);
         echo $OUTPUT->render($progressbar);
     }
 
