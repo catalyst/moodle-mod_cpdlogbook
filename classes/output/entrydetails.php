@@ -50,14 +50,21 @@ class entrydetails implements renderable, templatable {
     public $files;
 
     /**
+     * @var int
+     */
+    public $contextid;
+
+    /**
      * progressbar constructor.
      *
      * @param \stdClass $entry
      * @param \stored_file[] $files
+     * @param int $contextid
      */
-    public function __construct($entry, $files) {
+    public function __construct($entry, $files, $contextid) {
         $this->entry = $entry;
         $this->files = $files;
+        $this->contextid = $contextid;
     }
 
     /**
@@ -71,6 +78,11 @@ class entrydetails implements renderable, templatable {
         $data->completiondate = userdate($data->completiondate, get_string('summarydate', 'mod_cpdlogbook'));
         $data->duration = format_time($data->duration);
         $data->summary = format_text($data->summary);
+
+        // Format the reflection.
+        $data->reflection = file_rewrite_pluginfile_urls($data->reflection, 'pluginfile.php', $this->contextid,
+                'mod_cpdlogbook', 'reflection', $data->id);
+
         $data->files = [];
         foreach ($this->files as $file) {
             $url = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(),
