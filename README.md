@@ -35,3 +35,20 @@ https://moodle.org/plugins/local_cpd
 
 # Credit and thanks
 
+This project was undertaken as part of the Information Technology Project (COSC320) at UNE.
+
+## Developers
+
+Jordan Shatte [@UndeclaredVariable](https://github.com/UndeclaredVariable)
+
+Caleb Hill [@ZingerBoxBlues](https://github.com/ZingerBoxBlues)
+
+Jack Moloney [@jackdmoloney](https://github.com/jackdmoloney)
+
+Jesse Flemming [@ad-miral](https://github.com/ad-miral)
+
+Lukas Dimitrios [@PillowIsSoft](https://github.com/PillowIsSoft)
+
+## Client
+
+Brendan Heywood [@brendanheywood](https://github.com/brendanheywood)
