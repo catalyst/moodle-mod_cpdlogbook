@@ -41,6 +41,8 @@ if ($create) {
     // If an entry is being created.
     $record = new stdClass();
     $record->id = $id;
+    $record->textfield = '';
+    $record->textfieldformat = FORMAT_HTML;
 
     list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
 
@@ -61,13 +63,18 @@ if ($create) {
 
 $context = context_module::instance($cm->id);
 
+$reflectionoptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'context' => $context);
+$record = file_prepare_standard_editor($record, 'reflection', $reflectionoptions, $context, 'mod_cpdlogbook', 'reflection', $create ? null : $record->id);
+
+$reflectiondraft = file_get_submitted_draft_itemid('attachments');
+file_prepare_draft_area($reflectiondraft, $context->id, 'mod_cpdlogbook', 'reflection', $record->id);
+
+
 $draftitemid = file_get_submitted_draft_itemid('attachments');
 file_prepare_draft_area($draftitemid, $context->id, 'mod_cpdlogbook', 'attachments', $record->id);
 $record->attachments = $draftitemid;
 
 require_capability('mod/cpdlogbook:edit', $context);
-
-$reflectionoptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'context' => $context);
 
 $mform = new edit_entry($reflectionoptions);
 // Set the cpdlogbookid used for validation.
@@ -88,32 +95,28 @@ if ($mform->is_cancelled()) {
 } else if ($fromform = $mform->get_data()) {
     $fromform->periodid = period::get_period_for_date($fromform->completiondate, $cm->instance);
 
-    // Extracts usable data from raw editor form.
-    $fromform->reflection = $fromform->reflection_editor['text'];
-    $fromform->reflectionformat = $fromform->reflection_editor['format'];
-
-    $fromform = file_prepare_standard_editor($fromform, 'reflection', $reflectionoptions, $context, 'mod_cpdlogbook',
-        'reflection', $fromform->id);
-    $fromform = file_postupdate_standard_editor($fromform, 'reflection', $reflectionoptions, $context, 'mod_cpdlogbook',
-        'reflection', $fromform->id);
-
     if ($create) {
         unset($fromform->id);
 
         $fromform->cpdlogbookid = $cm->instance;
         $fromform->userid = $USER->id;
         $fromform->creationdate = time();
+        $fromform = file_postupdate_standard_editor($fromform, 'reflection', $reflectionoptions, $context, 'mod_cpdlogbook', 'reflection', null);
+
 
         $entryid = $DB->insert_record('cpdlogbook_entries', $fromform, true);
-        $newentry = $DB->get_record('cpdlogbook_entries', ['id' => $entryid]);
+        $entry = $DB->get_record('cpdlogbook_entries', ['id' => $entryid]);
+
 
         file_save_draft_area_files($fromform->attachments, $context->id, 'mod_cpdlogbook', 'attachments', $entryid);
 
         // Trigger an entry_created event after the record has been inserted into the database.
-        entry_created::create_from_entry($newentry, $context)->trigger();
+        entry_created::create_from_entry($entry, $context)->trigger();
     } else {
         // Update the record according to the submitted form data.
         $fromform->modifieddate = time();
+        $fromform = file_postupdate_standard_editor($fromform, 'reflection', $reflectionoptions, $context, 'mod_cpdlogbook', 'reflection', $fromform->id);
+
 
         $DB->update_record('cpdlogbook_entries', $fromform);
         $entry = $DB->get_record('cpdlogbook_entries', ['id' => $fromform->id]);
@@ -134,11 +137,6 @@ if ($create) {
     $title = get_string('createtitle', 'mod_cpdlogbook');
 } else {
     $title = $record->name;
-}
-
-// Sets reflection section when editing form.
-if (!$create) {
-    $record->reflection_editor = ['text' => $record->reflection, 'format' => $record->reflectionformat];
 }
 
 $PAGE->set_title($title);
