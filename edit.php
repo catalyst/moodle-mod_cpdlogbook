@@ -41,6 +41,8 @@ if ($create) {
     // If an entry is being created.
     $record = new stdClass();
     $record->id = $id;
+    $record->textfield = '';
+    $record->textfieldformat = FORMAT_HTML;
 
     list ($course, $cm) = get_course_and_cm_from_cmid($id, 'cpdlogbook');
 
@@ -61,13 +63,20 @@ if ($create) {
 
 $context = context_module::instance($cm->id);
 
+$reflectionoptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'context' => $context);
+$record = file_prepare_standard_editor($record, 'reflection', $reflectionoptions, $context, 'mod_cpdlogbook',
+        'reflection', $create ? null : $record->id);
+$reflectiondraft = file_get_submitted_draft_itemid('reflection');
+file_prepare_draft_area($reflectiondraft, $context->id, 'mod_cpdlogbook', 'reflection', $record->id);
+
+
 $draftitemid = file_get_submitted_draft_itemid('attachments');
 file_prepare_draft_area($draftitemid, $context->id, 'mod_cpdlogbook', 'attachments', $record->id);
 $record->attachments = $draftitemid;
 
 require_capability('mod/cpdlogbook:edit', $context);
 
-$mform = new edit_entry();
+$mform = new edit_entry($reflectionoptions);
 // Set the cpdlogbookid used for validation.
 if ($create) {
     $mform->set_cpdlogbookid($cm->instance);
@@ -94,20 +103,32 @@ if ($mform->is_cancelled()) {
         $fromform->creationdate = time();
 
         $entryid = $DB->insert_record('cpdlogbook_entries', $fromform, true);
-        $newentry = $DB->get_record('cpdlogbook_entries', ['id' => $entryid]);
+        $fromform->id = $entryid;
 
+        $fromform = file_postupdate_standard_editor($fromform, 'reflection', $reflectionoptions, $context,
+                'mod_cpdlogbook', 'reflection', $entryid);
+
+        $DB->update_record('cpdlogbook_entries', $fromform);
+
+        $entry = $DB->get_record('cpdlogbook_entries', ['id' => $entryid]);
+
+        // This function requires the entry id to work correctly, otherwise the files aren't linked correctly.
         file_save_draft_area_files($fromform->attachments, $context->id, 'mod_cpdlogbook', 'attachments', $entryid);
 
         // Trigger an entry_created event after the record has been inserted into the database.
-        entry_created::create_from_entry($newentry, $context)->trigger();
+        entry_created::create_from_entry($entry, $context)->trigger();
     } else {
         // Update the record according to the submitted form data.
         $fromform->modifieddate = time();
+        $fromform = file_postupdate_standard_editor($fromform, 'reflection', $reflectionoptions, $context,
+                'mod_cpdlogbook', 'reflection', $fromform->id);
+
 
         $DB->update_record('cpdlogbook_entries', $fromform);
         $entry = $DB->get_record('cpdlogbook_entries', ['id' => $fromform->id]);
 
-        file_save_draft_area_files($fromform->attachments, $context->id, 'mod_cpdlogbook', 'attachments', $fromform->id);
+        file_save_draft_area_files($fromform->attachments, $context->id, 'mod_cpdlogbook', 'attachments',
+                $fromform->id);
 
         // Trigger an entry_updated event.
         entry_updated::create_from_entry($entry, $context)->trigger();

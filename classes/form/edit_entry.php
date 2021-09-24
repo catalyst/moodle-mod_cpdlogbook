@@ -38,9 +38,25 @@ require_once($CFG->libdir.'/formslib.php');
 class edit_entry extends \moodleform {
 
     /**
+     * Constructor for form. Sets reflection options.
+     *
+     * @param array $reflectionoptions
+     */
+    public function __construct(array $reflectionoptions) {
+        $this->reflectionoptions = $reflectionoptions;
+        parent::__construct();
+    }
+
+
+    /**
      * @var int
      */
     private $cpdlogbookid;
+
+    /**
+     * @var array
+     */
+    private $reflectionoptions;
 
     /**
      * Sets the cpdlogbookid field.
@@ -85,6 +101,10 @@ class edit_entry extends \moodleform {
         $mform->addElement('textarea', 'summary', get_string('summary', 'mod_cpdlogbook'),
             ['rows' => '5', 'cols' => '50']);
         $mform->setType('summary', PARAM_TEXT);
+
+        $mform->addElement('editor', 'reflection_editor', get_string('reflection', 'mod_cpdlogbook'), null,
+            $this->reflectionoptions);
+        $mform->setType('reflection_editor', PARAM_RAW);
 
         $mform->addElement('filemanager', 'attachments', get_string('attachments', 'mod_cpdlogbook'), null);
 

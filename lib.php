@@ -126,7 +126,7 @@ function mod_cpdlogbook_pluginfile($course, $cm, $context, $filearea, $args, $fo
         return false;
     }
 
-    if ($filearea != 'attachments') {
+    if ($filearea != 'attachments' && $filearea != 'reflection') {
         return false;
     }
     require_login($course, true, $cm);

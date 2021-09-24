@@ -176,5 +176,27 @@ function xmldb_cpdlogbook_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2021080309, 'cpdlogbook');
     }
 
+    if ($oldversion < 2021080310) { // Adds reflection field to logbook entries.
+        // Define field reflection to be added to cpdlogbook_entries.
+        $table = new xmldb_table('cpdlogbook_entries');
+        $field = new xmldb_field('reflection', XMLDB_TYPE_TEXT, null, null, null, null, null, 'summary');
+
+        // Conditionally launch add field reflection.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field reflectionformat to be added to cpdlogbook_entries.
+        $field = new xmldb_field('reflectionformat', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', 'reflection');
+
+        // Conditionally launch add field reflectionformat.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cpdlogbook savepoint reached.
+        upgrade_mod_savepoint(true, 2021080310, 'cpdlogbook');
+    }
+
     return true;
 }
