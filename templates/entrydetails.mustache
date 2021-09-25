@@ -39,37 +39,48 @@
         "provider": "UNE",
     }
 }}
+
 <div>
-    <h2>Name</h2>
-    <div class="mb-5">{{ name }}</div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="mb-5">
+                <h4>{{& summary }}</h4>
+            </div>
 
-    <h2>Completion Date</h2>
-    <div class="mb-5">{{ completiondate }}</div>
+            <div class="mb-5">
+                <h2 class="ml-3">{{#str}} reflection, mod_cpdlogbook {{/str}}</h2>
+                <div class="card p-2">{{& reflection }}</div>
+            </div>
 
-    <h2>Points</h2>
-    <div class="mb-5">{{ points }}</div>
-
-    <h2>Duration</h2>
-    <div class="mb-5">{{ duration }}</div>
-
-    <h2>Location</h2>
-    <div class="mb-5">{{ location }}</div>
-
-    <h2>Summary</h2>
-    <div class="mb-5">{{& summary }}</div>
-
-    <h2>Reflection</h2>
-    <div class="mb-5">{{& reflection }}</div>
-
-    <h2>Provider</h2>
-    <div class="mb-5">{{ provider }}</div>
-
-    <h2>Attachments</h2>
-    <div class="mb-5">
-    {{#files}}
-        <div>
-            <a class="link-primary" href="{{ url }}">{{ filename }}</a>
+            <div class="mb-5">
+                <h2 class="ml-3">{{#str}} attachments, mod_cpdlogbook {{/str}}</h2>
+                <div class="card p-2">
+                    {{#files}}
+                    <div>
+                        <a class="link-primary" href="{{ url }}">{{ filename }}</a>
+                    </div>
+                    {{/files}}
+                </div>
+            </div>
         </div>
-    {{/files}}
+
+        <div class="col-md-4">
+            <div class="card px-3 pt-3 mb-5">
+                <h3 class="ml-3">{{#str}} details {{/str}}</h3>
+                <p>
+                    <b>{{#str}} points, mod_cpdlogbook {{/str}}:</b> {{ points }} <br>
+                    <b>{{#str}} duration, mod_cpdlogbook {{/str}}:</b> {{ duration }} <br>
+                    <b>{{#str}} completiondate, mod_cpdlogbook {{/str}}:</b> {{ completiondate }}
+                </p>
+            </div>
+
+            <div class="card px-3 pt-3">
+                <h3 class="ml-3">{{#str}} provider, mod_cpdlogbook {{/str}} {{#str}} info {{/str}}</h3>
+                <p>
+                    <b>{{#str}} provider, mod_cpdlogbook {{/str}}:</b> {{ provider }} <br>
+                    <b>{{#str}} location, mod_cpdlogbook {{/str}}:</b> {{ location }}
+                </p>
+            </div>
+        </div>
     </div>
 </div>
