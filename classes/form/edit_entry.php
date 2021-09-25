@@ -106,7 +106,7 @@ class edit_entry extends \moodleform {
             $this->reflectionoptions);
         $mform->setType('reflection_editor', PARAM_RAW);
 
-        $mform->addElement('filemanager', 'attachments', get_string('attachments', 'mod_cpdlogbook'), null);
+        $mform->addElement('filemanager', 'evidence', get_string('evidence', 'mod_cpdlogbook'), null);
 
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);

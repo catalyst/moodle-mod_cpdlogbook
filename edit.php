@@ -70,9 +70,9 @@ $reflectiondraft = file_get_submitted_draft_itemid('reflection');
 file_prepare_draft_area($reflectiondraft, $context->id, 'mod_cpdlogbook', 'reflection', $record->id);
 
 
-$draftitemid = file_get_submitted_draft_itemid('attachments');
-file_prepare_draft_area($draftitemid, $context->id, 'mod_cpdlogbook', 'attachments', $record->id);
-$record->attachments = $draftitemid;
+$draftitemid = file_get_submitted_draft_itemid('evidence');
+file_prepare_draft_area($draftitemid, $context->id, 'mod_cpdlogbook', 'evidence', $record->id);
+$record->evidence = $draftitemid;
 
 require_capability('mod/cpdlogbook:edit', $context);
 
@@ -113,7 +113,7 @@ if ($mform->is_cancelled()) {
         $entry = $DB->get_record('cpdlogbook_entries', ['id' => $entryid]);
 
         // This function requires the entry id to work correctly, otherwise the files aren't linked correctly.
-        file_save_draft_area_files($fromform->attachments, $context->id, 'mod_cpdlogbook', 'attachments', $entryid);
+        file_save_draft_area_files($fromform->evidence, $context->id, 'mod_cpdlogbook', 'evidence', $entryid);
 
         // Trigger an entry_created event after the record has been inserted into the database.
         entry_created::create_from_entry($entry, $context)->trigger();
@@ -127,7 +127,7 @@ if ($mform->is_cancelled()) {
         $DB->update_record('cpdlogbook_entries', $fromform);
         $entry = $DB->get_record('cpdlogbook_entries', ['id' => $fromform->id]);
 
-        file_save_draft_area_files($fromform->attachments, $context->id, 'mod_cpdlogbook', 'attachments',
+        file_save_draft_area_files($fromform->evidence, $context->id, 'mod_cpdlogbook', 'evidence',
                 $fromform->id);
 
         // Trigger an entry_updated event.
