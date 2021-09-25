@@ -22,37 +22,49 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['modulename'] = 'CPD Logbook';
-$string['pluginname'] = 'CPD Logbook';
-$string['modulenameplural'] = 'CPD Logbooks';
+// Required activity strings.
 $string['cpdlogbook:addinstance'] = 'Add an instance';
+$string['modulename'] = 'CPD Logbook';
+$string['modulenameplural'] = 'CPD Logbooks';
 $string['pluginadministration'] = 'Administration';
-$string['name'] = 'Name';
-$string['points'] = 'Points';
-$string['duration'] = 'Duration';
+$string['pluginname'] = 'CPD Logbook';
+
+// Headers and column names.
+$string['attachments'] = 'Attachments';
 $string['completiondate'] = 'Completion Date';
 $string['creationdate'] = 'Creation Date';
-$string['modifieddate'] = 'Modified Date';
-$string['provider'] = 'Provider';
+$string['duration'] = 'Duration';
+$string['enddate'] = 'End date';
 $string['location'] = 'Location';
-$string['summary'] = 'Summary';
-$string['period'] = 'Period';
+$string['modifieddate'] = 'Modified Date';
+$string['name'] = 'Name';
+$string['periods'] = 'Periods';
+$string['points'] = 'Points';
+$string['provider'] = 'Provider';
 $string['reflection'] = 'Reflection';
-$string['summarydate'] = '%a, %d %b %Y';
+$string['startdate'] = 'Start date';
+$string['summary'] = 'Summary';
+
+// Date format strings.
 $string['exportdate'] = '%Y-%m-%d';
+$string['summarydate'] = '%a, %d %b %Y';
+
+// Entry CRUD titles.
+$string['confirmdelete'] = 'Are you sure you want to delete entry "{$a}"?';
 $string['createtitle'] = 'Create a new entry';
 $string['edittitle'] = 'Edit this entry';
-$string['confirmdelete'] = 'Are you sure you want to delete entry "{$a}"?';
-$string['pointratio'] = '{$a->sum} / {$a->required} points';
-$string['periods'] = 'Periods';
-$string['startdate'] = 'Start date';
-$string['enddate'] = 'End date';
-$string['startendinvalid'] = 'Start date after end date';
-$string['overlap'] = 'This overlaps with an existing period';
-$string['invalidentries'] = 'There are {$a} entries without an appropriate period.';
-$string['nocurrentperiod'] = 'There is no period for today, so no entries can be added.';
+
+// Errors and invalid data.
 $string['daterestriction'] = 'This date must be between {$a->start} and {$a->end}.';
+$string['invalidentries'] = 'There are {$a} entries without an appropriate period.';
 $string['lessthanzero'] = 'This value cannot be less than zero.';
-$string['attachments'] = 'Attachments';
-$string['noperiod'] = 'No period';
+$string['nocurrentperiod'] = 'There is no period for today, so no entries can be added.';
+$string['overlap'] = 'This overlaps with an existing period';
+$string['startendinvalid'] = 'Start date after end date';
+
+// Period information.
 $string['currentperiod'] = 'Current period';
+$string['noperiod'] = 'No period';
+
+// Miscellaneous.
+$string['pointratio'] = '{$a->sum} / {$a->required} points';
