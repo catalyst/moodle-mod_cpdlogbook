@@ -63,7 +63,7 @@ $PAGE->navbar->add($record->name);
 echo $OUTPUT->header();
 
 $fs = get_file_storage();
-$files = $fs->get_area_files($context->id, 'mod_cpdlogbook', 'attachments', $record->id);
+$files = $fs->get_area_files($context->id, 'mod_cpdlogbook', 'evidence', $record->id);
 $entrydetails = new entrydetails($record, $files, $context->id);
 echo $OUTPUT->render($entrydetails);
 

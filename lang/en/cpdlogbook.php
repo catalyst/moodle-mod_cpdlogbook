@@ -30,11 +30,11 @@ $string['pluginadministration'] = 'Administration';
 $string['pluginname'] = 'CPD Logbook';
 
 // Headers and column names.
-$string['attachments'] = 'Attachments';
 $string['completiondate'] = 'Completion Date';
 $string['creationdate'] = 'Creation Date';
 $string['duration'] = 'Duration';
 $string['enddate'] = 'End date';
+$string['evidence'] = 'Evidence';
 $string['location'] = 'Location';
 $string['modifieddate'] = 'Modified Date';
 $string['name'] = 'Name';
