@@ -57,7 +57,7 @@ if (!$download) {
     if ($periodid != 0) {
         $period = new period($periodid);
 
-        $sum = $period->total_entry_points();
+        $sum = floatval($period->total_entry_points());
 
         // Output the points as a ratio, ie. 5 / 20.
         $a = new stdClass();
@@ -66,7 +66,12 @@ if (!$download) {
         echo html_writer::tag('p', get_string('pointratio', 'mod_cpdlogbook', $a), ['class' => 'h2']);
 
         // Output the points as a progress bar towards completion.
-        $percent = 100 * $sum / $period->get('points');
+        $points = $period->get('points');
+        if ($points != 0) {
+            $percent = 100 * $sum / $points;
+        } else {
+            $percent = 100;
+        }
         // Clamp the percentage to be between 100 and 0.
         if ($percent > 100) {
             $percent = 100;
