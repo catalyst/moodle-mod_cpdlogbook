@@ -44,12 +44,19 @@ class progressbar implements renderable, templatable {
     public $percent;
 
     /**
+     * @var float
+     */
+    public $target;
+
+    /**
      * progressbar constructor.
      *
      * @param float $percent
+     * @param float $target
      */
-    public function __construct($percent) {
+    public function __construct($percent, $target) {
         $this->percent = $percent;
+        $this->target = $target;
     }
 
     /**
@@ -61,6 +68,9 @@ class progressbar implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         $data = new \stdClass();
         $data->percent = format_float($this->percent);
+        // Calculate the difference between the current percent and the target.
+        $data->targetdiff = format_float($this->target - $this->percent);
+        $data->hastarget = $data->targetdiff > 0;
         return $data;
     }
 

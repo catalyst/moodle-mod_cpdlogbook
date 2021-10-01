@@ -217,4 +217,16 @@ class period extends \core\persistent {
         }
         return false;
     }
+
+    /**
+     * Return the sum of all points for entries within this period.
+     *
+     * @return int
+     * @throws \dml_exception
+     * @throws coding_exception
+     */
+    public function total_entry_points() {
+        global $DB;
+        return $DB->get_record('cpdlogbook_entries', ['periodid' => $this->get('id')], 'SUM(points) as sum')->sum;
+    }
 }

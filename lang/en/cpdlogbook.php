@@ -58,8 +58,10 @@ $string['edittitle'] = 'Edit this entry';
 $string['daterestriction'] = 'This date must be between {$a->start} and {$a->end}.';
 $string['invalidentries'] = 'There are {$a} entries without an appropriate period.';
 $string['lessthanzero'] = 'This value cannot be less than zero.';
+$string['startendinvalid'] = 'Start date after end date';
 $string['nocurrentperiod'] = 'There is no period for today, so no entries can be added.';
 $string['overlap'] = 'This overlaps with an existing period';
+$string['invalidentries'] = 'There are {$a} entries without an appropriate period.';
 $string['startendinvalid'] = 'Start date after end date';
 
 // Period information.
@@ -68,3 +70,4 @@ $string['noperiod'] = 'No period';
 
 // Miscellaneous.
 $string['pointratio'] = '{$a->sum} / {$a->required} points';
+$string['targetpoints'] = 'By now you should have at least {$a->sum} points for the current period.';

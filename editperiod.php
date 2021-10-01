@@ -106,9 +106,6 @@ $PAGE->navbar->add($title);
 echo $OUTPUT->header();
 echo $OUTPUT->heading($title);
 
-echo $id.PHP_EOL;
-echo $create;
-
 $mform->display();
 
 echo $OUTPUT->footer();
