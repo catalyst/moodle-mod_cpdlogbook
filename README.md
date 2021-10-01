@@ -55,4 +55,4 @@ Brendan Heywood [@brendanheywood](https://github.com/brendanheywood)
 
 ## Licensing
 
-Licensed under the [GPLv3 license](https://github.com/brendanheywood/moodle-mod_cpdlogbook/blob/main/LICENSE).
+Licensed under the [GPLv3 license](LICENSE).
