@@ -52,3 +52,7 @@ Lukas Dimitrios [@PillowIsSoft](https://github.com/PillowIsSoft)
 ## Client
 
 Brendan Heywood [@brendanheywood](https://github.com/brendanheywood)
+
+## Licensing
+
+Licensed under the[GPLv3 license](blob/main/LICENSE)
