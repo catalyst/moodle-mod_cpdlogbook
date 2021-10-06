@@ -8,7 +8,7 @@ This plugin is designed to provide a Continuous Professional Development logbook
 1. Install the plugin as you would any standard Moodle plugin via the Moodle plugin directory 
    (https://docs.moodle.org/311/en/Installing_plugins#Installing_directly_from_the_Moodle_plugins_directory) or git cloning it into your source:
    ```
-   git clone git@github.com:brendanheywood/moodle-mod_cpdlogbook.git /mod/cpdlogbook
+   git clone git@github.com:catalyst/moodle-mod_cpdlogbook.git /mod/cpdlogbook
    ```
    Note that the plugin folder name must be `cpdlogbook` for moodle to recognise the plugin.
 
